@@ -66,9 +66,16 @@ Public list prices used for the estimate (USD / 1M tokens). Lock the exact model
 
 Split-model vs all-full-tier: the two mini-tier agents would cost ~$0.018 extra per run on GPT-4o. Across 12 baseline inputs that is noise; across **20 PRDs/day × 22 working days** (~440 runs/month) it is ~$8/month saved and, more importantly, it keeps the reasoning budget on the agents the dataset actually tests.
 
-**Volume scenario (NeuronForge, post-capstone):** 20 first-draft PRDs/day → ~$0.44/day → **~$10/month** at this token sketch, plus Langfuse free-tier tracing. Re-runs after clarification double the Extractor+Gap cost only, not a fourth agent, because the pipeline is stateless.
+**Volume → cost per user per day** (the unit the session brief asks for):
 
-These numbers are a ceiling-style sketch. Actuals will be higher on T11/T12 (PRD-length context) and lower on T9 (empty notes). The scored deliverable is this formula plus Langfuse screenshots of real token totals — not the estimate itself.
+| Scenario | Volume | Cost |
+|---|---|---|
+| One PM, 2 first-drafts / day | 2 runs | **~$0.044 / user / day** |
+| Team, 20 first-drafts / day | 20 runs | ~$0.44 / day (~$10 / month) |
+
+Re-runs after clarification add Extractor+Gap cost only (stateless full pipeline, not a fourth agent).
+
+These numbers are a ceiling-style sketch. Actuals will be higher on T11/T12 (PRD-length context) and lower on T9 (empty notes). The scored deliverable is `tokens × price × expected daily volume`, expressed per user per day, plus Langfuse screenshots of real totals.
 
 ## Evaluation strategy
 
@@ -76,7 +83,11 @@ These numbers are a ceiling-style sketch. Actuals will be higher on T11/T12 (PRD
 2. Score configs: **completeness**, **hallucination** (untraceable items), **groundedness**.
 3. Run all 12 baseline inputs. Document each output in `evidence/baseline-results.md`.
 4. Open-code failing traces; axial-code into the dataset's own categories (vague, contradictory, incomplete, edge-case, dependency).
-5. Change **one** prompt or model setting per experiment (`evidence/experiment-log.md`). Never five things at once.
-6. Production metrics to keep after submission: hallucination rate, format compliance, tokens/run, latency, PM edit-time vs hand-draft (business metric from the charter).
+5. Change **one** thing per experiment (`evidence/experiment-log.md`), in this order if needed: prompt → model swap → architecture → config → fine-tune. Because outputs are non-deterministic, **re-run the same change several times** and keep it only if the gain is consistent.
+6. **Three or more production metrics** (session brief; picked from this project's failure mode — invented requirements):
+   1. Hallucination rate (% of items with no evidence quote)
+   2. Groundedness (traceable to source)
+   3. Format compliance (all 10 template sections present)
+   Plus operational: tokens and latency per run. Business: PM drafting time saved per first-draft PRD.
 
 Baseline results and the experiment log are empty of scores until Days 9–11 of the build. The strategy above is what Q3 asks for; Q4 reflection fills in what the traces actually showed.

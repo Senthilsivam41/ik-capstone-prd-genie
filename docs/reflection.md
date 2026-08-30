@@ -4,7 +4,7 @@
 
 ## What this page will prove
 
-Q4 is 15 points in the session brief / 5 points in the problem-statement PDF — either way it is scored on (1) what traces showed, (2) a concrete improvement plan, (3) risks of AI-generated PRDs, (4) connection to evaluation skills from weeks 6–7.
+Q4 is **5 points** on the PRD Genie rubric (session brief *and* problem statement). CalendarMate/Mira reflections are 15 — do not write to that length. Score is (1) what traces showed, (2) a concrete improvement plan, (3) risks of AI-generated PRDs, (4) connection to evaluation skills from weeks 6–7 / Agent Eval Fundamentals.
 
 ## Trace findings (to complete after baseline)
 

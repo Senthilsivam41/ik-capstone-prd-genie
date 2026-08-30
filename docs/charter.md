@@ -2,7 +2,9 @@
 NeuronForge Technologies | Applied Agentic AI for PMs/TPMs Capstone
 Author: Sendil | Draft v0.1
 
-Related: [RAID log](raid-log.md) · [ADRs](adr/) · [Architecture writeup](architecture-writeup.md) · [Reflection](reflection.md)
+Related: [Official rubric — 80 pts](rubric.md) · [RAID log](raid-log.md) · [ADRs](adr/) · [Architecture writeup](architecture-writeup.md) · [Reflection](reflection.md)
+
+**Scoring (PRD Genie only):** Q1 Ideation 15 · Q2 Charter 15 · Q3 Build 45 · Q4 Reflection 5 · **Total 80**. Not the 100-point CalendarMate/Mira split.
 
 ---
 

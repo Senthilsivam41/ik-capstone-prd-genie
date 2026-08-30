@@ -2,6 +2,10 @@
 
 Evaluation loop (Days 9–11). **One change per row.** If a row changes prompt *and* model, it is invalid.
 
+Because models are non-deterministic, **one run proves nothing**. Repeat the same experiment several times; keep the change only if the gain is consistent (session brief, experiment-record slide).
+
+Optimisation levers, cheapest first: (1) prompt (2) model/provider swap (3) architecture (4) config (5) fine-tune.
+
 Baseline = score on the 12-input set *before* the change. New score = after. Holdout: at least T1 (completeness) plus the tests that motivated the change.
 
 | ID | Date | Change made (exactly one) | Baseline | New score | Result | Decision |

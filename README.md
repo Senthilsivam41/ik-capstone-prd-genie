@@ -44,7 +44,7 @@ slides/        speaker outline for the summary deck
 demo/          placeholder for the required 5-min video URL
 ```
 
-Rubric mapping is in [docs/charter.md](docs/charter.md). Design rationale is in [docs/architecture-writeup.md](docs/architecture-writeup.md).
+**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts) and `.cursor/rules/prd-genie-rubric.mdc` — every change must name the rubric line it earns. Design rationale: [docs/architecture-writeup.md](docs/architecture-writeup.md).
 
 ## Setup
 

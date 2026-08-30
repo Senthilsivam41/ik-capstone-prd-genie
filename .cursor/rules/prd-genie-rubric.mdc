@@ -1,0 +1,60 @@
+---
+description: PRD Genie 80-point rubric — mandatory before every change
+alwaysApply: true
+---
+
+# Scoring thumb-rule (strict)
+
+This repo is graded out of **80**, not 100. Full table: `docs/rubric.md`. Problem statement PDF and Capstone Session 1 beat any other source. Do not use CalendarMate/Mira (charter 25 / reflection 15) or SalesGenie (no charter).
+
+| Line | Pts | Earn it by |
+|---|---|---|
+| Q1 Ideation | 15 | Pain → agent → I/O → risk for each pain |
+| Q2 Charter | 15 | Vision, scope, success criteria, RAID, ADRs, rollout |
+| Q3 Design | 10 | Diagram + **why** sequential+branch (not just the name) |
+| Q3 Core | 12 | Extractor, PRD, stories **end-to-end**, one capability at a time |
+| Q3 Extended | 8 | Gap Analyzer only — after core+baseline pass |
+| Q3 Observability | 5 | Langfuse **before** first successful run; per-agent traces + tokens |
+| Q3 Baseline | 5 | All 12 inputs documented with outputs **as you run** |
+| Q3 Cost+eval | 5 | `tokens × price × volume` as **$/user/day**; ≥3 metrics from *this* failure |
+| Q4 Reflection | 5 | One page after traces: findings, plan, PRD-AI risks, eval skills |
+
+Fine-tuning is optional and **forbidden** until core + T1–T12 exist.
+
+## Before any change
+
+State which rubric line it earns. If it earns none, do not do it (scope creep costs R5).
+
+## Never (avoidable-loss list — every cohort)
+
+- Wire all four agents before Extractor works on Transcript 1
+- Ship a prompt without: if X is unknown, say UNKNOWN; do not invent X
+- Silently resolve T3/T6 contradictions
+- Pad empty PRD sections instead of Open Questions
+- Paraphrase T4 acceptance criteria
+- Name a pattern without justification
+- Invent baseline scores, traces, or screenshots
+- Skip cost per user per day or name generic metrics (use hallucination / groundedness / format compliance)
+- Connect Langfuse last
+- Pad Q4 to 15 points
+- Submit without JSON export, README, `.gitignore`, three screenshots, slide deck, **5-min demo URL**
+
+## How to build (order is scored)
+
+1. Observability env first
+2. Extractor thin slice (Transcript 1)
+3. PRD Generator + Story Breakdown
+4. Run and **write** T1–T12 as you go
+5. Gap Analyzer branch (ADR-004: after Extractor, parallel with PRD)
+6. Experiments: **one** change; repeat runs; keep only if gain is consistent
+7. Levers, cheapest first: prompt → model → architecture → config → fine-tune
+8. Open-code traces; catalog the **first** failure in the chain
+
+## Guardrail copy (every agent)
+
+Wrong: “infer a reasonable dashboard.”  
+Right: “If the input cannot determine X, write UNKNOWN. Evidence quote or it does not ship.”
+
+## Subagents
+
+Paste this rule into every subagent that edits this repo.
