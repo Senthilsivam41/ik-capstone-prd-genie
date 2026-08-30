@@ -16,7 +16,7 @@ PMs mine transcripts by hand. PRDs are inconsistent. Notes die in docs.
 
 Sequential pipeline + one branch.  
 Extractor (full) → Gap Analyzer (full) ∥ PRD Generator (mini) → Story Breakdown (mini).  
-Diagram: `design/architecture-diagram.svg`
+Diagram: `design/architecture-diagram.png` (visual) · `design/architecture-diagram.svg` (structural)
 
 ## Slide 4 — Why this pattern
 
