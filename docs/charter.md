@@ -2,6 +2,8 @@
 NeuronForge Technologies | Applied Agentic AI for PMs/TPMs Capstone
 Author: Sendil | Draft v0.1
 
+Related: [RAID log](raid-log.md) · [ADRs](adr/) · [Architecture writeup](architecture-writeup.md) · [Reflection](reflection.md)
+
 ---
 
 ## Q1: Ideation (15 pts)

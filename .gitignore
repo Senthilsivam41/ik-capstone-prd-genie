@@ -1,0 +1,26 @@
+# Secrets — never commit real keys
+.env
+.env.local
+.env.*.local
+credentials.json
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python / local tooling
+__pycache__/
+*.pyc
+.venv/
+venv/
+graphify-out/
+
+# LangFlow / Langfuse local caches
+.langflow/
+langflow.db
+*.langfuse*

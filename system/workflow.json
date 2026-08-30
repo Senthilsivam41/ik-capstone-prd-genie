@@ -1,0 +1,13 @@
+{
+  "name": "PRD Genie",
+  "description": "Replace this file with a LangFlow export (File → Export). Not yet built.",
+  "status": "not-exported",
+  "intended_graph": [
+    "TextInput",
+    "RequirementExtractor (full-tier)",
+    "GapAnalyzer (full-tier, branch)",
+    "PRDGenerator (mini-tier, branch)",
+    "StoryBreakdown (mini-tier, after PRDGenerator)",
+    "CombinedMarkdownOutput"
+  ]
+}
