@@ -8,7 +8,7 @@ Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.
 
 **Do not use the 100-point CalendarMate/Mira split.** Those give charter 25 and reflection 15. PRD Genie is **charter 15, reflection 5, total 80.**
 
-**Enforced on every agent turn** via `.cursor/rules/prd-genie-rubric.mdc` and `AGENTS.md`. If a change does not map to a row below, do not make it.
+**Live completion audit:** [rubric-evaluation.md](rubric-evaluation.md) (46/80 as of 30 Aug 2026).
 
 ## Point allocation
 

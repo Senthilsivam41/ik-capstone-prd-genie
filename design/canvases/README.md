@@ -5,6 +5,7 @@ Live Cursor canvases are **not** in git. They live under the IDE project folder.
 | File | What it is |
 |---|---|
 | `prd-genie-rubric.canvas.tsx` | 80-point PRD Genie rubric scoreboard (Session 1 × problem statement) |
+| `prd-genie-completion.canvas.tsx` | Grader-conservative completion audit (46/80, 30 Aug 2026) |
 
 To open in Cursor: the IDE loads canvases from its managed `canvases/` directory. This folder is the **git copy**, not the live editor surface. After editing the live canvas, overwrite the file here with the same name.
 

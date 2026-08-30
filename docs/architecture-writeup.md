@@ -4,7 +4,7 @@ NeuronForge Technologies · Applied Agentic AI for PMs/TPMs Capstone
 Author: Sendil · 1–2 page design / tool rationale / cost  
 Decisions: [ADR-001](adr/ADR-001-orchestration-pattern.md) · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-003](adr/ADR-003-split-model-design.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md)
 
-## Problem (three sentences)
+## Problem 
 
 PRD Genie turns NeuronForge meeting transcripts, product briefs, and stakeholder notes into a first-draft PRD and user stories so PMs stop hand-mining unstructured discussion. It is for PMs/TPMs who must ship a consistent template to engineering. The biggest risk if the AI is wrong is a hallucinated requirement — a "maybe" or a missing metric treated as committed scope — which is worse than the manual process because it looks like a finished document.
 
@@ -88,7 +88,7 @@ These numbers are a ceiling-style sketch. Actuals will be higher on T11/T12 (PRD
 
 1. Connect Langfuse **before** the first successful canvas run (not bolted on).
 2. Score configs: **completeness**, **hallucination** (untraceable items), **groundedness**.
-3. Run all 12 baseline inputs. Document each output in `evidence/baseline-results.md`.
+3. **TDD:** treat each T-row as a failing test. Green one ID (paste output + Pass/Fail) before adding the next agent. Do not run all 12 only after the full graph exists.
 4. Open-code failing traces; axial-code into the dataset's own categories (vague, contradictory, incomplete, edge-case, dependency).
 5. Change **one** thing per experiment (`evidence/experiment-log.md`), in this order if needed: prompt → model swap → architecture → config → fine-tune. Because outputs are non-deterministic, **re-run the same change several times** and keep it only if the gain is consistent.
 6. **Three or more production metrics** (session brief; picked from this project's failure mode — invented requirements):
