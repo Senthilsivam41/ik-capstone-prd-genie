@@ -17,6 +17,7 @@ Name the rubric line the current task earns (Q1 15 / Q2 15 / design 10 / core 12
 - One experimental change at a time; repeat because non-deterministic; keep only if the gain is consistent.
 - Fine-tune only after core + baseline. Demo video is required.
 - Every Cursor canvas must be copied to `design/canvases/` in this repo (git reference). Live files stay in the IDE canvases folder.
+- Implementation always uses branch `feature/<feature_name>` (kebab-case, no extra slashes). Never `feat/`. Never commit on `main` or `master`.
 
 ## Pointers
 

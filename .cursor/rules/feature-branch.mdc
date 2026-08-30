@@ -1,0 +1,24 @@
+---
+description: All implementation goes on feature/<kebab-name> — never on main
+alwaysApply: true
+---
+
+# Branch naming (mandatory)
+
+Every implementation change happens on `feature/<feature_name>`.
+
+- `feature_name` is kebab-case only: `capstone-design-pack`, `langfuse-setup`, `extractor-thin-slice`
+- No extra slashes in `feature_name` (`feature/foo/bar` is forbidden)
+- Never `feat/`, `fix/`, `chore/`, or a bare ticket id
+- Never commit on `main` or `master`. Create or switch to `feature/<feature_name>` first
+- One feature per branch. New work = new `feature/` branch from updated main
+
+```
+# Wrong
+git checkout main && git commit
+git checkout -b feat/extractor
+git checkout -b feature/extractor/thin-slice
+
+# Right
+git checkout -b feature/extractor-thin-slice
+```

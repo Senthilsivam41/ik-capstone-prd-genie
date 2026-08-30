@@ -16,7 +16,7 @@ Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.
 |---|---|---|---|
 | Q1 Ideation / business case | 15 | [charter.md](charter.md) §Q1 | Drafted |
 | Q2 Programme charter | 15 | [charter.md](charter.md) §Q2 · [raid-log.md](raid-log.md) · [adr/](adr/) | Drafted (RAID + ADRs are named deliverables in the session brief) |
-| Q3 Design and rationale | 10 | [architecture-writeup.md](architecture-writeup.md) · [architecture-diagram.svg](../design/architecture-diagram.svg) · ADRs | Drafted — pattern **justified**, not just named |
+| Q3 Design and rationale | 10 | [architecture-writeup.md](architecture-writeup.md) · [architecture-diagram.png](../design/architecture-diagram.png) · ADRs | Drafted — pattern **justified**, not just named |
 | Q3 Core capabilities | 12 | LangFlow canvas + prompts in `design/agents/` | Prompts written · canvas not built |
 | Q3 Extended capability | 8 | Gap Analyzer ([ADR-002](adr/ADR-002-extended-capability.md)) | Designed · not wired |
 | Q3 Observability | 5 | Langfuse traces per agent, tokens + cost | Not connected |

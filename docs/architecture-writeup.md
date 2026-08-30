@@ -2,8 +2,7 @@
 
 NeuronForge Technologies · Applied Agentic AI for PMs/TPMs Capstone  
 Author: Sendil · 1–2 page design / tool rationale / cost  
-Decisions: [ADR-001](adr/ADR-001-orchestration-pattern.md) · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-003](adr/ADR-003-split-model-design.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md)  
-Diagram: [design/architecture-diagram.svg](../design/architecture-diagram.svg)
+Decisions: [ADR-001](adr/ADR-001-orchestration-pattern.md) · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-003](adr/ADR-003-split-model-design.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md)
 
 ## Problem (three sentences)
 
@@ -12,6 +11,14 @@ PRD Genie turns NeuronForge meeting transcripts, product briefs, and stakeholder
 ## Design
 
 Four agents. Three are core (Extractor, PRD Generator, Story Breakdown). One is the extended capability (Gap Analyzer).
+
+<div align="center">
+  <img src="../design/architecture-diagram.png" alt="Automated Product Requirements Generation Workflow — sequential pipeline with Gap Analyzer branching after the Requirement Extractor" width="920" />
+  <p><em>Automated Product Requirements Generation Workflow.</em><br />
+  PNG is the submission visual; <a href="../design/architecture-diagram.svg">architecture-diagram.svg</a> is the structural source.</p>
+</div>
+
+Text fallback (same flow):
 
 ```
 Transcript / brief / notes
