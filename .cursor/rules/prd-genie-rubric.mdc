@@ -58,3 +58,7 @@ Right: “If the input cannot determine X, write UNKNOWN. Evidence quote or it d
 ## Subagents
 
 Paste this rule into every subagent that edits this repo.
+
+## Canvases
+
+Any `.canvas.tsx` created for this project must also be written to `design/canvases/` (git reference). See `.cursor/rules/canvas-checkin.mdc`.

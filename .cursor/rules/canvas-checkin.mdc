@@ -1,0 +1,19 @@
+---
+description: Copy every Cursor canvas into design/canvases/ as a git reference
+alwaysApply: true
+---
+
+# Canvas check-in (mandatory)
+
+Cursor live canvases live outside git (`~/.cursor/projects/.../canvases/`). Graders and later sessions never see those unless we copy them.
+
+**Whenever you create or edit a `.canvas.tsx` in this project:**
+
+1. Write the live file where Cursor requires it.
+2. **Immediately** copy the same contents to `design/canvases/<same-filename>.canvas.tsx` in this repo.
+3. If you add a new canvas, add one line to `design/canvases/README.md`.
+4. Do not leave a canvas only in the Cursor project folder.
+
+Do not commit `.canvas.data.json` sidecars (host state). The `.tsx` is the reference.
+
+Existing copy: `design/canvases/prd-genie-rubric.canvas.tsx`.

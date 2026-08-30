@@ -37,7 +37,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 
 ```
 docs/          Q1–Q4 writeups, RAID, ADRs, course problem statement PDF
-design/        architecture SVG, agent prompts, orchestration notes
+design/        architecture SVG, agent prompts, orchestration notes, canvas git copies
 evidence/      ground-truth baseline file, results + experiment log, screenshots
 system/        LangFlow export (pending), inputs, PRD template, .env.example
 slides/        speaker outline for the summary deck
