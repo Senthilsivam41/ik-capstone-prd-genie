@@ -18,11 +18,14 @@ Name the rubric line the current task earns (Q1 15 / Q2 15 / design 10 / core 12
 - Fine-tune only after core + baseline. Demo video is required.
 - Every Cursor canvas must be copied to `design/canvases/` in this repo (git reference). Live files stay in the IDE canvases folder.
 - Implementation always uses branch `feature/<feature_name>` (kebab-case, no extra slashes). Never `feat/`. Never commit on `main` or `master`.
+- **TDD / eval-first:** red on a T1–T12 row in `evidence/baseline-results.md` before building or changing the agent that should pass it. One test ID per slice. Never invent Pass. See `.cursor/rules/tdd.mdc`.
 
 ## Pointers
 
 - Charter / RAID / ADRs: `docs/`
 - Prompts: `design/agents/`
 - Canvas references: `design/canvases/`
+- **Tests (red until run):** `evidence/baseline-results.md` — seams in `.cursor/rules/tdd.mdc`
+- **Rubric completion audit:** `docs/rubric-evaluation.md`
 - Ground truth: `evidence/ground-truth/eval_prdgenie_inputs.txt`
 - Template: `system/prd_template.md`
