@@ -133,6 +133,8 @@ Requirement Extractor — stated vs ambiguous
 Clarification questions                ↓
                                 PRD + user stories (markdown, per template)
 ```
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/b29983a5-9f3e-49ff-83cb-34fab41b7893" />
+
 
 Color coding (for the submitted diagram): full-tier reasoning agents (Extractor, Gap Analyzer) in one color; mini-tier mechanical agents (PRD Generator, Story Breakdown) in a second color; input/output boundaries in neutral gray — visually reinforcing the split-model tool selection.
 
