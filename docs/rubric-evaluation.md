@@ -28,7 +28,7 @@
 | Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n is the IK-hosted equivalent (ADR-005); HITL simulated; tool table | JSON canvas is **core**, not this line. |
 | Q3 Core e2e | 12 | **0** | Prompts in `design/agents/` only | Not end-to-end. `system/workflow.json` is a placeholder. n8n canvas not built. |
 | Q3 Extended | 8 | **0** | ADR-002 + `gap-analyzer.md` | Not wired; TDD forbids it until core IDs are green. |
-| Q3 Observability | 5 | **0** | Langfuse named; `.env.example` has keys | No traces, no per-agent tokens. RAID: Langfuse **Not started**. |
+| Q3 Observability | 5 | **0** | Langfuse EU project named; keys in shell / `.env.example` | No traces, no per-agent tokens. RAID: keys exist, traces not proven. |
 | Q3 Baseline documented | 5 | **0** | Ground truth + expected checks in [baseline-results.md](../evidence/baseline-results.md) | All 12 results `Not run`. Session requires **outputs**. Template ≠ documentation. |
 | Q3 Cost + eval strategy | 5 | **4** | Formula `tokens × price × volume` as **$/user/day** (~$0.044); ≥3 failure-mode metrics; five levers; TDD loop; experiment-log template | No Langfuse actuals. −1 until traces overwrite the sketch. |
 | Q4 Reflection | 5 | **2** | [reflection.md](reflection.md): risks of AI PRDs, eval-skills link, improvement-plan process | **Trace findings** empty — that is the scored half. Do not pad to 15 pts. |
