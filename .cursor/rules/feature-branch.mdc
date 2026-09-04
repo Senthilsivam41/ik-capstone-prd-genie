@@ -22,3 +22,40 @@ git checkout -b feature/extractor/thin-slice
 # Right
 git checkout -b feature/extractor-thin-slice
 ```
+
+# Push before switching (mandatory)
+
+**Never leave a branch until its work is committed and pushed.** Work that exists only locally is invisible to the author, cannot be reviewed, and is lost if the workspace is reset.
+
+Before `git checkout` / `git switch` to a different branch:
+
+1. `git status` is clean — nothing uncommitted, nothing stashed and forgotten
+2. Commit with a real message (what changed and why)
+3. `git push -u origin feature/<feature_name>` — confirm it succeeded, do not assume
+4. Open the PR, or say plainly that it is unpushed and why
+
+A failed push is a **blocker, not a footnote**. Report it and stop; do not switch away and carry on.
+
+## Stacked branches
+
+When splitting accumulated work, later branches usually contain earlier ones. Target each PR at the branch below it, not at `main` — otherwise every PR shows the whole pile and none of them are reviewable.
+
+```
+# Right — each PR shows only its own delta
+feature/a  -> main
+feature/b  -> feature/a
+feature/c  -> feature/b
+```
+
+Merge bottom-up. Push every branch in the stack; a stack with an unpushed link is broken.
+
+## Auth check
+
+This repo has more than one GitHub account in the local keychain. Only the repo owner can push or open PRs.
+
+```
+gh api user --jq '.login'   # must be the account with push access
+gh auth switch --hostname github.com --user <owner>
+```
+
+A `403` on push or `must be a collaborator` on PR create means the wrong account is active — fix the account, do not work around it.
