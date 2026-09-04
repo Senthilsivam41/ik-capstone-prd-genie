@@ -20,7 +20,7 @@ import {
 
 const LINE_ROWS = [
   ["Q1 Ideation", "15", "15", "charter.md §Q1 — four pains with I/O and risk"],
-  ["Q2 Programme charter", "15", "15", "Charter + RAID + four ADRs"],
+  ["Q2 Programme charter", "15", "15", "Charter + RAID + five ADRs"],
   ["Q3 Design / rationale", "10", "10", "Writeup + PNG + pattern justified"],
   ["Q3 Core e2e", "12", "0", "Prompts only; workflow.json is a stub"],
   ["Q3 Extended (Gap Analyzer)", "8", "0", "Designed; TDD blocks wiring until core is green"],
@@ -35,7 +35,7 @@ const PACK_ROWS = [
   ["Architecture diagram (PNG)", "Pass"],
   ["1–2 page write-up + cost formula", "Pass"],
   ["Q1–Q2 assignment answers", "Pass"],
-  ["LangFlow JSON export", "Fail"],
+  ["n8n JSON export", "Fail"],
   ["Baseline outputs for 12 inputs", "Fail"],
   ["Screenshots (canvas / run / traces)", "Fail"],
   ["Slide deck .pptx", "Fail"],

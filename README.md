@@ -10,7 +10,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 | Author | Sendil |
 | Pattern | Sequential pipeline + one branch ([ADR-001](docs/adr/ADR-001-orchestration-pattern.md)) |
 | Extended capability | Gap Analyzer ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
-| Platform | LangFlow + Langfuse |
+| Platform | n8n (IK Cloud) + Langfuse EU |
 | Status | Design pack complete · canvas not yet built · baseline not yet run |
 
 ## What is in this repo vs what is still to build
@@ -25,7 +25,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 
 **Not in the repo yet (Days 3–14 of the charter):**
 
-- LangFlow `system/workflow.json` export
+- n8n `system/workflow.json` export
 - Screenshots (canvas, run, Langfuse traces)
 - Filled baseline outputs for T1–T12
 - Experiment E1+ with real before/after scores
@@ -39,7 +39,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 docs/          Q1–Q4 writeups, RAID, ADRs, course problem statement PDF
 design/        architecture SVG, agent prompts, orchestration notes, canvas git copies
 evidence/      ground-truth baseline file, results + experiment log, screenshots
-system/        LangFlow export (pending), inputs, PRD template, .env.example
+system/        n8n export (pending), inputs, PRD template, .env.example
 slides/        speaker outline for the summary deck
 demo/          placeholder for the required 5-min video URL
 ```
@@ -48,32 +48,33 @@ demo/          placeholder for the required 5-min video URL
 
 ## Setup
 
-1. Install [LangFlow](https://docs.langflow.org/) (desktop or `uv pip install langflow` / Docker — use whatever the course environment already uses).
-2. Create a project at [cloud.langfuse.com](https://cloud.langfuse.com) (free tier).
+Runtime is **Interview Kickstart n8n Cloud** + **Langfuse EU** ([ADR-005](docs/adr/ADR-005-workflow-platform.md)). Do not install LangFlow for the submission canvas.
+
+1. Sign in to [IK n8n](https://agenticai100.app.n8n.cloud/home/workflows).
+2. Confirm the Langfuse project: [EU project](https://cloud.langfuse.com/project/cmsbfzos000iead0hcz5k5ygp) (region **EU**, host `https://cloud.langfuse.com` — not `us.cloud.langfuse.com`).
 3. Copy `system/.env.example` to `system/.env` and fill keys. **Do not commit `.env`.**
 
 ```bash
 cp system/.env.example system/.env
 ```
 
-4. Export the same variables in the environment that launches LangFlow so traces actually reach Langfuse:
-
-```bash
-set -a && source system/.env && set +a
-# then start LangFlow
-```
-
-On macOS, a LangFlow Desktop app may not inherit shell env — set the Langfuse keys in the app's environment UI if traces do not appear (they can take 5–10 minutes; auto-refresh ~30s).
-
+4. In n8n: **Credentials → Add** → Langfuse (or HTTP if that node is missing). Paste `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, host `https://cloud.langfuse.com` with **no trailing slash and no leading space**. n8n Cloud does not read `system/.env`; the file is only a local backup of the same values.
 5. Create Langfuse score configs: `completeness`, `hallucination`, `groundedness`.
 
-## How to run (once the canvas exists)
+An OpenAI or Anthropic (or OpenRouter) credential is still required in n8n before T1 can run. Observability keys alone do not earn the +5 until a trace appears on that project.
 
-1. Import `system/workflow.json` into LangFlow (**File → Import**). Until that file is an real export, build the canvas from [design/orchestration-notes.md](design/orchestration-notes.md) and the four files in `design/agents/`.
-2. Paste one baseline row from `evidence/ground-truth/eval_prdgenie_inputs.txt` into the text input. T11 uses the T1 extraction; T12 uses the T11 PRD.
-3. Run. Confirm a trace in Langfuse.
-4. Save the output under the matching ID in `evidence/baseline-results.md`.
-5. After all 12, fill `evidence/experiment-log.md` — one change per row.
+## How to run (Slice 1 — Extractor)
+
+Importable canvas is already in the repo (TDD: Extractor only until T1 is green).
+
+1. In [IK n8n](https://agenticai100.app.n8n.cloud): **… → Import from File** (or Create workflow → ⋮ → Import).
+2. Choose [`system/workflow.json`](system/workflow.json) (same file as [`system/workflows/prd-genie-slice1-extractor.json`](system/workflows/prd-genie-slice1-extractor.json)).
+3. Open **OpenAI Chat Model** → Credentials → select **OpenAI account** (IK).
+4. Open **Input Text** — `chatInput` is prefilled with Transcript 1. For graded **T1**, replace it with the T1 line from [`evidence/ground-truth/eval_prdgenie_inputs.txt`](evidence/ground-truth/eval_prdgenie_inputs.txt).
+5. Click **Test workflow**. Copy the Extractor markdown into [`evidence/baseline-results.md`](evidence/baseline-results.md).
+6. Do **not** add PRD / stories / Gap Analyzer until that row is Pass. Langfuse HTTP ingest is the next edit after a green Extractor run.
+
+Full target graph (later slices): [design/orchestration-notes.md](design/orchestration-notes.md).
 
 Sample long-form inputs (not the graded 12, but useful for the thin-slice on Transcript 1) live in `system/inputs/`.
 

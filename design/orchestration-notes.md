@@ -36,22 +36,41 @@ Copied from the charter so this folder stands alone:
 
 | Category | Choice | Why |
 |---|---|---|
-| Workflow platform | LangFlow | Distinct-prompt agent chain; course pairing; text-only inputs |
+| Workflow platform | n8n (IK Cloud) | Cohort instance; sequential + branch; LangFlow-equivalent canvas (ADR-005) |
 | LLM — Extractor | Claude or GPT-4o | Stated-vs-ambiguous + contradiction tests (6/12) |
 | LLM — Gap Analyzer | Claude or GPT-4o | Same judgment profile |
 | LLM — PRD Generator | GPT-4o-mini | Template fill from grounded data |
 | LLM — Story Breakdown | GPT-4o-mini | Fixed-format transform |
-| Ingestion | LangFlow text/file nodes | `.txt` / `.md` only |
+| Ingestion | n8n Manual Trigger / text | `.txt` / `.md` only |
 | Observability | Langfuse | Traces, cost, LLM-as-judge; open/axial coding |
 | Output | Markdown / `prd_template.md` | No Docs/Notion required |
 | Auth | None in-app | Keys in `.env` only |
 
-## LangFlow wiring (when building)
+## n8n wiring (when building)
 
-1. Chat/Text input → Extractor (full-tier prompt from `agents/requirement-extractor.md`).
-2. Extractor output → Gap Analyzer (full-tier) **and** PRD Generator (mini-tier + template as context).
-3. PRD Generator output → Story Breakdown (mini-tier).
-4. Combine Gap Analyzer + Story Breakdown into a single readable output (two markdown blocks).
-5. Enable Langfuse env vars **before** the first run.
+IK instance: `https://agenticai100.app.n8n.cloud`. Langfuse: EU `https://cloud.langfuse.com`.  
+Follow-along canvas: [prd-genie-n8n-workflow.canvas.tsx](canvases/prd-genie-n8n-workflow.canvas.tsx).
 
-Do not add a "quality checker" or "confidence scorer" agent unless a baseline failure specifically needs it. Extra agents make the first-failure-in-the-chain harder to see.
+Use **Basic LLM Chain** (or LLM Chain / AI Agent with **zero tools**). Do not attach tools.
+
+```mermaid
+flowchart TD
+  T[Manual Trigger] --> S[Edit Fields: transcript]
+  S --> E[Basic LLM Chain: Extractor gpt-4o]
+  E --> G[Basic LLM Chain: Gap Analyzer gpt-4o]
+  E --> P[Basic LLM Chain: PRD Generator gpt-4o-mini]
+  P --> ST[Basic LLM Chain: Story Breakdown gpt-4o-mini]
+  G --> M[Merge]
+  ST --> M
+  M --> O[Output: questions then PRD plus stories]
+```
+
+TDD order: **Extractor + Langfuse HTTP only** until T1 is green. Then PRD → stories. Then Gap Analyzer branch.
+
+1. Manual Trigger → Edit Fields (`transcript`) → Extractor (prompt from `agents/requirement-extractor.md`, gpt-4o).
+2. HTTP Request after Extractor: `POST https://cloud.langfuse.com/api/public/ingestion` **before** the first successful run.
+3. Extractor output → Gap Analyzer (full-tier) **and** PRD Generator (mini-tier + `prd_template.md`).
+4. PRD Generator output → Story Breakdown (mini-tier).
+5. Merge Gap Analyzer + Story Breakdown into two markdown blocks.
+
+Do not add a quality-checker or confidence-scorer agent unless a baseline failure specifically needs it. Extra agents hide the first failure in the chain.
