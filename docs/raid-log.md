@@ -23,6 +23,7 @@ Extracted from [charter.md](charter.md). Update in place during Days 3–14; do 
 | A4 | Clarification questions are a terminal output; HITL resume-mid-trace is out of scope. | Architecture would need a stateful loop (deferred). |
 | A5 | PRD Genie **80-point** rubric is intentional and will be scaled vs 100-point projects (facilitator, 2 Sep). | If wrong, revisit extras — but do not pad reflection to 15. |
 | A6 | n8n Cloud is an accepted submission platform alongside LangFlow (facilitator, 2 Sep). | Switch to LangFlow only if n8n blocks observability or export. |
+| A7 | **Unvalidated planning assumption:** a first-draft PRD takes a PM ~**4–8 hours** of hands-on drafting. Industry-typical range for sizing only — **not measured at NeuronForge**, not evidence, and never cited as a result. The BO-1 baseline stays **UNKNOWN** ([BRD §5](brd.md#5-success-measures), OQ-2). Validate by timing a PM drafting one PRD unaided vs. reviewing/editing a Genie draft of the same transcript to the same standard. | The time-saved business case is mis-sized. No rubric answer or claim depends on it, so nothing already written becomes wrong — but BO-1 stays unquantified until the paired timings are run. |
 
 ## Issues
 

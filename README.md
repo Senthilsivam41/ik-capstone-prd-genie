@@ -44,7 +44,7 @@ slides/        speaker outline for the summary deck
 demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 ```
 
-**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts) and `.cursor/rules/prd-genie-rubric.mdc` — every change must name the rubric line it earns. Design rationale: [docs/architecture-writeup.md](docs/architecture-writeup.md). **Build order / demo:** [docs/release-plan.md](docs/release-plan.md) · clip path `demo/prd-genie-demo.mp4` (R4). **Course touch points (stay on n8n):** [docs/course-touchpoints.md](docs/course-touchpoints.md).
+**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts) and `.cursor/rules/prd-genie-rubric.mdc` — every change must name the rubric line it earns. **Business framing, scope boundaries and business rules:** [docs/brd.md](docs/brd.md). Design rationale: [docs/architecture-writeup.md](docs/architecture-writeup.md). **Build order / demo:** [docs/release-plan.md](docs/release-plan.md) · clip path `demo/prd-genie-demo.mp4` (R4). **Course touch points (stay on n8n):** [docs/course-touchpoints.md](docs/course-touchpoints.md).
 
 ## Setup
 

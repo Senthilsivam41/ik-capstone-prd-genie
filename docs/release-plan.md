@@ -12,9 +12,12 @@
 | Runnable | `system/workflow.json` imports on IK n8n and runs the slice’s agents |
 | Documented | README + this plan’s release row status updated |
 | Evidence | New T-rows / traces / screenshots only if **real** (never invented) |
+| **Traceability (blocking)** | **Zero untraceable items** in what that slice emits — every requirement, AC, metric and constraint carries an evidence quote from the source input. One item without a quote **blocks the release** ([BRD BR-14](brd.md#7-business-rules)) |
 | Secrets | No `.env` / API keys in git |
 | Platform named | README says **n8n (IK Cloud) + Langfuse EU** |
 | Demo | Only when the release table says so — see [demo/](../demo/) |
+
+**On the traceability gate.** It is enforcement, not reporting. An untraceable item is not written up as a known gap and shipped behind a caveat — the release does not go out until the item is either grounded in a quote or removed and replaced with an UNKNOWN / open question. Reliability is the key NFR (BR-1): inaccurate derived detail makes the tool worthless, and a caveat does not tell the reader *which* line is the ungrounded one. This is stricter than the rubric requires and deliberately so; it may stall a release whose other evidence is complete, and that is the accepted trade. Note the division of labour with BR-13: BR-13 asks whether the evidence is **real**, this gate asks whether every emitted item **has any**.
 
 Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is Done (facilitator: extras after the minimum).
 

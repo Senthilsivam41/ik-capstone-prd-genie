@@ -2,7 +2,7 @@
 NeuronForge Technologies | Applied Agentic AI for PMs/TPMs Capstone
 Author: Sendil | Draft v0.1
 
-Related: [Official rubric — 80 pts](rubric.md) · [RAID log](raid-log.md) · [ADRs](adr/) · [Architecture writeup](architecture-writeup.md) · [Reflection](reflection.md)
+Related: [Official rubric — 80 pts](rubric.md) · [BRD — business framing & business rules](brd.md) · [RAID log](raid-log.md) · [ADRs](adr/) · [Architecture writeup](architecture-writeup.md) · [Reflection](reflection.md)
 
 **Scoring (PRD Genie only):** Q1 Ideation 15 · Q2 Charter 15 · Q3 Build 45 · Q4 Reflection 5 · **Total 80**. Not the 100-point CalendarMate/Mira split.
 
@@ -78,7 +78,7 @@ Two families of metric, per the course's evaluation framework — technical/AI m
 ### Timeline (compressed 2-week capstone cadence)
 | Phase | Activity |
 |---|---|
-| Days 1–2 | Discovery/BRD, tool selection, architecture design (this document + Q3 design) |
+| Days 1–2 | Discovery/[BRD](brd.md), tool selection, architecture design (this document + Q3 design) |
 | Days 3–5 | Thin slice: Requirement Extractor working end-to-end on one transcript (Transcript 1) |
 | Days 6–8 | Add PRD Generator + Story Breakdown; connect observability early |
 | Days 9–11 | Run full 12-input baseline dataset; evaluation-optimization loop (find failure → fix prompt → re-test) |
