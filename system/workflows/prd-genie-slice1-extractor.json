@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "df5e6fc9-6d67-4e56-b070-e96a38d9de91",
+      "id": "20e846d3-931b-4ffc-94bd-94a88c6261ea",
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -38,7 +38,7 @@
         },
         "options": {}
       },
-      "id": "f6e278ab-fd7b-4f1e-8a2b-a8135f2651f9",
+      "id": "2d70f52f-252f-4b54-8158-529bb4ae8a01",
       "name": "Input Text",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
@@ -50,18 +50,16 @@
     },
     {
       "parameters": {
-        "promptType": "auto",
         "messages": {
           "messageValues": [
             {
-              "type": "SystemMessagePromptTemplate",
               "message": "You are the Requirement Extractor for NeuronForge PRD Genie. You read a meeting transcript, product brief, or stakeholder notes and extract only what is actually there. You are a careful analyst, not a product visionary. Your output is the source of truth for every downstream agent. If you invent a requirement, the PRD will be wrong and engineering will estimate against fiction.\n\n## INPUT\n\nRaw text. One of:\n\n- Meeting transcript (speakers, back-and-forth)\n- Product brief\n- Stakeholder notes (messy, incomplete by design)\n\nYou do NOT receive the PRD template. You do NOT generate stories.\n\n## OUTPUT\n\nReturn markdown with these sections only:\n\n# Extraction\n## Source type\ntranscript | brief | notes | unknown\n\n## Stated requirements\n- ID: REQ-n\n  text: <verbatim or tight paraphrase, no new facts>\n  owners: <names if present, else UNKNOWN>\n  deadline: <if present, else UNKNOWN>\n  evidence: \"<short quote from input>\"\n\n## Ambiguous / assumed\n- ID: AMB-n\n  text: <what is unclear>\n  why_ambiguous: <one sentence>\n  evidence: \"<quote>\"\n\n## Constraints\n- ...\n\n## Stakeholders\n- Name — role (if stated)\n\n## Deadlines\n- ...\n\n## Contradictions\n- <side A> vs <side B> — do not pick a winner\n\n## Missing information\n- ...\n\n## Extractability\nEXTRACTABLE | INSUFFICIENT | NONE\n\nIf Extractability is NONE (e.g. \"Meeting happened. Notes: none.\"), output empty requirement lists and do not invent a product.\n\n## RULES\n\n1. Do not invent. If the input is too vague to determine X, write UNKNOWN. Never fill X from general knowledge, competitor products, or \"typical dashboards.\"\n2. Stated vs ambiguous is the job. A firm \"results must load in under 2 seconds\" is stated. \"John mentioned something about real-time... need to check\" is ambiguous.\n3. Numbers stay exact. Do not round 10,000 to 10k in a way that drops precision; keep 200ms p95, Salesforce REST API v52, Q3, March, 5 seconds.\n4. Never resolve contradictions. Auto-refresh every 5 seconds vs minimize API calls are both stated. List both under Contradictions. Do not recommend WebSockets unless a speaker stated it — and if they did, tag it as a suggested option, not a decision.\n5. Do not favor a stakeholder. Engineering vs Design vs PM vs DevOps — capture all viewpoints.\n6. Incomplete notes stay incomplete. Budget TBD stays TBD. \"follow up with design (who?)\" stays an open owner.\n7. No PRD, no stories, no success metrics, no timeline unless they appear in the input.\n\n## Self-check (end of every output)\n\n- Count of stated requirements that have an evidence quote.\n- Count of items you were tempted to add but did not.\n- One sentence: \"I did not add anything that is not in the input.\"\n"
             }
           ]
         },
         "batching": {}
       },
-      "id": "7d420d56-6c4a-4784-8e0f-ed5d9201cf74",
+      "id": "932bbc8d-bbb0-47ad-ac14-64d01bf15797",
       "name": "Requirement Extractor",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
@@ -83,42 +81,31 @@
           "temperature": 0.2
         }
       },
-      "id": "be48095a-d0b4-45f5-a8aa-a009f8b0c7ad",
+      "id": "0a4d2ea9-e2a5-4d28-97cb-60f37347c070",
       "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
         560,
-        520
+        540
       ],
-      "notes": "After import: open this node and select credential OpenAI account (IK)."
-    },
-    {
-      "parameters": {
-        "content": "## PRD Genie - Slice 1 (Extractor + Langfuse)\n\n**Import order matters. Langfuse must be live before any run you cite as evidence.**\n\n### 1. OpenAI credential\nOpen **OpenAI Chat Model** -> Credentials -> select your OpenAI account.\n\n### 2. Langfuse credential\nOpen **Send to Langfuse** -> Credentials -> Basic Auth -> Create new:\n- Username = Langfuse **public** key (pk-lf-...)\n- Password = Langfuse **secret** key (sk-lf-...)\n\nHost is EU: `https://cloud.langfuse.com`. Not `us.` - that project will look empty.\n\n### 3. Run\nOpen **Input Text**, set `chatInput`, click **Test workflow**.\n\n### 4. Record\nTrace appears in the EU project within ~1 min. Copy the Extractor output AND the\n`traceId` into `evidence/baseline-results.md`. A Pass with no trace ID does not count.\n\n### Do not\nAdd PRD Generator / Story Breakdown / Gap Analyzer until T1 is green.",
-        "height": 620,
-        "width": 420,
-        "color": 5
-      },
-      "id": "77329bee-3349-45a5-9ea7-7a7d4f428820",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -40,
-        -80
-      ]
+      "credentials": {
+        "openAiApi": {
+          "id": "fHsYkUcRoCoAEnfH",
+          "name": "OpenAI account"
+        }
+      }
     },
     {
       "parameters": {
         "jsCode": "// Builds a Langfuse ingestion batch for the Extractor run.\n// One trace (the run) + one generation (the Extractor agent).\n// Slice 1 has a single agent; R2/R4 add one generation per agent.\n\nconst uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {\n  const r = (Math.random() * 16) | 0;\n  const v = c === 'x' ? r : ((r & 0x3) | 0x8);\n  return v.toString(16);\n});\n\nconst src = $('Input Text').first().json;\nconst out = $input.first().json;\n\n// chainLlm returns { text }. Fall back rather than silently sending \"[object Object]\".\nconst outputText =\n  typeof out.text === 'string' ? out.text :\n  typeof out.output === 'string' ? out.output :\n  JSON.stringify(out);\n\nconst traceId = uuid();\nconst startTime = src.startTime || new Date().toISOString();\nconst endTime = new Date().toISOString();\nconst testId = src.testId || 'unspecified';\n\nconst batch = [\n  {\n    id: uuid(),\n    type: 'trace-create',\n    timestamp: endTime,\n    body: {\n      id: traceId,\n      name: 'prd-genie-slice1',\n      input: src.chatInput,\n      output: outputText,\n      tags: ['prd-genie', 'slice1', testId],\n      metadata: { testId, release: 'R1', platform: 'n8n-ik-cloud' },\n    },\n  },\n  {\n    id: uuid(),\n    type: 'generation-create',\n    timestamp: endTime,\n    body: {\n      id: uuid(),\n      traceId,\n      name: 'Requirement Extractor',\n      model: 'gpt-4o',\n      startTime,\n      endTime,\n      input: src.chatInput,\n      output: outputText,\n      metadata: { testId, agent: 'Requirement Extractor' },\n    },\n  },\n];\n\n// traceId is surfaced so it can be pasted into the Trace ID column of\n// evidence/baseline-results.md. Never record a Pass without it.\nreturn [{ json: { batch, traceId, testId, extractorOutput: outputText } }];"
       },
-      "id": "3f0c9b41-77aa-4d2e-9b1e-51c0a7d3e8b2",
+      "id": "bfb41a5b-c062-480f-adaf-1354598bed0f",
       "name": "Build Langfuse Batch",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        860,
+        900,
         300
       ],
       "notes": "Builds trace + generation. Copy traceId into evidence/baseline-results.md."
@@ -134,17 +121,40 @@
         "jsonBody": "={{ JSON.stringify({ batch: $json.batch }) }}",
         "options": {}
       },
-      "id": "8b2d51c7-4e6f-4a90-b3d8-6e9f1a2c4d55",
+      "id": "33de4859-4fb1-4df3-b5ac-c92c38022169",
       "name": "Send to Langfuse",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1080,
+        1140,
         300
       ],
-      "notes": "Basic Auth credential: username = Langfuse PUBLIC key, password = SECRET key. EU host. Keys live in n8n credentials, never in this file."
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "Z3fMCC3wBY3bi7VF",
+          "name": "LangFuse Credentials"
+        }
+      },
+      "notes": "Basic Auth credential: username = Langfuse PUBLIC key (pk-lf-...), password = SECRET key (sk-lf-...). EU host. Keys live in n8n credentials, never in this file."
+    },
+    {
+      "parameters": {
+        "content": "## PRD Genie - Slice 1 (Extractor + Langfuse)\n\nOne Extractor. One LLM call per run.\n\n### Credentials\n- **OpenAI Chat Model** -> your OpenAI account\n- **Send to Langfuse** -> Basic Auth: username = public key, password = secret key\n\n### Run\n**Input Text** -> set `chatInput` -> **Test workflow**.\n\n### Record\nCopy the Extractor output AND the `traceId` from **Build Langfuse Batch**\ninto `evidence/baseline-results.md`. A Pass with no trace ID does not count.\n\n### Do not\n- Duplicate this chain. Two Extractors = double spend and inflated cost actuals.\n- Add PRD / Story / Gap nodes until T1 is green.",
+        "height": 560,
+        "width": 440,
+        "color": 5
+      },
+      "id": "8255867a-062e-4480-ac05-e816e82be532",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -140
+      ]
     }
   ],
+  "pinData": {},
   "connections": {
     "Manual Trigger": {
       "main": [
@@ -163,17 +173,6 @@
           {
             "node": "Requirement Extractor",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Requirement Extractor",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -200,15 +199,29 @@
           }
         ]
       ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Requirement Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
+  "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   },
+  "versionId": "7901708d-bcf9-4c94-9de8-a38f1cdfc29a",
   "meta": {
-    "templateCredsSetupCompleted": false,
-    "instanceId": "prd-genie-capstone"
+    "instanceId": "b2489aab6989931d43ab21c3e2ed59618c765e0c35ab9e334d007b405bfd2d77"
   },
-  "pinData": {},
+  "nodeGroups": [],
+  "id": "P3dEtmvn2eRFBVKQ",
   "tags": []
 }
