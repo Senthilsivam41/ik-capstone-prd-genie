@@ -1,7 +1,7 @@
 # Langfuse +5 on IK n8n — what “done” looks like
 
 **Rubric line:** Q3 Observability **5 pts**.  
-**Platform:** n8n Cloud `agenticai100.app.n8n.cloud` → Langfuse EU `https://cloud.langfuse.com/project/cmsbfzos000iead0hcz5k5ygp` (`product-health-monitor`).  
+**Platform:** n8n Cloud `agenticai100.app.n8n.cloud` → Langfuse EU `https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv` (`my-capstone-prd-genie`).  
 **Release:** [R1 in release-plan.md](release-plan.md).  
 **Open question for facilitator (only if blocked):** which of the wiring options below they accept when native LangFlow-style env tracing is unavailable.
 
@@ -27,7 +27,7 @@ A TA opening the submission without a live pair session should find:
 
 | # | Evidence | Pass when |
 |---|---|---|
-| 1 | **Project** | Traces land in EU project `cmsbfzos000iead0hcz5k5ygp` (host `https://cloud.langfuse.com`, **not** `us.` / not `eu.` hostname typos) |
+| 1 | **Project** | Traces land in EU project `cmthhhzzv02wsad0d4qogeznv` (host `https://cloud.langfuse.com`, **not** `us.` / not `eu.` hostname typos) |
 | 2 | **At least one successful run** traced **before** we claim green T1 (rule: observability before first successful scored run) |
 | 3 | **Per-agent visibility** | For the agents that ran in that workflow version, the trace shows **separate spans/generations** (or clearly named observations) — not a single opaque blob. Slice 1 = Extractor only; later releases = one span per agent |
 | 4 | **Tokens / cost** | Input+output tokens (and cost if Langfuse prices the model) visible on the trace or generation |

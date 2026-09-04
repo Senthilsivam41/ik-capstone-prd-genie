@@ -51,7 +51,7 @@ demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 Runtime is **Interview Kickstart n8n Cloud** + **Langfuse EU** ([ADR-005](docs/adr/ADR-005-workflow-platform.md)). Do not install LangFlow for the submission canvas.
 
 1. Sign in to [IK n8n](https://agenticai100.app.n8n.cloud/home/workflows).
-2. Confirm the Langfuse project: [EU project](https://cloud.langfuse.com/project/cmsbfzos000iead0hcz5k5ygp) (region **EU**, host `https://cloud.langfuse.com` — not `us.cloud.langfuse.com`).
+2. Confirm the Langfuse project: [EU project](https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv) (region **EU**, host `https://cloud.langfuse.com` — not `us.cloud.langfuse.com`).
 3. Copy `system/.env.example` to `system/.env` and fill keys. **Do not commit `.env`.**
 
 ```bash

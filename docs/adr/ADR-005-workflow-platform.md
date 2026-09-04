@@ -12,7 +12,7 @@ Build the PRD Genie canvas on **Interview Kickstart’s n8n Cloud instance**
 `https://agenticai100.app.n8n.cloud`
 
 Observability stays **Langfuse EU**:  
-`https://cloud.langfuse.com/project/cmsbfzos000iead0hcz5k5ygp`
+`https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv`
 
 Do **not** submit a LangFlow canvas. LangFlow Desktop may exist on the laptop as a personal sandbox; it is not the graded runtime.
 

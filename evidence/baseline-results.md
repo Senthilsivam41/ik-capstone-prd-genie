@@ -26,6 +26,29 @@ T11 input is the **extraction from T1**, not a new transcript. T12 input is the 
 
 ---
 
+## Observability proof run — 4 Sep (pre-T1, not a graded row)
+
+First end-to-end traced run of the Extractor. Recorded here because the rubric requires Langfuse to be live **before** the first successful scored run; this is the evidence that it was.
+
+**This is not T1.** The input was the long meeting transcript (`Transcript1`), whereas the graded T1 input in [`ground-truth/eval_prdgenie_inputs.txt`](ground-truth/eval_prdgenie_inputs.txt) is the short one-line string. The T1 row below stays `Not run` until that exact string is run. Grading this run as T1 would be scoring against an input the test does not specify.
+
+| Field | Value |
+|---|---|
+| Trace ID | `8748c951-d201-4824-ac1b-a4194002f88d` |
+| Project | `my-capstone-prd-genie` / `cmthhhzzv02wsad0d4qogeznv` (EU) |
+| Timestamp | 2026-09-04T16:33:57Z |
+| Generation | `Requirement Extractor` |
+| Model | `gpt-4o` |
+| Tokens | 240 in / 395 out / **635 total** |
+| Cost | **$0.00455** |
+| Latency | 10.3 s |
+
+Tokens are derived by Langfuse from the model name; the ingest batch sends no `usage` block. They are Langfuse's figures, not hand-entered.
+
+Behaviour worth noting for Q4: the Extractor left `deadline: UNKNOWN` on REQ-1 while separately listing "End of Q3" under Deadlines. Conservative rather than wrong — it declined to bind a feature-level deadline to a specific requirement — but the split is worth watching when T11 consumes this output.
+
+---
+
 ## T1 output
 
 ```
