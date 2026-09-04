@@ -10,7 +10,7 @@ Extracted from [charter.md](charter.md). Update in place during Days 3–14; do 
 | R2 | Contradictions (T3, T6) get silently resolved in one direction instead of flagged | High | High | Prompt rule: never favor one stakeholder; always surface tension explicitly | Open — prompt rule drafted |
 | R3 | PRD Generator pads template sections with no grounded data | Medium | High | Empty sections stay under Open Questions; never auto-filled | Open — prompt rule drafted |
 | R4 | Cost overrun from re-running long transcripts through multiple agents | Medium | Medium | Track tokens per agent via Langfuse from day 1; full-tier only on Extractor + Gap Analyzer | Open — observability not yet connected |
-| R5 | Scope creep into optional capabilities (fine-tuning, RAG) before core is solid | Medium | Medium | Core 3 capabilities + 12-input baseline must pass before Gap Analyzer is added | Open |
+| R5 | Scope creep into optional capabilities (fine-tuning, RAG, Scope Estimator, synthetic emails) before core is solid | Medium | Medium | Facilitator allows extras **after** the minimum; core 3 + T1–T12 + Gap Analyzer first ([facilitator-clarifications-2026-09-02.md](facilitator-clarifications-2026-09-02.md)) | Open |
 | R6 | Hallucinated PRD accepted as engineering-ready | Medium | High | Groundedness score + human review of first draft; 0% untraceable items on T1–T12 | Open |
 
 ## Assumptions
@@ -21,12 +21,15 @@ Extracted from [charter.md](charter.md). Update in place during Days 3–14; do 
 | A2 | n8n Manual Trigger + text input on the IK instance can run all 12 baseline inputs without custom scripting. | Need a thin batch runner; still in scope. |
 | A3 | Langfuse EU hobby tier covers trace volume for a 2-week build (`cloud.langfuse.com` / project `cmsbfzos000iead0hcz5k5ygp`). | Switch to local Langfuse or prune traces. |
 | A4 | Clarification questions are a terminal output; HITL resume-mid-trace is out of scope. | Architecture would need a stateful loop (deferred). |
+| A5 | PRD Genie **80-point** rubric is intentional and will be scaled vs 100-point projects (facilitator, 2 Sep). | If wrong, revisit extras — but do not pad reflection to 15. |
+| A6 | n8n Cloud is an accepted submission platform alongside LangFlow (facilitator, 2 Sep). | Switch to LangFlow only if n8n blocks observability or export. |
 
 ## Issues
 
 | ID | Issue | Opened | Owner | Resolution |
 |---|---|---|---|---|
 | I1 | How to earn Langfuse +5 on IK n8n (no native tracing credential type) | 2026-09-02 | Sendil | Open — acceptance criteria in [langfuse-observability-acceptance.md](langfuse-observability-acceptance.md); default Option C HTTP ingest; ask facilitator only if blocked |
+| I2 | Gap Analyzer placement vs course diagram not explicitly confirmed | 2026-09-02 | Sendil | Open — ADR-004 written; ask only if a TA challenges it |
 
 ## Dependencies
 

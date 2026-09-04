@@ -24,3 +24,8 @@ graphify-out/
 .langflow/
 langflow.db
 *.langfuse*
+
+# Demo: keep small committed clip (demo/prd-genie-demo.*); ignore raw masters
+demo/raw/
+demo/*.mov.raw
+demo/*.uncompressed.*

@@ -30,7 +30,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 - Filled baseline outputs for T1–T12
 - Experiment E1+ with real before/after scores
 - Q4 reflection findings (page is a locked method + empty results column)
-- 5-minute demo video link
+- 5-minute demo video (`demo/prd-genie-demo.mp4` at release R4; optional URL backup)
 - Slide deck `.pptx` (speaker outline is in `slides/`)
 
 ## Repo map
@@ -41,10 +41,10 @@ design/        architecture SVG, agent prompts, orchestration notes, canvas git 
 evidence/      ground-truth baseline file, results + experiment log, screenshots
 system/        n8n export (pending), inputs, PRD template, .env.example
 slides/        speaker outline for the summary deck
-demo/          placeholder for the required 5-min video URL
+demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 ```
 
-**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts) and `.cursor/rules/prd-genie-rubric.mdc` — every change must name the rubric line it earns. Design rationale: [docs/architecture-writeup.md](docs/architecture-writeup.md).
+**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts) and `.cursor/rules/prd-genie-rubric.mdc` — every change must name the rubric line it earns. Design rationale: [docs/architecture-writeup.md](docs/architecture-writeup.md). **Build order / demo:** [docs/release-plan.md](docs/release-plan.md) · clip path `demo/prd-genie-demo.mp4` (R4). **Course touch points (stay on n8n):** [docs/course-touchpoints.md](docs/course-touchpoints.md).
 
 ## Setup
 
@@ -91,7 +91,7 @@ A priori estimate is ~**$0.02 per full run** on the split-model design (~$10/mon
 
 ## Demo video
 
-PRD Genie requires a 5-minute demo. Put the URL in [demo/demo-video-link.md](demo/demo-video-link.md). Do not commit the video file.
+PRD Genie requires a ≤5-minute recording of the working app. **Canonical:** commit a small file as `demo/prd-genie-demo.mp4` (first required at release **R4** — see [docs/release-plan.md](docs/release-plan.md)). Keep an optional URL in [demo/demo-video-link.md](demo/demo-video-link.md) if the file is too large for GitHub (&lt;25 MB preferred; 100 MB hard limit).
 
 ## License / provenance
 
