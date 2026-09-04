@@ -1,6 +1,6 @@
 # Requirement Extractor — prompt spec
 
-Paste the **Prompt** block into the LangFlow agent system message. Keep ROLE / INPUT / OUTPUT / RULES intact. Model: full tier (ADR-003).
+Paste the **Prompt** block into the n8n AI Agent system message. Keep ROLE / INPUT / OUTPUT / RULES intact. Model: full tier (ADR-003).
 
 ## ROLE
 

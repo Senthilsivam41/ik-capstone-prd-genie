@@ -1,7 +1,7 @@
 # Rubric completion evaluation
 
 **Audit date:** 30 Aug 2026  
-**Scope:** Project documentation in this repo only. No LangFlow run, no Langfuse trace, no T1–T12 output.  
+**Scope:** Project documentation in this repo only. No n8n run, no Langfuse trace, no T1–T12 output.  
 **Rubric:** PRD Genie **80 points** (Session 1 × problem statement). Not CalendarMate 100.  
 **Method:** Grader-conservative. Credit only what a TA could mark from GitHub without watching a live canvas.  
 **Live view:** [rubric-completion canvas](../design/canvases/prd-genie-completion.canvas.tsx)
@@ -24,11 +24,11 @@
 | Line | Max | Earned | Evidence | Gap a grader would cite |
 |---|---|---|---|---|
 | Q1 Ideation | 15 | **15** | [charter.md](charter.md) §Q1 — four pains, each with manual step, agent, I/O, risk, tied to T2/T4/T5/T9 | None for the written Q. |
-| Q2 Programme charter | 15 | **15** | Charter §Q2: vision, objectives, scope (core + Gap Analyzer + out of scope), success criteria, timeline, RAID, stakeholders, rollout. Named deliverables: [raid-log.md](raid-log.md), [ADR-001](adr/ADR-001-orchestration-pattern.md)–[004](adr/ADR-004-gap-analyzer-placement.md) | Issues log empty is appropriate at Day 2. |
-| Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n/LangGraph rejected; HITL simulated; tool table | JSON canvas is **core**, not this line. |
-| Q3 Core e2e | 12 | **0** | Prompts in `design/agents/` only | Not end-to-end. `system/workflow.json` is a placeholder. |
+| Q2 Programme charter | 15 | **15** | Charter §Q2: vision, objectives, scope (core + Gap Analyzer + out of scope), success criteria, timeline, RAID, stakeholders, rollout. Named deliverables: [raid-log.md](raid-log.md), [ADR-001](adr/ADR-001-orchestration-pattern.md)–[005](adr/ADR-005-workflow-platform.md) | Issues log empty is appropriate at Day 2. |
+| Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n is the IK-hosted equivalent (ADR-005); HITL simulated; tool table | JSON canvas is **core**, not this line. |
+| Q3 Core e2e | 12 | **0** | Prompts in `design/agents/` only | Not end-to-end. `system/workflow.json` is a placeholder. n8n canvas not built. |
 | Q3 Extended | 8 | **0** | ADR-002 + `gap-analyzer.md` | Not wired; TDD forbids it until core IDs are green. |
-| Q3 Observability | 5 | **0** | Langfuse named; `.env.example` has keys | No traces, no per-agent tokens. RAID: Langfuse **Not started**. |
+| Q3 Observability | 5 | **0** | Langfuse EU project named; keys in shell / `.env.example` | No traces, no per-agent tokens. RAID: keys exist, traces not proven. |
 | Q3 Baseline documented | 5 | **0** | Ground truth + expected checks in [baseline-results.md](../evidence/baseline-results.md) | All 12 results `Not run`. Session requires **outputs**. Template ≠ documentation. |
 | Q3 Cost + eval strategy | 5 | **4** | Formula `tokens × price × volume` as **$/user/day** (~$0.044); ≥3 failure-mode metrics; five levers; TDD loop; experiment-log template | No Langfuse actuals. −1 until traces overwrite the sketch. |
 | Q4 Reflection | 5 | **2** | [reflection.md](reflection.md): risks of AI PRDs, eval-skills link, improvement-plan process | **Trace findings** empty — that is the scored half. Do not pad to 15 pts. |

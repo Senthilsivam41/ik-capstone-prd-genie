@@ -13,7 +13,7 @@
 | PRD Generator | Mini (GPT-4o-mini / 4.1-mini) | Mechanical mapping of already-grounded extraction into `prd_template.md` |
 | Story Breakdown | Mini (GPT-4o-mini) | Fixed-format transformation, not open-ended reasoning |
 
-Exact model IDs are locked in LangFlow when keys are connected. The *tier split* is the decision; swapping Claude for GPT-4o (or vice versa) on the full-tier pair does not change the architecture.
+Exact model IDs are locked in n8n credentials when keys are connected (ADR-005). The *tier split* is the decision; swapping Claude for GPT-4o (or vice versa) on the full-tier pair does not change the architecture.
 
 ## Why not one model for all four
 

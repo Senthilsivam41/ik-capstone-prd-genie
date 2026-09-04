@@ -27,5 +27,7 @@ Name the rubric line the current task earns (Q1 15 / Q2 15 / design 10 / core 12
 - Canvas references: `design/canvases/`
 - **Tests (red until run):** `evidence/baseline-results.md` — seams in `.cursor/rules/tdd.mdc`
 - **Rubric completion audit:** `docs/rubric-evaluation.md`
+- **Incremental releases:** `docs/release-plan.md` (each slice production-ready; demo gate at R4)
+- **Langfuse +5 acceptance (IK n8n):** `docs/langfuse-observability-acceptance.md`
 - Ground truth: `evidence/ground-truth/eval_prdgenie_inputs.txt`
 - Template: `system/prd_template.md`

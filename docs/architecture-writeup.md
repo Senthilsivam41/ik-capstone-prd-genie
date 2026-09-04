@@ -2,7 +2,7 @@
 
 NeuronForge Technologies · Applied Agentic AI for PMs/TPMs Capstone  
 Author: Sendil · 1–2 page design / tool rationale / cost  
-Decisions: [ADR-001](adr/ADR-001-orchestration-pattern.md) · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-003](adr/ADR-003-split-model-design.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md)
+Decisions: [ADR-001](adr/ADR-001-orchestration-pattern.md) · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-003](adr/ADR-003-split-model-design.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md) · [ADR-005](adr/ADR-005-workflow-platform.md)
 
 ## Problem 
 
@@ -42,19 +42,19 @@ Requirement Extractor     (full-tier)  stated vs ambiguous
 
 | Category | Choice | Why |
 |---|---|---|
-| Workflow platform | LangFlow | Purpose-built for chaining distinct-prompt LLM agents; course materials pair it with PRD Genie; no OAuth/file-upload friction — every input is plain text |
+| Workflow platform | n8n (IK Cloud) | Cohort instance at agenticai100.app.n8n.cloud; sequential + one branch maps to AI Agent nodes; rubric accepts LangFlow **or equivalent** canvas ([ADR-005](adr/ADR-005-workflow-platform.md)) |
 | LLM — Extractor / Gap Analyzer | Claude or GPT-4o (full tier) | Highest-stakes judgment; 6/12 baseline tests grade this step |
 | LLM — PRD Generator / Story Breakdown | GPT-4o-mini | Mechanical fill of a fixed template from already-grounded data |
-| Document ingestion | LangFlow text/file nodes | Inputs are `.txt` / `.md`; no OCR or CSV reshape |
+| Document ingestion | n8n Manual Trigger / text | Inputs are `.txt` / `.md`; no OCR or CSV reshape |
 | Observability | Langfuse | Per-agent traces, token cost, LLM-as-judge scores (completeness, hallucination, groundedness); maps to the class open-coding / axial-coding loop |
 | Output | Markdown matching `prd_template.md` | Rubric does not require Docs/Notion export |
 | Auth | None in-app | File-upload pipeline; provider keys live in env only |
 
-n8n was considered and rejected: the work is prompt-chaining, not webhook/API orchestration. A coded LangGraph app was rejected because the capstone scores a documented LangFlow (or equivalent) canvas plus traces, not a custom runtime.
+LangFlow was the 30 Aug default and is now the rejected primary: the course **hosts n8n** for this cohort, so the graded canvas is that instance (ADR-005). A coded LangGraph app stays rejected — the capstone scores a visual canvas export plus traces, not a custom runtime.
 
 ## Cost analysis (a priori — replace with Langfuse actuals after baseline)
 
-Public list prices used for the estimate (USD / 1M tokens). Lock the exact model IDs in LangFlow and overwrite this table from traces.
+Public list prices used for the estimate (USD / 1M tokens). Lock the exact model IDs in n8n and overwrite this table from traces.
 
 | Model | Input | Output |
 |---|---|---|

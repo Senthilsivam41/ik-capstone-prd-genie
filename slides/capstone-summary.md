@@ -1,6 +1,6 @@
 # Capstone summary — speaker outline
 
-Export this to Google Slides / PowerPoint as `capstone-summary.pptx` before submission. Keep to ~8–10 slides. Problem, approach, outcomes — not a LangFlow tutorial.
+Export this to Google Slides / PowerPoint as `capstone-summary.pptx` before submission. Keep to ~8–10 slides. Problem, approach, outcomes — not an n8n tutorial.
 
 ## Slide 1 — Title
 

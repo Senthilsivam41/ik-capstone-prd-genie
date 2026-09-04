@@ -30,6 +30,6 @@ Gap Analyzer is the extended capability (ADR-002). Placing it as a branch off ex
 
 ## Consequences
 
-- LangFlow canvas is a straight chain plus one parallel node.
+- n8n canvas (ADR-005) is a straight chain plus one parallel node.
 - Each agent can be scored independently (completeness, hallucination, groundedness).
 - Re-runs after stakeholder answers start from the Extractor as a fresh run (stateless). No mid-trace resume.
