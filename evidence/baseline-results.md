@@ -9,7 +9,7 @@ Scoring (per test): Pass only if every "Must contain" holds **and** every "Must 
 
 | ID | Type | Must contain | Must not | Result | Trace ID | Notes |
 |---|---|---|---|---|---|---|
-| T1 | Detailed | Filter by date/category/status; 2-second load; PM Sarah; Q3 deadline | Requirements not in the input | Not run | | |
+| T1 | Detailed | Filter by date/category/status; 2-second load; PM Sarah; Q3 deadline | Requirements not in the input | **Pass** | `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210` | Official short brief. Tokens 35/220/255, $0.0022875. Earlier run `f82a17cd-0fca-4f40-ba5e-9e44dfd4ccce` same input. Scores list still empty at record time. |
 | T2 | Vague | Flag ambiguous; list missing info (metrics, format, users) | Invented specific requirements | Not run | | |
 | T3 | Contradictory | Identify frequent refresh vs minimize API calls; flag for resolution | Silently choosing one side | Not run | | |
 | T4 | Detailed + AC | AC verbatim (PDF logo, CSV formulas); stories use those ACs | Extra acceptance criteria | Not run | | |
@@ -51,8 +51,55 @@ Behaviour worth noting for Q4: the Extractor left `deadline: UNKNOWN` on REQ-1 w
 
 ## T1 output
 
+Trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210` · 2026-09-05T09:49:13Z · tags `T1`, `prd-genie`, `slice1`  
+Input (verbatim): `The user should be able to filter reports by date range, category, and status. Results must load in under 2 seconds. PM: Sarah. Deadline: Q3.`
+
+**Grade:** Pass. Must-contain: date/category/status (REQ-1), 2-second load (REQ-2), Sarah as PM, Q3 deadline. Must-not: no requirements invented beyond the brief. Binding Sarah/Q3 onto both REQs is stated in the input, not invented features. Placeholder `...` in empty sections is sloppy vs UNKNOWN but is not new requirements.
+
 ```
-(paste)
+# Extraction
+## Source type
+unknown
+
+## Stated requirements
+- ID: REQ-1
+  text: The user should be able to filter reports by date range, category, and status.
+  owners: Sarah
+  deadline: Q3
+  evidence: "The user should be able to filter reports by date range, category, and status."
+
+- ID: REQ-2
+  text: Results must load in under 2 seconds.
+  owners: Sarah
+  deadline: Q3
+  evidence: "Results must load in under 2 seconds."
+
+## Ambiguous / assumed
+- ...
+
+## Constraints
+- ...
+
+## Stakeholders
+- Sarah — PM
+
+## Deadlines
+- Q3
+
+## Contradictions
+- ...
+
+## Missing information
+- ...
+
+## Extractability
+EXTRACTABLE
+
+## Self-check
+
+- Count of stated requirements that have an evidence quote: 2
+- Count of items you were tempted to add but did not: 0
+- One sentence: "I did not add anything that is not in the input."
 ```
 
 ## T2 output

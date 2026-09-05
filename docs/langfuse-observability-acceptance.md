@@ -83,10 +83,10 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 - [x] One Test workflow run on Slice 1 — two runs, 4 Sep (Option C, HTTP ingest)
 - [x] Trace visible in Langfuse within a few minutes — trace `8748c951-d201-4824-ac1b-a4194002f88d`, project `cmthhhzzv02wsad0d4qogeznv`
 - [x] Tokens visible on that generation — 240 in / 395 out / 635 total, cost $0.00455, model `gpt-4o`
-- [ ] `evidence/baseline-results.md` updated for T1 / Transcript 1 from that run — recorded as a **pre-T1 observability proof run**, not as T1. The traced input was the long meeting transcript; the graded T1 input is the short one-line string in [`eval_prdgenie_inputs.txt`](../evidence/ground-truth/eval_prdgenie_inputs.txt). T1 stays `Not run`.
+- [x] `evidence/baseline-results.md` updated for **T1** — trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210`, official short brief, Result **Pass**. The 4 Sep long-meeting run stays a pre-T1 proof, not this row.
 - [x] Wiring method named in README (one sentence) — Option C, HTTP Request → `POST /api/public/ingestion`
 - [x] Optional: `langfuse-traces.png` committed — [evidence/screenshots/langfuse-traces.png](../evidence/screenshots/langfuse-traces.png)
 
 Then mark Observability **5/5** in [rubric-evaluation.md](rubric-evaluation.md) only with that evidence — never invent.
 
-**Status 5 Sep: not 5/5.** Criteria 1–8 except the graded T1 row: configs exist; traces/tokens/screenshot/wiring exist. Remaining checklist gap is T1 (`Not run`). Configs do not backfill the 4 Sep traces; re-run after enabling if a grader must see scores on a generation.
+**Status 5 Sep: R1 checklist complete.** T1 is recorded from a real trace. LLM-as-judge scores had not appeared on that generation at record time (`GET /api/public/scores` still empty) — configs/evaluators exist; attachment may lag.
