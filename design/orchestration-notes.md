@@ -68,7 +68,7 @@ flowchart TD
 TDD order: **Extractor + Langfuse HTTP only** until T1 is green. Then PRD → stories. Then Gap Analyzer branch.
 
 1. Manual Trigger → Edit Fields (`transcript`) → Extractor (prompt from `agents/requirement-extractor.md`, gpt-4o).
-2. HTTP Request after Extractor: `POST https://cloud.langfuse.com/api/public/ingestion` **before** the first successful run.
+2. HTTP Request after Extractor: `POST https://cloud.langfuse.com/api/public/otel/v1/traces` with `x-langfuse-ingestion-version: 4` **before** the first successful run.
 3. Extractor output → Gap Analyzer (full-tier) **and** PRD Generator (mini-tier + `prd_template.md`).
 4. PRD Generator output → Story Breakdown (mini-tier).
 5. Merge Gap Analyzer + Story Breakdown into two markdown blocks.

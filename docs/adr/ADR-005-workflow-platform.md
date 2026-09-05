@@ -43,7 +43,7 @@ Langfuse has no first-party n8n *tracing* node (prompt-management node only). Tr
 2. Else OpenRouter as the model gateway with Langfuse broadcast (course-compatible).
 3. Else an HTTP Request after each agent to Langfuse’s ingestion API — works on any n8n Cloud plan.
 
-Do not call observability done until a real trace exists on the EU project. Host must be `https://cloud.langfuse.com` (EU), not `us.cloud.langfuse.com`.
+Do not call observability done until a real trace exists on the EU project. Host must be `https://cloud.langfuse.com` (EU), not `us.cloud.langfuse.com`. Ingest is OTLP/HTTP (`/api/public/otel/v1/traces`), not the deprecated `/api/public/ingestion` batch.
 
 ## Consequences
 

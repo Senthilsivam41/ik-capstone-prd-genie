@@ -4,10 +4,11 @@ n8n Cloud import files for PRD Genie (IK instance: `agenticai100.app.n8n.cloud`)
 
 | File | Slice | What it contains |
 |---|---|---|
-| `prd-genie-slice1-extractor.json` | 1 (current) | Manual Trigger → **Input Text** (`chatInput` = official T1 brief, `testId` = `T1`) → Extractor → Langfuse |
-| `../workflow.json` | same | Canonical export path expected by the submission pack — keep identical to Slice 1 until a later export overwrites it |
+| `prd-genie-slice1-extractor.json` | 1 (Extractor-only) | Manual Trigger → **Input Text** (`chatInput` = official T1 brief) → Extractor → Langfuse OTLP |
+| `PRD Genie — Slice 1 Extractor + Langfuse-v0.5.json` | Core (Sheets lookup) | `testId` → Google Sheet row → Extractor → PRD → stories → Langfuse OTLP (one generation per agent) |
+| `../workflow.json` | Core (pack export) | Same graph as v0.5 — `testId` → sheet → Extractor → PRD → stories → Langfuse OTLP |
 
-Extractor only, on purpose. PRD Generator, Story Breakdown and Gap Analyzer are **not** in this file: wiring all four agents before the Extractor passes T1 is the failure mode the rubric scores against.
+Gap Analyzer is still out (R4 / ADR-004). Do not import `*-bkup.json` or `*-5Sept.json`.
 
 ## Import
 
@@ -18,15 +19,15 @@ Extractor only, on purpose. PRD Generator, Story Breakdown and Gap Analyzer are 
    - Password = Langfuse **secret** key (`sk-lf-…`)
 4. Import as a **new** workflow and delete older Slice 1 copies.
 5. Re-select OpenAI and Langfuse credentials if empty.
-6. Open **Input Text**. You should see the T1 brief already in `chatInput`. Click **Test workflow** from Manual Trigger.
+6. Open **Input Text**, set `testId`, click **Test workflow** from Manual Trigger.
 
-`testId` is only a Langfuse tag. The Extractor reads `chatInput`, not `testId`. The long Sarah/Raj/Lisa meeting is not T1 — do not put it in `chatInput` for this run.
+On v0.5 / `workflow.json`, `testId` selects the Google Sheet row. That row’s `chatInput` is the Extractor input. The long Sarah/Raj/Lisa meeting is not T1.
 
 Keys live in n8n credentials. They are never written into these JSON files.
 
 ## How tracing works here
 
-IK n8n Cloud has no first-party Langfuse *tracing* credential, so this uses **Option C (HTTP ingest)** from [langfuse-observability-acceptance.md](../../docs/langfuse-observability-acceptance.md): a Code node builds a Langfuse ingestion batch (one `trace-create` plus one `generation-create`) and an HTTP Request node posts it to the EU endpoint.
+IK n8n Cloud has no first-party Langfuse *tracing* credential, so this uses **Option C (HTTP ingest)** from [langfuse-observability-acceptance.md](../../docs/langfuse-observability-acceptance.md): a Code node builds an OTLP/HTTP JSON payload (root observation + one generation) and an HTTP Request node posts it to `POST https://cloud.langfuse.com/api/public/otel/v1/traces` with `x-langfuse-ingestion-version: 4`. Builder: [../langfuse/build-otlp-trace.js](../langfuse/build-otlp-trace.js).
 
 Spans are explicit — one generation per agent, added as agents are added — rather than automatic LangChain callbacks. That still satisfies the acceptance bar, which asks for per-agent generations with I/O and tokens, not for a specific integration.
 

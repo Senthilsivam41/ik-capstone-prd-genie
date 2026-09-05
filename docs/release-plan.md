@@ -34,7 +34,7 @@ Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is 
 | **DoD** | Docs in git; no fake baseline Pass |
 | **Demo** | None |
 
-### R1 — Observability + Extractor thin slice (**next**)
+### R1 — Observability + Extractor thin slice (**Done**)
 
 | | |
 |---|---|
@@ -44,7 +44,7 @@ Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is 
 | **DoD** | Import works; OpenAI credential selected; **Langfuse EU shows ≥1 trace** with Extractor input/output + tokens; `langfuse-traces.png` optional but preferred; T1 row Pass/Fail from a real run |
 | **Demo** | None (pipeline not e2e yet) |
 
-### R2 — Core e2e (PRD + stories)
+### R2 — Core e2e (PRD + stories) (**Done** — T11/T12 Pass; canvas screenshots still missing)
 
 | | |
 |---|---|
@@ -53,7 +53,7 @@ Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is 
 | **DoD** | Template sections present (no padding); T4 ACs verbatim if used; screenshots `n8n-canvas.png` + `pipeline-in-action.png` |
 | **Demo** | **Optional dry-run clip** (≤60s) of T1→PRD only — not the graded 5-min yet |
 
-### R3 — Baseline T1–T12 documented
+### R3 — Baseline T1–T12 documented (**table Done** — cost actuals still open)
 
 | | |
 |---|---|

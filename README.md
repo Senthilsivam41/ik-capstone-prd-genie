@@ -11,7 +11,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 | Pattern | Sequential pipeline + one branch ([ADR-001](docs/adr/ADR-001-orchestration-pattern.md)) |
 | Extended capability | Gap Analyzer ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
 | Platform | n8n (IK Cloud) + Langfuse EU |
-| Status | Design pack complete · Slice 1 Extractor canvas built and traced in Langfuse · baseline T1–T12 not yet run |
+| Status | Core e2e live (Extractor → PRD → stories) · Langfuse v4 OTLP · T1–T12 documented · Gap Analyzer not wired |
 
 ## What is in this repo vs what is still to build
 
@@ -22,18 +22,18 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 - Architecture diagram
 - Official course inputs and the 12-row baseline file
 - Experiment log + baseline results **templates** (no invented scores)
-- Slice 1 Extractor n8n export with Langfuse HTTP ingest, plus the 4 Sep trace screenshot and its recorded tokens/cost
+- Core n8n export: sheet `testId` → Extractor → PRD → stories → Langfuse v4 OTLP (`system/workflow.json` = v0.5)
+- Baseline T1–T12 pasted from real traces (T2/T7 kept after E1/E1b; T11/T12 Pass)
+- Langfuse score configs Completeness / Hallucination / Groundedness (NUMERIC 0–1)
+- 4 Sep traces screenshot and recorded tokens/cost
 
-**Not in the repo yet (Days 3–14 of the charter):**
+**Not in the repo yet:**
 
-- n8n export for the **full** pipeline — only the Slice 1 Extractor export is in (`system/workflow.json`); PRD Generator, Story Breakdown and Gap Analyzer are not wired
-- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` — the Langfuse traces screenshot **is** in (`evidence/screenshots/langfuse-traces.png`)
-- Langfuse score configs `completeness` / `hallucination` / `groundedness`
-- Filled baseline outputs for T1–T12
-- Experiment E1+ with real before/after scores
-- Q4 reflection findings (page is a locked method + empty results column)
-- 5-minute demo video (`demo/prd-genie-demo.mp4` at release R4; optional URL backup)
-- Slide deck `.pptx` (speaker outline is in `slides/`)
+- Gap Analyzer branch (R4)
+- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` — traces screenshot **is** in
+- Q4 reflection findings (method only)
+- Cost table overwrite from Langfuse actuals
+- 5-minute demo video and slide deck `.pptx`
 
 ## Repo map
 
@@ -41,7 +41,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 docs/          Q1–Q4 writeups, RAID, ADRs, course problem statement PDF
 design/        architecture SVG, agent prompts, orchestration notes, canvas git copies
 evidence/      ground-truth baseline file, results + experiment log, screenshots
-system/        n8n export (pending), inputs, PRD template, .env.example
+system/        n8n export (v0.5 core + OTLP builder), PRD template, .env.example
 slides/        speaker outline for the summary deck
 demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 ```
@@ -61,22 +61,20 @@ cp system/.env.example system/.env
 ```
 
 4. In n8n: **Credentials → Add → Basic Auth**. Username = `LANGFUSE_PUBLIC_KEY`, password = `LANGFUSE_SECRET_KEY`, with **no trailing slash and no leading space**. The `Send to Langfuse` node uses this as a generic `httpBasicAuth` credential; the host `https://cloud.langfuse.com` is already in the node URL, not in the credential. n8n Cloud does not read `system/.env`; the file is only a local backup of the same values.
-5. Create Langfuse score configs: `completeness`, `hallucination`, `groundedness`. **Still outstanding** — the one open item on the observability line.
+5. Score configs already exist on the EU project: Completeness, Hallucination, Groundedness (NUMERIC 0–1).
 
-**How n8n sends data to Langfuse:** the workflow has no auto-tracing callback, so a `Build Langfuse Batch` Code node assembles a `trace` + `generation` batch and a `Send to Langfuse` **HTTP Request** node posts it to `POST https://cloud.langfuse.com/api/public/ingestion` over Basic Auth — Option C in [docs/langfuse-observability-acceptance.md](docs/langfuse-observability-acceptance.md). IK n8n Cloud has no first-party Langfuse *tracing* credential and community-node install rights are not assumed, so spans are explicit (one HTTP call per agent) rather than automatic. Langfuse derives tokens and cost from the model name; the batch sends no `usage` block.
+**How n8n sends data to Langfuse:** the workflow has no auto-tracing callback, so a `Build Langfuse Batch` Code node builds an OTLP/HTTP JSON payload (root observation + one generation) and a `Send to Langfuse` **HTTP Request** node posts it to `POST https://cloud.langfuse.com/api/public/otel/v1/traces` with `x-langfuse-ingestion-version: 4` — Option C in [docs/langfuse-observability-acceptance.md](docs/langfuse-observability-acceptance.md). Overall I/O sits on the root observation (`langfuse.observation.input` / `output`), not deprecated trace I/O. IK n8n Cloud has no first-party Langfuse *tracing* credential, so spans are explicit. Re-import the JSON after this change; n8n Cloud does not read git.
 
 An OpenAI or Anthropic (or OpenRouter) credential is still required in n8n before T1 can run. Observability keys alone do not earn the +5 until a trace appears on that project.
 
-## How to run (Slice 1 — Extractor)
+## How to run (core canvas)
 
-Importable canvas is already in the repo (TDD: Extractor only until T1 is green).
-
-1. In [IK n8n](https://agenticai100.app.n8n.cloud): **… → Import from File** (or Create workflow → ⋮ → Import).
-2. Choose [`system/workflow.json`](system/workflow.json) (same file as [`system/workflows/prd-genie-slice1-extractor.json`](system/workflows/prd-genie-slice1-extractor.json)).
-3. Open **OpenAI Chat Model** → Credentials → select **OpenAI account** (IK).
-4. Open **Input Text** — `chatInput` is prefilled with Transcript 1. For graded **T1**, replace it with the T1 line from [`evidence/ground-truth/eval_prdgenie_inputs.txt`](evidence/ground-truth/eval_prdgenie_inputs.txt).
-5. Click **Test workflow**. Copy the Extractor markdown into [`evidence/baseline-results.md`](evidence/baseline-results.md).
-6. Do **not** add PRD / stories / Gap Analyzer until that row is Pass. Langfuse HTTP ingest is already wired and traced (4 Sep) — observability came before the first scored run, as the rubric requires.
+1. In [IK n8n](https://agenticai100.app.n8n.cloud): **… → Import from File**.
+2. Choose [`system/workflow.json`](system/workflow.json) (same as [`system/workflows/PRD Genie — Slice 1 Extractor + Langfuse-v0.5.json`](system/workflows/PRD%20Genie%20%E2%80%94%20Slice%201%20Extractor%20%2B%20Langfuse-v0.5.json)).
+3. Re-select OpenAI, Google Sheets, and Langfuse Basic Auth if empty.
+4. Open **Input Text** and set `testId` (`T1`…`T12`). The sheet row’s `chatInput` is what the Extractor reads. T11/T12 rows should be the T1 extraction / T11 PRD, not a new transcript.
+5. Click **Test workflow**. Confirm a trace in Langfuse (root + one generation per agent).
+6. Gap Analyzer is **not** on this canvas yet (ADR-004 / R4).
 
 Full target graph (later slices): [design/orchestration-notes.md](design/orchestration-notes.md).
 

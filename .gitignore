@@ -25,6 +25,11 @@ graphify-out/
 langflow.db
 *.langfuse*
 
+# Local junk — never pack installers or scratch n8n dumps
+*.dmg
+system/workflows/*-bkup.json
+system/workflows/*-5Sept.json
+
 # Demo: keep small committed clip (demo/prd-genie-demo.*); ignore raw masters
 demo/raw/
 demo/*.mov.raw

@@ -47,10 +47,10 @@ Fine-tuning: 0 and correctly omitted.
 | Architecture diagram | Pass — `design/architecture-diagram.png` |
 | 1–2 page write-up + cost + ≥3 metrics | Pass (actuals pending) |
 | Assignment Q1–Q2 | Pass |
-| Assignment Q3 build | Partial — Slice 1 Extractor runs and traces; PRD / stories / Gap unwired |
+| Assignment Q3 build | Partial — Extractor + PRD + stories live on v0.5; Gap Analyzer still unwired |
 | Assignment Q4 | Partial — method only |
-| Workflow JSON export | Partial — real Slice 1 export (`system/workflow.json`), not the full pipeline |
-| Baseline outputs for all 12 | Fail |
+| Workflow JSON export | Pass for core — `system/workflow.json` = v0.5 (sheet → three agents → OTLP) |
+| Baseline outputs for all 12 | Pass — T1–T12 pasted from real traces |
 | Screenshots: canvas, in-action, traces | Partial — `langfuse-traces.png` present; canvas and in-action missing |
 | Slide deck `.pptx` | Fail — markdown outline only |
 | 5-minute demo URL | Fail — empty |
@@ -63,7 +63,7 @@ These do not add points. They prevent losing the points above.
 
 | Loss | Docs | Proven in a run |
 |---|---|---|
-| Build everything at once | TDD rule + thin-slice order | Yes — only the Extractor is wired; PRD/stories/Gap deliberately absent |
+| Build everything at once | TDD rule + thin-slice order | Yes through T10; PRD/stories added after those IDs were green. Gap still parked. |
 | No hallucination guardrail | UNKNOWN in all four agent specs | Partly — the 4 Sep run emitted `deadline: UNKNOWN` rather than guessing |
 | Pattern not justified | ADR-001 | Yes (written) |
 | No cost analysis | Writeup table | Sketch + one real per-run figure ($0.00455 for the Extractor) |

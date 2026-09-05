@@ -58,12 +58,13 @@ Route the Chat Model through a gateway that forwards traces to Langfuse. Only if
 
 After Requirement Extractor (and later each agent):
 
-1. **HTTP Request** `POST https://cloud.langfuse.com/api/public/ingestion`
-2. Auth: Basic (`publicKey`:`secretKey`) or Langfuse’s documented header scheme for that API version
-3. Body: minimal ingestion batch with `trace` + `generation` (name = agent name, input = `chatInput` / prior output, output = chain text, usage tokens if present)
-4. Header Auth / generic credential in n8n — **do not** commit keys
+1. **HTTP Request** `POST https://cloud.langfuse.com/api/public/otel/v1/traces`
+2. Auth: Basic (`publicKey`:`secretKey`)
+3. Header: `x-langfuse-ingestion-version: 4`
+4. Body: OTLP/HTTP JSON (`resourceSpans`) — one root span (overall I/O) plus one generation per agent. Do **not** send `trace-create` / `generation-create` to `/api/public/ingestion` (deprecated; removed on Cloud 16 Nov 2026).
+5. Generic Basic Auth credential in n8n — **do not** commit keys
 
-This works without community nodes. Spans are **explicit** (one HTTP per agent) rather than automatic LangChain callbacks — still valid if the Langfuse UI shows per-agent generations and tokens.
+Payload builder: [system/langfuse/build-otlp-trace.js](../system/langfuse/build-otlp-trace.js). This works without community nodes. Spans are **explicit** (one HTTP per agent) rather than automatic LangChain callbacks — still valid if the Langfuse UI shows per-agent generations and tokens.
 
 ### Option D — Fallback (last resort)
 
@@ -84,7 +85,7 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 - [x] Trace visible in Langfuse within a few minutes — trace `8748c951-d201-4824-ac1b-a4194002f88d`, project `cmthhhzzv02wsad0d4qogeznv`
 - [x] Tokens visible on that generation — 240 in / 395 out / 635 total, cost $0.00455, model `gpt-4o`
 - [x] `evidence/baseline-results.md` updated for **T1** — trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210`, official short brief, Result **Pass**. The 4 Sep long-meeting run stays a pre-T1 proof, not this row.
-- [x] Wiring method named in README (one sentence) — Option C, HTTP Request → `POST /api/public/ingestion`
+- [x] Wiring method named in README (one sentence) — Option C, HTTP Request → `POST /api/public/otel/v1/traces` (v4 header). Re-import n8n after the v4 JSON change.
 - [x] Optional: `langfuse-traces.png` committed — [evidence/screenshots/langfuse-traces.png](../evidence/screenshots/langfuse-traces.png)
 
 Then mark Observability **5/5** in [rubric-evaluation.md](rubric-evaluation.md) only with that evidence — never invent.
