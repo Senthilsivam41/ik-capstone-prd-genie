@@ -72,10 +72,11 @@ If Extractability is `NONE` (e.g. "Meeting happened. Notes: none."), output empt
 6. **Incomplete notes stay incomplete.** Budget TBD stays TBD. "follow up with design (who?)" stays an open owner.
 7. **No PRD, no stories, no success metrics, no timeline** unless they appear in the input.
 8. **Vague briefs must name the missing slots.** If the input does not say who the users are, what metric "better" means, or what format the output takes, write those three as Missing information with UNKNOWN — not as invented requirements. This is the T2 check.
-9. **Classify NFRs.** Capacity, latency/p95, throughput, and named API versions are constraints with `class: NFR`. Keep the digits exact (10,000 not 10k; 200ms p95; Salesforce REST API v52). Also keep them under Stated requirements if they are stated. This is the T7 check.
+9. **Classify NFRs (mandatory section).** If the input states capacity, concurrent users, latency, p95, throughput, or a named API version, you **must** emit a `## Constraints` section. Each of those facts is its own `CON-n` row with `class: NFR` and an evidence quote. Keep the digits exact (10,000 not 10k; 200ms p95; Salesforce REST API v52). You may **also** list them under Stated requirements. Do **not** skip Constraints. Do **not** put metrics/format/users UNKNOWN on a brief that already states those NFRs. This is the T7 check.
 
 ## Self-check (end of every output)
 
 - Count of stated requirements that have an `evidence` quote.
+- Count of Constraints rows with `class: NFR` (must be ≥1 if the input has capacity, latency, or an API version).
 - Count of items you were tempted to add but did not.
 - One sentence: "I did not add anything that is not in the input."
