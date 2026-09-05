@@ -1,12 +1,12 @@
 # Rubric completion evaluation
 
 **Audit date:** 30 Aug 2026 · **observability line revised 5 Sep 2026** (score configs verified same day)  
-**Scope:** Project documentation, plus Slice 1 Extractor and a T11 PRD run. T1–T11 have real traces. T12 remains `Not run`.  
+**Scope:** Project documentation plus core canvas (Extractor → PRD → stories). T1–T12 have real traces.  
 **Rubric:** PRD Genie **80 points** (Session 1 × problem statement). Not CalendarMate 100.  
 **Method:** Grader-conservative. Credit only what a TA could mark from GitHub without watching a live canvas.  
 **Live view:** [rubric-completion canvas](../design/canvases/prd-genie-completion.canvas.tsx)
 
-**Headline: 51 / 80 earned. Written + design are submission-ready. Observability is 5/5 after the graded T1 trace. Core e2e is still 0 — one agent, one row.**
+**Headline: 68 / 80 earned. Core e2e and the 12-row baseline are in. Gap Analyzer, cost actuals, and Q4 findings remain.**
 
 | Band | Max | Earned | % |
 |---|---|---|---|
@@ -15,8 +15,8 @@
 | Q3 Cost + eval strategy | 5 | 4 | 80% |
 | Q4 Reflection | 5 | 2 | 40% |
 | Q3 Observability | 5 | 5 | 100% |
-| Q3 Core + extended + baseline | 25 | 0 | 0% |
-| **Total** | **80** | **51** | **64%** |
+| Q3 Core + extended + baseline | 25 | 17 | 68% |
+| **Total** | **80** | **68** | **85%** |
 
 ---
 
@@ -27,13 +27,13 @@
 | Q1 Ideation | 15 | **15** | [charter.md](charter.md) §Q1 — four pains, each with manual step, agent, I/O, risk, tied to T2/T4/T5/T9 | None for the written Q. |
 | Q2 Programme charter | 15 | **15** | Charter §Q2: vision, objectives, scope (core + Gap Analyzer + out of scope), success criteria, timeline, RAID, stakeholders, rollout. Named deliverables: [raid-log.md](raid-log.md), [ADR-001](adr/ADR-001-orchestration-pattern.md)–[005](adr/ADR-005-workflow-platform.md) | Issues log empty is appropriate at Day 2. |
 | Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n is the IK-hosted equivalent (ADR-005); HITL simulated; tool table | JSON canvas is **core**, not this line. |
-| Q3 Core e2e | 12 | **0** | Extractor T1–T10 green; T11 PRD **Pass** `bd27a36e` | Still **0** until Story Breakdown runs (T12). Three-agent e2e is not live. |
+| Q3 Core e2e | 12 | **12** | T11 Pass `bd27a36e`; T12 Pass `958dff5055157a90830d28d3be555c23` (Extractor + PRD + Story Breakdown on one v4 trace) | Export v0.5 over `system/workflow.json` so the pack JSON matches the live canvas. |
 | Q3 Extended | 8 | **0** | ADR-002 + `gap-analyzer.md` | Not wired; TDD forbids it until core IDs are green. |
 | Q3 Observability | 5 | **5** | Graded T1 trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210` (short brief, tags `T1`, 255 tokens). Plus 4 Sep proof run, HTTP ingest, screenshot, three NUMERIC score configs + evaluators. | LLM-as-judge scores had not appeared on the T1 generation at record time. Configs exist; attachment may lag. |
-| Q3 Baseline documented | 5 | **0** | T1–T11 outputs pasted from real traces | T12 still `Not run`. The +5 needs stories as well. |
+| Q3 Baseline documented | 5 | **5** | T1–T12 outputs pasted from real traces | None for the table. T4/T8 story checks still sit on T12, not a second story run. |
 | Q3 Cost + eval strategy | 5 | **4** | Formula `tokens × price × volume` as **$/user/day** (~$0.044); ≥3 failure-mode metrics; five levers; TDD loop; experiment-log template | No Langfuse actuals. −1 until traces overwrite the sketch. |
 | Q4 Reflection | 5 | **2** | [reflection.md](reflection.md): risks of AI PRDs, eval-skills link, improvement-plan process | **Trace findings** empty — that is the scored half. Do not pad to 15 pts. |
-| **Total** | **80** | **51** | | |
+| **Total** | **80** | **68** | | |
 
 Fine-tuning: 0 and correctly omitted.
 
@@ -75,8 +75,8 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. T11 is green (`bd27a36e`). T12 first run **Fail** (`bd2aa6f5`) — PRD prompt ran again. Re-run T12 with `design/agents/story-breakdown.md` only.
-2. Core +12 only when extract → PRD → stories is live on the canvas.
+1. T12 is green (`958dff50…`). Next: Gap Analyzer only (ADR-004), then score T2/T3/T5/T6/T9/T10 on questions.
+2. Re-export v0.5 as `system/workflow.json` so graders see the three-agent canvas.
 3. Gap Analyzer after core IDs that do not need it are green → **+8**.
 4. Overwrite cost table from traces → **+1** (4→5).
 5. One-page findings after traces → **+3** (2→5).

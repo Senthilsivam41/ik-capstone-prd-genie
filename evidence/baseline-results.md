@@ -20,7 +20,7 @@ Scoring (per test): Pass only if every "Must contain" holds **and** every "Must 
 | T9 | Edge / empty | Flag: no requirements extractable | A PRD generated from nothing | **Pass** | `82c80563-45a5-4b74-bfd7-2aa2d074d20e` | Extractability NONE; empty lists; no PRD. |
 | T10 | Dependency | SSO feature; dependency on auth service / Team Alpha; unknown ETA as risk | Dropping the dependency | **Pass** | `3d905bf1-1893-45e3-b164-583fe2eb6c1b` | SSO + Team Alpha kept. ETA as AMB/missing, not labelled "risk". |
 | T11 | PRD generation | Full template; all sections present; only T1 content | Padding empty sections | **Pass** | `bd27a36e-46d5-4f21-9538-e3af4c6799d3` | Ten sections present. Filters + 2s grounded. Empty Goals/AC/personas not padded with fake KPIs. Q3 only date. Sarah omitted from Personas (stated PM). Langfuse span still named Extractor / gpt-4o. Prior fails `50b9428a`, `a3b6bb70`. |
-| T12 | Story breakdown | Epics + "As a [user]" stories; priority suggestions | AC drift from T4/T11 | **Fail** | `bd2aa6f5-6d61-4c03-9321-0100191a8e9b` | Input is the T11 PRD. Output is another PRD, not stories. No Epic / As a / Priority. Langfuse still named Extractor / gpt-4o. |
+| T12 | Story breakdown | Epics + "As a [user]" stories; priority suggestions | AC drift from T4/T11 | **Pass** | `958dff5055157a90830d28d3be555c23` | Epic + US-1..4, `As a User`, Must Have. ACs are REQ-1 / 2s text, not T4 logo/CSV. v4 OTEL: Extractor + PRD + Story Breakdown on one trace. Prior fail `bd2aa6f5`. |
 
 T11 input is the **extraction from T1**, not a new transcript. T12 input is the **PRD from T11**.
 
@@ -766,6 +766,49 @@ Status: Draft
 ```
 
 ## T12 output
+
+Trace `958dff5055157a90830d28d3be555c23` · 2026-09-05T16:26:45.684Z · tags `T12` · env `prd-genie-capstone`
+
+**Grade:** Pass. Epic + four `As a User` stories with `Must Have`. Filter REQ and 2-second NFR kept. No PDF-logo / CSV-formula ACs (those are T4). Personas were empty in the T11 PRD, so `User` is allowed.
+
+Watch: “so that” reasons are not in the PRD. This run also re-extracted the T11 PRD (Extractor + PRD ran again) before stories. Story Breakdown itself is gpt-4o-mini, 390/312/702, $0.0002457.
+
+```
+# Story breakdown
+
+## Epic: Reporting Enhancement
+Goal: Enable users to filter reports by date range, category, and status.
+
+### Feature: Report Filtering
+#### US-1
+As a User, I want to filter reports by date range so that I can view relevant data within a specific timeframe.
+Priority: Must Have
+Acceptance criteria:
+- [ ] The user should be able to filter reports by date range, category, and status.
+Source: REQ-1
+
+#### US-2
+As a User, I want to filter reports by category so that I can view specific segments of data.
+Priority: Must Have
+Acceptance criteria:
+- [ ] The user should be able to filter reports by date range, category, and status.
+Source: REQ-1
+
+#### US-3
+As a User, I want to filter reports by status so that I can quickly assess the progress of various items.
+Priority: Must Have
+Acceptance criteria:
+- [ ] The user should be able to filter reports by date range, category, and status.
+Source: REQ-1
+
+### Feature: Performance
+#### US-4
+As a User, I want the results to load in under 2 seconds so that I have a seamless experience when viewing reports.
+Priority: Must Have
+Acceptance criteria:
+- [ ] Results must load in under 2 seconds.
+Source: NFR-1
+```
 
 ### T12 attempt — Fail (rewrote the PRD)
 
