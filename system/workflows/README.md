@@ -4,7 +4,7 @@ n8n Cloud import files for PRD Genie (IK instance: `agenticai100.app.n8n.cloud`)
 
 | File | Slice | What it contains |
 |---|---|---|
-| `prd-genie-slice1-extractor.json` | 1 (current) | Manual Trigger → Select Test (`testId`) → Resolve Input → Requirement Extractor → Build Langfuse Batch → Send to Langfuse. One straight line — no Switch. |
+| `prd-genie-slice1-extractor.json` | 1 (current) | Manual Trigger → **Input Text** (`chatInput` = official T1 brief, `testId` = `T1`) → Extractor → Langfuse |
 | `../workflow.json` | same | Canonical export path expected by the submission pack — keep identical to Slice 1 until a later export overwrites it |
 
 Extractor only, on purpose. PRD Generator, Story Breakdown and Gap Analyzer are **not** in this file: wiring all four agents before the Extractor passes T1 is the failure mode the rubric scores against.
@@ -16,9 +16,11 @@ Extractor only, on purpose. PRD Generator, Story Breakdown and Gap Analyzer are 
 3. **Send to Langfuse** → Credentials → **Basic Auth** → new credential:
    - Username = Langfuse **public** key (`pk-lf-…`)
    - Password = Langfuse **secret** key (`sk-lf-…`)
-4. Import as a **new** workflow. Delete any previous Slice 1 copies that show unconnected nodes (the Switch import often landed as two disconnected graphs).
-5. Re-select OpenAI and Langfuse credentials if the nodes show none.
-6. **Select Test** → `testId` = `T1` or `Transcript1`. Click **Test workflow** from Manual Trigger.
+4. Import as a **new** workflow and delete older Slice 1 copies.
+5. Re-select OpenAI and Langfuse credentials if empty.
+6. Open **Input Text**. You should see the T1 brief already in `chatInput`. Click **Test workflow** from Manual Trigger.
+
+`testId` is only a Langfuse tag. The Extractor reads `chatInput`, not `testId`. The long Sarah/Raj/Lisa meeting is not T1 — do not put it in `chatInput` for this run.
 
 Keys live in n8n credentials. They are never written into these JSON files.
 

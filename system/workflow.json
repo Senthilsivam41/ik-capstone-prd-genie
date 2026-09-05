@@ -17,38 +17,36 @@
         "assignments": {
           "assignments": [
             {
-              "id": "sel-testid",
+              "id": "in-testid",
               "name": "testId",
               "value": "T1",
+              "type": "string"
+            },
+            {
+              "id": "in-chat",
+              "name": "chatInput",
+              "value": "The user should be able to filter reports by date range, category, and status. Results must load in under 2 seconds. PM: Sarah. Deadline: Q3.",
+              "type": "string"
+            },
+            {
+              "id": "in-start",
+              "name": "startTime",
+              "value": "={{ $now.toISO() }}",
               "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "id": "sel-001",
-      "name": "Select Test",
+      "id": "in-001",
+      "name": "Input Text",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        240,
+        260,
         300
       ],
-      "notes": "Set testId to T1 or Transcript1. One value. Then Test workflow."
-    },
-    {
-      "parameters": {
-        "jsCode": "const catalog = {\n  T1: \"The user should be able to filter reports by date range, category, and status. Results must load in under 2 seconds. PM: Sarah. Deadline: Q3.\",\n  Transcript1: \"Meeting: Product Planning - Reporting Dashboard\\nDate: March 15, 2026\\nAttendees: Sarah (PM), Raj (Engineering Lead), Lisa (Design)\\n\\nSarah: Okay let's talk about the reporting feature. Users have been asking for this for months. The key requirement is that users should be able to filter reports by date range, category, and status.\\n\\nRaj: Makes sense. What about performance? If they're pulling large datasets we need to think about load times.\\n\\nSarah: Good point. Results must load in under 2 seconds. That's a hard requirement from the enterprise customers.\\n\\nLisa: Are we doing this as a new page or adding it to the existing dashboard?\\n\\nSarah: New dedicated page. But it should match our existing design system.\\n\\nRaj: Who owns this? And what's the timeline?\\n\\nSarah: I'm the PM owner. Deadline is end of Q3. Raj, your team would handle the backend. Lisa, we'd need designs by end of April.\\n\\nRaj: We'll need to decide on the data source. Are we querying live or using a pre-computed data warehouse?\\n\\nSarah: TBD on that. Let's decide after we see Lisa's designs and understand the query patterns.\",\n};\nconst testId = String($json.testId || 'T1').trim();\nif (!catalog[testId]) {\n  throw new Error('Unknown testId \"' + testId + '\". Use T1 or Transcript1.');\n}\nreturn [{\n  json: {\n    testId,\n    chatInput: catalog[testId],\n    startTime: new Date().toISOString(),\n  },\n}];"
-      },
-      "id": "res-001",
-      "name": "Resolve Input",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        480,
-        300
-      ],
-      "notes": "Looks up the chosen testId. Does not merge texts."
+      "notes": "chatInput IS the input. testId is only a Langfuse tag. Default text is the graded T1 brief from the course file. To run T2 later, paste that string into chatInput and set testId to T2."
     },
     {
       "parameters": {
@@ -66,7 +64,7 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        720,
+        560,
         300
       ],
       "notes": "Slice 1 only. Do not add PRD / stories / Gap Analyzer until T1 is green in evidence/baseline-results.md."
@@ -88,7 +86,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        720,
+        560,
         520
       ],
       "credentials": {
@@ -96,19 +94,18 @@
           "id": "fHsYkUcRoCoAEnfH",
           "name": "OpenAI account"
         }
-      },
-      "notes": "Select credential OpenAI account if import drops it."
+      }
     },
     {
       "parameters": {
-        "jsCode": "const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {\n  const r = (Math.random() * 16) | 0;\n  const v = c === 'x' ? r : ((r & 0x3) | 0x8);\n  return v.toString(16);\n});\n\nconst src = $('Resolve Input').first().json;\nconst out = $input.first().json;\nconst outputText =\n  typeof out.text === 'string' ? out.text :\n  typeof out.output === 'string' ? out.output :\n  JSON.stringify(out);\n\nconst traceId = uuid();\nconst startTime = src.startTime || new Date().toISOString();\nconst endTime = new Date().toISOString();\nconst testId = src.testId || 'unspecified';\n\nconst batch = [\n  {\n    id: uuid(),\n    type: 'trace-create',\n    timestamp: endTime,\n    body: {\n      id: traceId,\n      name: 'prd-genie-slice1',\n      input: src.chatInput,\n      output: outputText,\n      tags: ['prd-genie', 'slice1', testId],\n      metadata: { testId, release: 'R1', platform: 'n8n-ik-cloud' },\n    },\n  },\n  {\n    id: uuid(),\n    type: 'generation-create',\n    timestamp: endTime,\n    body: {\n      id: uuid(),\n      traceId,\n      name: 'Requirement Extractor',\n      model: 'gpt-4o',\n      startTime,\n      endTime,\n      input: src.chatInput,\n      output: outputText,\n      metadata: { testId, agent: 'Requirement Extractor' },\n    },\n  },\n];\n\nreturn [{ json: { batch, traceId, testId, extractorOutput: outputText } }];"
+        "jsCode": "const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {\n  const r = (Math.random() * 16) | 0;\n  const v = c === 'x' ? r : ((r & 0x3) | 0x8);\n  return v.toString(16);\n});\n\nconst src = $('Input Text').first().json;\nconst out = $input.first().json;\nconst outputText =\n  typeof out.text === 'string' ? out.text :\n  typeof out.output === 'string' ? out.output :\n  JSON.stringify(out);\n\nconst traceId = uuid();\nconst startTime = src.startTime || new Date().toISOString();\nconst endTime = new Date().toISOString();\nconst testId = src.testId || 'T1';\n\nconst batch = [\n  {\n    id: uuid(),\n    type: 'trace-create',\n    timestamp: endTime,\n    body: {\n      id: traceId,\n      name: 'prd-genie-slice1',\n      input: src.chatInput,\n      output: outputText,\n      tags: ['prd-genie', 'slice1', testId],\n      metadata: { testId, release: 'R1', platform: 'n8n-ik-cloud' },\n    },\n  },\n  {\n    id: uuid(),\n    type: 'generation-create',\n    timestamp: endTime,\n    body: {\n      id: uuid(),\n      traceId,\n      name: 'Requirement Extractor',\n      model: 'gpt-4o',\n      startTime,\n      endTime,\n      input: src.chatInput,\n      output: outputText,\n      metadata: { testId, agent: 'Requirement Extractor' },\n    },\n  },\n];\n\nreturn [{ json: { batch, traceId, testId, extractorOutput: outputText } }];"
       },
       "id": "lf-001",
       "name": "Build Langfuse Batch",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        980,
+        860,
         300
       ]
     },
@@ -128,7 +125,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1220,
+        1100,
         300
       ],
       "credentials": {
@@ -140,9 +137,9 @@
     },
     {
       "parameters": {
-        "content": "## Import as a NEW workflow, then delete the broken copies.\n\nOne line only — no Switch.\n\n1. Select Test → `testId` = `T1` (default) or `Transcript1`\n2. **Test workflow** from Manual Trigger\n3. Re-attach OpenAI + Langfuse credentials if empty\n",
-        "height": 360,
-        "width": 420,
+        "content": "## Slice 1 — one input, visible on the canvas\n\n**Input Text.chatInput** is the source text the Extractor reads.\n**testId** is only a tag in Langfuse (default `T1`).\n\nThe default chatInput is the official T1 brief (filters, 2 seconds, Sarah, Q3). It is short on purpose.\n\nThe long Sarah/Raj/Lisa meeting is NOT T1. Do not paste it here if you are scoring T1.\n\nClick **Test workflow** from Manual Trigger.",
+        "height": 400,
+        "width": 400,
         "color": 5
       },
       "id": "note-001",
@@ -160,25 +157,14 @@
       "main": [
         [
           {
-            "node": "Select Test",
+            "node": "Input Text",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Select Test": {
-      "main": [
-        [
-          {
-            "node": "Resolve Input",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Resolve Input": {
+    "Input Text": {
       "main": [
         [
           {
