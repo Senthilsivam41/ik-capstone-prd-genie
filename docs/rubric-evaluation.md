@@ -1,7 +1,7 @@
 # Rubric completion evaluation
 
 **Audit date:** 30 Aug 2026 · **observability line revised 5 Sep 2026** (score configs verified same day)  
-**Scope:** Project documentation, plus the Slice 1 Extractor canvas. T1 is **Pass** from a 5 Sep Langfuse trace. T2–T12 remain `Not run`.  
+**Scope:** Project documentation, plus the Slice 1 Extractor canvas. T1–T10 have real traces (T2 and T7 **Fail**). T11–T12 remain `Not run`.  
 **Rubric:** PRD Genie **80 points** (Session 1 × problem statement). Not CalendarMate 100.  
 **Method:** Grader-conservative. Credit only what a TA could mark from GitHub without watching a live canvas.  
 **Live view:** [rubric-completion canvas](../design/canvases/prd-genie-completion.canvas.tsx)
@@ -30,7 +30,7 @@
 | Q3 Core e2e | 12 | **0** | Prompts in `design/agents/`; Slice 1 Extractor canvas running; T1 **Pass** | Still **0**: one agent of three is not end-to-end. PRD Generator and Story Breakdown are unwired. |
 | Q3 Extended | 8 | **0** | ADR-002 + `gap-analyzer.md` | Not wired; TDD forbids it until core IDs are green. |
 | Q3 Observability | 5 | **5** | Graded T1 trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210` (short brief, tags `T1`, 255 tokens). Plus 4 Sep proof run, HTTP ingest, screenshot, three NUMERIC score configs + evaluators. | LLM-as-judge scores had not appeared on the T1 generation at record time. Configs exist; attachment may lag. |
-| Q3 Baseline documented | 5 | **0** | T1 output pasted from a real trace | T2–T12 still `Not run`. The +5 needs the full table. |
+| Q3 Baseline documented | 5 | **0** | T1–T10 outputs pasted from real traces | T11–T12 still `Not run`. T2 and T7 are honest Fails. The +5 needs the full table including PRD + stories. |
 | Q3 Cost + eval strategy | 5 | **4** | Formula `tokens × price × volume` as **$/user/day** (~$0.044); ≥3 failure-mode metrics; five levers; TDD loop; experiment-log template | No Langfuse actuals. −1 until traces overwrite the sketch. |
 | Q4 Reflection | 5 | **2** | [reflection.md](reflection.md): risks of AI PRDs, eval-skills link, improvement-plan process | **Trace findings** empty — that is the scored half. Do not pad to 15 pts. |
 | **Total** | **80** | **51** | | |
@@ -75,8 +75,8 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. T1 is green. Next IDs vertically (T2 UNKNOWN behaviour) before wiring PRD Generator. Core +12 only when extract → PRD → stories is live (T11, T12).
-2. Paste T2–T12 outputs as you go → **+5** baseline.
+1. Tighten Extractor prompt for T2 (name metrics / format / users when missing) and T7 (classify NFRs). Re-run those two IDs only — one change per experiment.
+2. Then PRD Generator on T1 extraction (T11) and Story Breakdown (T12). Core +12 only when that e2e is live.
 3. Gap Analyzer after core IDs that do not need it are green → **+8**.
 4. Overwrite cost table from traces → **+1** (4→5).
 5. One-page findings after traces → **+3** (2→5).
