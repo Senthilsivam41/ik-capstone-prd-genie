@@ -25,9 +25,9 @@ Facilitator (2 Sep): **any** stack is fine (n8n, LangFlow, or code). That freedo
 | # | Course wants | Where it lives here | Proved by | Status |
 |---|---|---|---|---|
 | 1 | **Architecture pattern named + justified** (sequential + branch — *why*, not just the label) | [ADR-001](adr/ADR-001-orchestration-pattern.md) · [architecture-writeup.md](architecture-writeup.md) · diagram PNG | R0 | **done** (written) |
-| 2 | **Sequential pipeline + one branch** (Gap Analyzer) | ADR-001 · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md) · orchestration notes | R0 design · **R4** wired | **done** design / **later** runtime |
-| 3 | **Core agents e2e** — Extractor → PRD → stories, one capability at a time | `design/agents/*` · `system/workflow.json` (v0.5) | R1 Extractor · **R2** e2e | **done** (T11/T12 Pass; trace `958dff50`) |
-| 4 | **Extended capability** — Gap Analyzer (questions, not invented answers) | `design/agents/gap-analyzer.md` · ADR-002/004 | **R4** | **later** |
+| 2 | **Sequential pipeline + one branch** (Gap Analyzer) | ADR-001 · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md) · orchestration notes | R0 design · **R4** wired | **done** (v0.7 runtime) |
+| 3 | **Core agents e2e** — Extractor → PRD → stories, one capability at a time | `design/agents/*` · `system/workflow.json` (v0.7) | R1 Extractor · **R2** e2e | **done** (T11/T12 Pass; trace `958dff50`) |
+| 4 | **Extended capability** — Gap Analyzer (questions, not invented answers) | `design/agents/gap-analyzer.md` · ADR-002/004 · v0.7 | **R4** | **done** (T2/T3/T5/T6/T9/T10 Pass) |
 | 5 | **Hallucination guardrails** — UNKNOWN; no invent; no silent contradiction resolve; no template pad; ACs verbatim | All four agent specs · README Guardrails · TDD rule | R1+ (proven on failing/passing T-rows) | **done** (T2/T3/T7/T11/T12) |
 | 6 | **Evals-first / TDD** — red T-row before building; no horizontal slice | `.cursor/rules/tdd.mdc` · [baseline-results.md](../evidence/baseline-results.md) · AGENTS.md | R1→R3 loop | **done** |
 | 7 | **Langfuse early** — before first successful scored run; per-agent traces + tokens | [langfuse-observability-acceptance.md](langfuse-observability-acceptance.md) · `.env.example` · ADR-005 | **R1** | **done** (v4 OTLP; T1 before later agents) |
@@ -51,13 +51,9 @@ Facilitator (2 Sep): **any** stack is fine (n8n, LangFlow, or code). That freedo
 
 These are the course items a grader **cannot** mark Pass from GitHub today:
 
-1. **Langfuse +5** — no real EU trace yet (R1).
-2. **T1 green** — Extractor thin slice not scored from a real run (R1).
-3. **Core e2e +12** — PRD + stories not on canvas (R2).
-4. **Baseline +5** — T1–T12 all `Not run` (R3).
-5. **Gap Analyzer +8** — not wired (R4).
-6. **Demo + screenshots + slides + Q4 findings** — pack/reflection (R4–R5).
-7. **Cost actuals** — a priori only (−1 on Cost line until Langfuse overwrite).
+1. **Demo + canvas/in-action screenshots + slides + Q4 findings** — pack/reflection (R4–R5).
+2. **Cost actuals** — a priori only (−1 on Cost line until Langfuse overwrite).
+3. **Gap on gpt-4o** — live node is still gpt-4o-mini (ADR-003 watch, not a scored fail).
 
 Do **not** invent Pass, traces, or screenshots to close these.
 
