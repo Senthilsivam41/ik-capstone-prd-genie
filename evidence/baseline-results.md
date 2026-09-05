@@ -19,7 +19,7 @@ Scoring (per test): Pass only if every "Must contain" holds **and** every "Must 
 | T8 | Persona-heavy | Three personas (Admin, End User, Auditor); separate stories | Merged generic "user" stories | **Pass** | `f0f51767-1c69-4e00-8a53-57ca83f12ccd` | Three separate REQs. Stories are T12. |
 | T9 | Edge / empty | Flag: no requirements extractable | A PRD generated from nothing | **Pass** | `82c80563-45a5-4b74-bfd7-2aa2d074d20e` | Extractability NONE; empty lists; no PRD. |
 | T10 | Dependency | SSO feature; dependency on auth service / Team Alpha; unknown ETA as risk | Dropping the dependency | **Pass** | `3d905bf1-1893-45e3-b164-583fe2eb6c1b` | SSO + Team Alpha kept. ETA as AMB/missing, not labelled "risk". |
-| T11 | PRD generation | Full template; all sections present; only T1 content | Padding empty sections | Not run | | |
+| T11 | PRD generation | Full template; all sections present; only T1 content | Padding empty sections | **Pass** | `bd27a36e-46d5-4f21-9538-e3af4c6799d3` | Ten sections present. Filters + 2s grounded. Empty Goals/AC/personas not padded with fake KPIs. Q3 only date. Sarah omitted from Personas (stated PM). Langfuse span still named Extractor / gpt-4o. Prior fails `50b9428a`, `a3b6bb70`. |
 | T12 | Story breakdown | Epics + "As a [user]" stories; priority suggestions | AC drift from T4/T11 | Not run | | |
 
 T11 input is the **extraction from T1**, not a new transcript. T12 input is the **PRD from T11**.
@@ -703,8 +703,66 @@ EXTRACTABLE
 
 ## T11 output
 
+Trace `bd27a36e-46d5-4f21-9538-e3af4c6799d3` · 2026-09-05T15:02:17.961Z · tags `T11`
+
+**Grade:** Pass. All 10 template sections present. Feature rows are only REQ-1 (date/category/status filters) and CON-1 (under 2 seconds). Success Metrics / launch milestones not invented; Open Questions carry UNKNOWN metrics/format/users. Timeline is Q3 only.
+
+Watch items (not Fail): Sarah (PM) is in the extraction but Personas is empty. Overview sentence adds "enhancement" / "efficiency". Langfuse generation is still named Requirement Extractor / gpt-4o (271/270/541, $0.0033775) — fix the batch `name`/`model` before T12.
+
+Prior fails: refusal `50b9428a` (asked for template); JSON refusal `a3b6bb70`; Extractor re-runs `d145af85`, `37f21fb3`.
+
 ```
-(paste)
+# Product Requirements Document (PRD)
+
+## Product Overview
+Grounded
+
+This document outlines the requirements for the new reporting feature enhancement allowing users to filter reports with improved speed and efficiency.
+
+## Goals and Objectives
+Explicitly Empty
+
+## User Personas
+Explicitly Empty
+
+## Feature Requirements
+
+### Functional Requirements
+
+| ID    | Description                                               | Source                                   |
+|-------|-----------------------------------------------------------|------------------------------------------|
+| REQ-1 | The user should be able to filter reports by date range, category, and status. | Evidence: "The user should be able to filter reports by date range, category, and status." |
+
+### Non-Functional Requirements
+
+| ID    | Description                          | Source                                          |
+|-------|--------------------------------------|-------------------------------------------------|
+| CON-1 | Results must load in under 2 seconds. | Evidence: "Results must load in under 2 seconds." |
+
+## Acceptance Criteria
+Explicitly Empty
+
+## Out of Scope
+Explicitly Empty
+
+## Dependencies
+Explicitly Empty
+
+## Assumptions
+Explicitly Empty
+
+## Open Questions
+
+- What are the success metrics? (UNKNOWN — not in source)
+- What is the format for presenting the reports? (UNKNOWN)
+- Who are the end users? (UNKNOWN)
+
+## Timeline
+Grounded
+
+- Deadline for completion: Q3
+
+Status: Draft
 ```
 
 ## T12 output
