@@ -79,7 +79,7 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 
 ## R1 checklist (ship when all true)
 
-- [ ] Score configs created on EU project — `completeness`, `hallucination`, `groundedness` do **not** exist yet. This is the one open blocker for the +5.
+- [x] Score configs created on EU project — verified 5 Sep via `GET /api/public/score-configs` (project `cmthhhzzv02wsad0d4qogeznv`): `Completeness`, `Hallucination`, `Groundedness` (Title Case), all **NUMERIC** 0–1. An active LLM-as-judge evaluator named `Hallucination` is assigned to generation observations (not traces); `GET /api/public/scores` still returns zero scores. Completeness and Groundedness have configs only — no evaluators.
 - [x] One Test workflow run on Slice 1 — two runs, 4 Sep (Option C, HTTP ingest)
 - [x] Trace visible in Langfuse within a few minutes — trace `8748c951-d201-4824-ac1b-a4194002f88d`, project `cmthhhzzv02wsad0d4qogeznv`
 - [x] Tokens visible on that generation — 240 in / 395 out / 635 total, cost $0.00455, model `gpt-4o`
@@ -89,4 +89,4 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 
 Then mark Observability **5/5** in [rubric-evaluation.md](rubric-evaluation.md) only with that evidence — never invent.
 
-**Status 5 Sep: not 5/5.** Criteria 1–5, 7 and 8 in the acceptance table are met. Criterion 6 (score configs) is not, and no run of the graded T1 input has been traced. Both unchecked boxes above must close before the line is claimed in full.
+**Status 5 Sep: not 5/5.** Criteria 1–8 except the graded T1 row: configs exist; traces/tokens/screenshot/wiring exist. Remaining checklist gap is T1 (`Not run`). Configs do not backfill the 4 Sep traces; re-run after enabling if a grader must see scores on a generation.
