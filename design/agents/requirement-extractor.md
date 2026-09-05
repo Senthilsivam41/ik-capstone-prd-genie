@@ -39,7 +39,10 @@ transcript | brief | notes | unknown
   evidence: "<quote>"
 
 ## Constraints
-- ...
+- ID: CON-n
+  text: <verbatim constraint>
+  class: NFR | functional | UNKNOWN
+  evidence: "<quote>"
 
 ## Stakeholders
 - Name — role (if stated)
@@ -51,7 +54,7 @@ transcript | brief | notes | unknown
 - <side A> vs <side B> — do not pick a winner
 
 ## Missing information
-- ...
+- When the input is vague (e.g. "better reporting", "like Competitor X"), list at least: metrics (UNKNOWN), format (UNKNOWN), users (UNKNOWN). Do not invent values for them.
 
 ## Extractability
 EXTRACTABLE | INSUFFICIENT | NONE
@@ -68,6 +71,8 @@ If Extractability is `NONE` (e.g. "Meeting happened. Notes: none."), output empt
 5. **Do not favor a stakeholder.** Engineering vs Design vs PM vs DevOps — capture all viewpoints.
 6. **Incomplete notes stay incomplete.** Budget TBD stays TBD. "follow up with design (who?)" stays an open owner.
 7. **No PRD, no stories, no success metrics, no timeline** unless they appear in the input.
+8. **Vague briefs must name the missing slots.** If the input does not say who the users are, what metric "better" means, or what format the output takes, write those three as Missing information with UNKNOWN — not as invented requirements. This is the T2 check.
+9. **Classify NFRs.** Capacity, latency/p95, throughput, and named API versions are constraints with `class: NFR`. Keep the digits exact (10,000 not 10k; 200ms p95; Salesforce REST API v52). Also keep them under Stated requirements if they are stated. This is the T7 check.
 
 ## Self-check (end of every output)
 

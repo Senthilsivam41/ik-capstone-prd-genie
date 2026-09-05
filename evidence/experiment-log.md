@@ -10,7 +10,7 @@ Baseline = score on the 12-input set *before* the change. New score = after. Hol
 
 | ID | Date | Change made (exactly one) | Baseline | New score | Result | Decision |
 |---|---|---|---|---|---|---|
-| E1 | | | | | | |
+| E1 | 2026-09-05 | Extractor prompt: add rule 8 (vague → list metrics/format/users as UNKNOWN) **and** rule 9 (capacity/latency/API version → `class: NFR`). Two rules in one edit because both T2 and T7 failed the same run. | T2 Fail (no metrics/format/users); T7 Fail (numbers exact, not labelled NFR) | *re-run T2 and T7 only — not filled until traces exist* | pending | Keep only if both IDs pass on the new traces |
 | E2 | | | | | | |
 | E3 | | | | | | |
 
