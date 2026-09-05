@@ -11,7 +11,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 | Pattern | Sequential pipeline + one branch ([ADR-001](docs/adr/ADR-001-orchestration-pattern.md)) |
 | Extended capability | Gap Analyzer ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
 | Platform | n8n (IK Cloud) + Langfuse EU |
-| Status | Design pack complete · canvas not yet built · baseline not yet run |
+| Status | Design pack complete · Slice 1 Extractor canvas built and traced in Langfuse · baseline T1–T12 not yet run |
 
 ## What is in this repo vs what is still to build
 
@@ -22,11 +22,13 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 - Architecture diagram
 - Official course inputs and the 12-row baseline file
 - Experiment log + baseline results **templates** (no invented scores)
+- Slice 1 Extractor n8n export with Langfuse HTTP ingest, plus the 4 Sep trace screenshot and its recorded tokens/cost
 
 **Not in the repo yet (Days 3–14 of the charter):**
 
-- n8n `system/workflow.json` export
-- Screenshots (canvas, run, Langfuse traces)
+- n8n export for the **full** pipeline — only the Slice 1 Extractor export is in (`system/workflow.json`); PRD Generator, Story Breakdown and Gap Analyzer are not wired
+- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` — the Langfuse traces screenshot **is** in (`evidence/screenshots/langfuse-traces.png`)
+- Langfuse score configs `completeness` / `hallucination` / `groundedness`
 - Filled baseline outputs for T1–T12
 - Experiment E1+ with real before/after scores
 - Q4 reflection findings (page is a locked method + empty results column)
@@ -58,8 +60,10 @@ Runtime is **Interview Kickstart n8n Cloud** + **Langfuse EU** ([ADR-005](docs/a
 cp system/.env.example system/.env
 ```
 
-4. In n8n: **Credentials → Add** → Langfuse (or HTTP if that node is missing). Paste `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, host `https://cloud.langfuse.com` with **no trailing slash and no leading space**. n8n Cloud does not read `system/.env`; the file is only a local backup of the same values.
-5. Create Langfuse score configs: `completeness`, `hallucination`, `groundedness`.
+4. In n8n: **Credentials → Add → Basic Auth**. Username = `LANGFUSE_PUBLIC_KEY`, password = `LANGFUSE_SECRET_KEY`, with **no trailing slash and no leading space**. The `Send to Langfuse` node uses this as a generic `httpBasicAuth` credential; the host `https://cloud.langfuse.com` is already in the node URL, not in the credential. n8n Cloud does not read `system/.env`; the file is only a local backup of the same values.
+5. Create Langfuse score configs: `completeness`, `hallucination`, `groundedness`. **Still outstanding** — the one open item on the observability line.
+
+**How n8n sends data to Langfuse:** the workflow has no auto-tracing callback, so a `Build Langfuse Batch` Code node assembles a `trace` + `generation` batch and a `Send to Langfuse` **HTTP Request** node posts it to `POST https://cloud.langfuse.com/api/public/ingestion` over Basic Auth — Option C in [docs/langfuse-observability-acceptance.md](docs/langfuse-observability-acceptance.md). IK n8n Cloud has no first-party Langfuse *tracing* credential and community-node install rights are not assumed, so spans are explicit (one HTTP call per agent) rather than automatic. Langfuse derives tokens and cost from the model name; the batch sends no `usage` block.
 
 An OpenAI or Anthropic (or OpenRouter) credential is still required in n8n before T1 can run. Observability keys alone do not earn the +5 until a trace appears on that project.
 
@@ -72,7 +76,7 @@ Importable canvas is already in the repo (TDD: Extractor only until T1 is green)
 3. Open **OpenAI Chat Model** → Credentials → select **OpenAI account** (IK).
 4. Open **Input Text** — `chatInput` is prefilled with Transcript 1. For graded **T1**, replace it with the T1 line from [`evidence/ground-truth/eval_prdgenie_inputs.txt`](evidence/ground-truth/eval_prdgenie_inputs.txt).
 5. Click **Test workflow**. Copy the Extractor markdown into [`evidence/baseline-results.md`](evidence/baseline-results.md).
-6. Do **not** add PRD / stories / Gap Analyzer until that row is Pass. Langfuse HTTP ingest is the next edit after a green Extractor run.
+6. Do **not** add PRD / stories / Gap Analyzer until that row is Pass. Langfuse HTTP ingest is already wired and traced (4 Sep) — observability came before the first scored run, as the rubric requires.
 
 Full target graph (later slices): [design/orchestration-notes.md](design/orchestration-notes.md).
 
