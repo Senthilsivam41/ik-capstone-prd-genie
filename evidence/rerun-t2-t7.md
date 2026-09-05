@@ -1,5 +1,7 @@
 # Re-run T2 and T7 (after prompt E1)
 
+**E1 result (5 Sep):** T2 **Pass** (`1fadd877-560b-4db4-98fe-ca683925e2d4`). T7 **still Fail** (`87076a54-22f3-4889-aa37-a7beb8989721`) — no Constraints / `class: NFR`. Next: E1b, T7 only.
+
 The Fail results are already recorded. The **fix** is in the Extractor system prompt, not in a new workflow.
 
 ## Where the change is

@@ -10,12 +10,12 @@ Scoring (per test): Pass only if every "Must contain" holds **and** every "Must 
 | ID | Type | Must contain | Must not | Result | Trace ID | Notes |
 |---|---|---|---|---|---|---|
 | T1 | Detailed | Filter by date/category/status; 2-second load; PM Sarah; Q3 deadline | Requirements not in the input | **Pass** | `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210` | Official short brief. Tokens 35/220/255, $0.0022875. Earlier run `f82a17cd-0fca-4f40-ba5e-9e44dfd4ccce` same input. Scores list still empty at record time. |
-| T2 | Vague | Flag ambiguous; list missing info (metrics, format, users) | Invented specific requirements | **Fail** | `8db374ad-19f2-4c7e-889e-2512d3e1b3a5` | Flagged Competitor X as AMB; INSUFFICIENT; no invented reqs. Missing-info list does **not** name metrics, format, or users. |
+| T2 | Vague | Flag ambiguous; list missing info (metrics, format, users) | Invented specific requirements | **Pass** (E1) | `1fadd877-560b-4db4-98fe-ca683925e2d4` | After rule 8: Missing information lists metrics / format / users as UNKNOWN. No invented reqs. First run `8db374ad` was Fail. Output dropped the full template (NONE is harsh). |
 | T3 | Contradictory | Identify frequent refresh vs minimize API calls; flag for resolution | Silently choosing one side | **Pass** | `fcb63046-bb63-449c-a095-7ef84c3a5978` | Both sides listed; contradiction named; no winner. |
 | T4 | Detailed + AC | AC verbatim (PDF logo, CSV formulas); stories use those ACs | Extra acceptance criteria | **Pass** | `31892156-b678-4c7a-8542-b624d2b2dc5e` | Logo and formulas copied. Stories are T12. No extra ACs. |
 | T5 | Incomplete | Flag insufficient; list missing (what dashboard, what real-time, what budget) | Filling gaps with assumptions | **Pass** | `e241ff95-c975-4914-be83-35b003405e90` | INSUFFICIENT. Real-time and budget listed as missing. Dashboard type only implied. |
 | T6 | Multi-stakeholder | All three viewpoints; tensions named | Favoring one stakeholder | **Pass** | `0155652b-1610-4642-9a4d-64567066f4e8` | Eng / Design / PM kept; tension named. |
-| T7 | Technical / NFR | Exact 10,000 users; 200ms p95; Salesforce REST API v52; classified as NFRs | Rounded or modified numbers | **Fail** | `9f01fda6-a7c6-47a4-9c99-686aeb1804d3` | Numbers and v52 exact. **Not classified as NFRs** — all three sit under Stated requirements. |
+| T7 | Technical / NFR | Exact 10,000 users; 200ms p95; Salesforce REST API v52; classified as NFRs | Rounded or modified numbers | **Fail** | `87076a54-22f3-4889-aa37-a7beb8989721` | E1 re-run: numbers still exact. Still **no `class: NFR`** and no Constraints section. First fail `9f01fda6`. |
 | T8 | Persona-heavy | Three personas (Admin, End User, Auditor); separate stories | Merged generic "user" stories | **Pass** | `f0f51767-1c69-4e00-8a53-57ca83f12ccd` | Three separate REQs. Stories are T12. |
 | T9 | Edge / empty | Flag: no requirements extractable | A PRD generated from nothing | **Pass** | `82c80563-45a5-4b74-bfd7-2aa2d074d20e` | Extractability NONE; empty lists; no PRD. |
 | T10 | Dependency | SSO feature; dependency on auth service / Team Alpha; unknown ETA as risk | Dropping the dependency | **Pass** | `3d905bf1-1893-45e3-b164-583fe2eb6c1b` | SSO + Team Alpha kept. ETA as AMB/missing, not labelled "risk". |
@@ -147,6 +147,30 @@ INSUFFICIENT
 - Count of stated requirements that have an evidence quote: 1
 - Count of items you were tempted to add but did not: 0
 - One sentence: "I did not add anything that is not in the input."
+```
+
+### T2 re-run (E1) — Pass
+
+Trace `1fadd877-560b-4db4-98fe-ca683925e2d4` · 2026-09-05T10:50:39.287Z
+
+```
+## Missing information
+- Metrics: UNKNOWN
+- Format: UNKNOWN
+- Users: UNKNOWN
+
+## Extractability
+NONE
+
+---
+
+Self-check:
+
+Count of stated requirements that have an evidence quote: 0
+
+Count of items you were tempted to add but did not: 3
+
+I did not add anything that is not in the input.
 ```
 
 ## T3 output
@@ -424,6 +448,40 @@ EXTRACTABLE
 - Count of stated requirements that have an evidence quote: 3
 - Count of items you were tempted to add but did not: 0
 - One sentence: "I did not add anything that is not in the input."
+```
+
+### T7 re-run (E1) — still Fail
+
+Trace `87076a54-22f3-4889-aa37-a7beb8989721` · 2026-09-05T10:50:01.854Z  
+Numbers exact. No Constraints section and no `class: NFR`.
+
+```
+## Stated requirements
+1. The API must support 10,000 concurrent users.
+   - Evidence: "API must support 10,000 concurrent users."
+2. The response time must be less than 200ms at the 95th percentile (p95).
+   - Evidence: "Response time < 200ms at p95."
+3. The API must integrate with Salesforce REST API v52.
+   - Evidence: "Must integrate with Salesforce REST API v52."
+
+## Missing information
+- Users: UNKNOWN
+- Metrics for success beyond stated requirements: UNKNOWN
+- Format of integration or output: UNKNOWN
+
+## Contradictions
+None
+
+## Extractability
+EXTRACTABLE
+
+---
+
+Count of stated requirements that have an evidence quote: 3
+
+Count of items you were tempted to add but did not: 0
+
+I did not add anything that is not in the input.
 ```
 
 ## T8 output
