@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "20e846d3-931b-4ffc-94bd-94a88c6261ea",
+      "id": "trig-001",
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -17,7 +17,7 @@
         "assignments": {
           "assignments": [
             {
-              "id": "bac25ae7-a110-4c29-b23d-60d364ce4e8e",
+              "id": "sel-testid",
               "name": "testId",
               "value": "T1",
               "type": "string"
@@ -26,132 +26,29 @@
         },
         "options": {}
       },
-      "id": "da06e453-28e9-4931-91c1-72dc36d07415",
+      "id": "sel-001",
       "name": "Select Test",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        220,
+        240,
         300
       ],
-      "notes": "Change testId to T1 (graded short string) or Transcript1 (long meeting). Do not merge them. Then Test workflow from Manual Trigger."
+      "notes": "Set testId to T1 or Transcript1. One value. Then Test workflow."
     },
     {
       "parameters": {
-        "rules": {
-          "values": [
-            {
-              "outputKey": "T1",
-              "renameOutput": true,
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "79fe6ad3-4830-4ab7-bb0f-bc3962a5f795",
-                    "leftValue": "={{ $json.testId }}",
-                    "rightValue": "T1",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {
-          "fallbackOutput": "extra"
-        }
+        "jsCode": "const catalog = {\n  T1: \"The user should be able to filter reports by date range, category, and status. Results must load in under 2 seconds. PM: Sarah. Deadline: Q3.\",\n  Transcript1: \"Meeting: Product Planning - Reporting Dashboard\\nDate: March 15, 2026\\nAttendees: Sarah (PM), Raj (Engineering Lead), Lisa (Design)\\n\\nSarah: Okay let's talk about the reporting feature. Users have been asking for this for months. The key requirement is that users should be able to filter reports by date range, category, and status.\\n\\nRaj: Makes sense. What about performance? If they're pulling large datasets we need to think about load times.\\n\\nSarah: Good point. Results must load in under 2 seconds. That's a hard requirement from the enterprise customers.\\n\\nLisa: Are we doing this as a new page or adding it to the existing dashboard?\\n\\nSarah: New dedicated page. But it should match our existing design system.\\n\\nRaj: Who owns this? And what's the timeline?\\n\\nSarah: I'm the PM owner. Deadline is end of Q3. Raj, your team would handle the backend. Lisa, we'd need designs by end of April.\\n\\nRaj: We'll need to decide on the data source. Are we querying live or using a pre-computed data warehouse?\\n\\nSarah: TBD on that. Let's decide after we see Lisa's designs and understand the query patterns.\",\n};\nconst testId = String($json.testId || 'T1').trim();\nif (!catalog[testId]) {\n  throw new Error('Unknown testId \"' + testId + '\". Use T1 or Transcript1.');\n}\nreturn [{\n  json: {\n    testId,\n    chatInput: catalog[testId],\n    startTime: new Date().toISOString(),\n  },\n}];"
       },
-      "id": "4ea7f18a-79fa-44f1-9eeb-0bc540950bf6",
-      "name": "Pick Input",
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
+      "id": "res-001",
+      "name": "Resolve Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        440,
+        480,
         300
       ],
-      "notes": "T1 = course eval row. Fallback = Transcript1 long meeting. Never concatenates the two."
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "f5504424-cb31-4d67-9d23-3ac60ed38cbd",
-              "name": "testId",
-              "value": "T1",
-              "type": "string"
-            },
-            {
-              "id": "90b0470d-342b-423e-a36d-06c05da0bed7",
-              "name": "chatInput",
-              "value": "The user should be able to filter reports by date range, category, and status. Results must load in under 2 seconds. PM: Sarah. Deadline: Q3.",
-              "type": "string"
-            },
-            {
-              "id": "a723f668-8686-412f-a5ba-60a60c26e972",
-              "name": "startTime",
-              "value": "={{ $now.toISO() }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "c5f103d7-bdba-4752-98e7-7f20eeb3c041",
-      "name": "T1 Input",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        680,
-        180
-      ],
-      "notes": "Fixed payload for T1. Do not edit unless the ground-truth file changes."
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "899e87e8-2016-4685-a216-1e9d7a8668d7",
-              "name": "testId",
-              "value": "Transcript1",
-              "type": "string"
-            },
-            {
-              "id": "cd2a1222-e976-44a6-a4a3-3352169394db",
-              "name": "chatInput",
-              "value": "Meeting: Product Planning - Reporting Dashboard\nDate: March 15, 2026\nAttendees: Sarah (PM), Raj (Engineering Lead), Lisa (Design)\n\nSarah: Okay let's talk about the reporting feature. Users have been asking for this for months. The key requirement is that users should be able to filter reports by date range, category, and status.\n\nRaj: Makes sense. What about performance? If they're pulling large datasets we need to think about load times.\n\nSarah: Good point. Results must load in under 2 seconds. That's a hard requirement from the enterprise customers.\n\nLisa: Are we doing this as a new page or adding it to the existing dashboard?\n\nSarah: New dedicated page. But it should match our existing design system.\n\nRaj: Who owns this? And what's the timeline?\n\nSarah: I'm the PM owner. Deadline is end of Q3. Raj, your team would handle the backend. Lisa, we'd need designs by end of April.\n\nRaj: We'll need to decide on the data source. Are we querying live or using a pre-computed data warehouse?\n\nSarah: TBD on that. Let's decide after we see Lisa's designs and understand the query patterns.",
-              "type": "string"
-            },
-            {
-              "id": "b99142dc-4d7b-4a68-a7df-e5d6ce6474d0",
-              "name": "startTime",
-              "value": "={{ $now.toISO() }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "510550ce-9f39-4039-a6ad-89af3a678a77",
-      "name": "Transcript1 Input",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        680,
-        420
-      ],
-      "notes": "Fixed payload for Transcript1. Do not edit unless the ground-truth file changes."
+      "notes": "Looks up the chosen testId. Does not merge texts."
     },
     {
       "parameters": {
@@ -164,12 +61,12 @@
         },
         "batching": {}
       },
-      "id": "932bbc8d-bbb0-47ad-ac14-64d01bf15797",
+      "id": "ext-001",
       "name": "Requirement Extractor",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        940,
+        720,
         300
       ],
       "notes": "Slice 1 only. Do not add PRD / stories / Gap Analyzer until T1 is green in evidence/baseline-results.md."
@@ -186,34 +83,34 @@
           "temperature": 0.2
         }
       },
-      "id": "0a4d2ea9-e2a5-4d28-97cb-60f37347c070",
+      "id": "llm-001",
       "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        940,
-        540
+        720,
+        520
       ],
       "credentials": {
         "openAiApi": {
           "id": "fHsYkUcRoCoAEnfH",
           "name": "OpenAI account"
         }
-      }
+      },
+      "notes": "Select credential OpenAI account if import drops it."
     },
     {
       "parameters": {
-        "jsCode": "// Builds a Langfuse ingestion batch for the Extractor run.\n// One trace (the run) + one generation (the Extractor agent).\n// Slice 1 has a single agent; R2/R4 add one generation per agent.\n\nconst uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {\n  const r = (Math.random() * 16) | 0;\n  const v = c === 'x' ? r : ((r & 0x3) | 0x8);\n  return v.toString(16);\n});\n\nfunction firstJson(name) {\n  try {\n    const items = $(name).all();\n    if (items && items.length) return items[0].json;\n  } catch (e) {}\n  return null;\n}\nconst src = firstJson('T1 Input') || firstJson('Transcript1 Input');\nif (!src || !src.chatInput) {\n  throw new Error('No selected input. Set testId to T1 or Transcript1 and run the full workflow.');\n}\nconst out = $input.first().json;\n\n// chainLlm returns { text }. Fall back rather than silently sending \"[object Object]\".\nconst outputText =\n  typeof out.text === 'string' ? out.text :\n  typeof out.output === 'string' ? out.output :\n  JSON.stringify(out);\n\nconst traceId = uuid();\nconst startTime = src.startTime || new Date().toISOString();\nconst endTime = new Date().toISOString();\nconst testId = src.testId || 'unspecified';\n\nconst batch = [\n  {\n    id: uuid(),\n    type: 'trace-create',\n    timestamp: endTime,\n    body: {\n      id: traceId,\n      name: 'prd-genie-slice1',\n      input: src.chatInput,\n      output: outputText,\n      tags: ['prd-genie', 'slice1', testId],\n      metadata: { testId, release: 'R1', platform: 'n8n-ik-cloud' },\n    },\n  },\n  {\n    id: uuid(),\n    type: 'generation-create',\n    timestamp: endTime,\n    body: {\n      id: uuid(),\n      traceId,\n      name: 'Requirement Extractor',\n      model: 'gpt-4o',\n      startTime,\n      endTime,\n      input: src.chatInput,\n      output: outputText,\n      metadata: { testId, agent: 'Requirement Extractor' },\n    },\n  },\n];\n\n// traceId is surfaced so it can be pasted into the Trace ID column of\n// evidence/baseline-results.md. Never record a Pass without it.\nreturn [{ json: { batch, traceId, testId, extractorOutput: outputText } }];"
+        "jsCode": "const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {\n  const r = (Math.random() * 16) | 0;\n  const v = c === 'x' ? r : ((r & 0x3) | 0x8);\n  return v.toString(16);\n});\n\nconst src = $('Resolve Input').first().json;\nconst out = $input.first().json;\nconst outputText =\n  typeof out.text === 'string' ? out.text :\n  typeof out.output === 'string' ? out.output :\n  JSON.stringify(out);\n\nconst traceId = uuid();\nconst startTime = src.startTime || new Date().toISOString();\nconst endTime = new Date().toISOString();\nconst testId = src.testId || 'unspecified';\n\nconst batch = [\n  {\n    id: uuid(),\n    type: 'trace-create',\n    timestamp: endTime,\n    body: {\n      id: traceId,\n      name: 'prd-genie-slice1',\n      input: src.chatInput,\n      output: outputText,\n      tags: ['prd-genie', 'slice1', testId],\n      metadata: { testId, release: 'R1', platform: 'n8n-ik-cloud' },\n    },\n  },\n  {\n    id: uuid(),\n    type: 'generation-create',\n    timestamp: endTime,\n    body: {\n      id: uuid(),\n      traceId,\n      name: 'Requirement Extractor',\n      model: 'gpt-4o',\n      startTime,\n      endTime,\n      input: src.chatInput,\n      output: outputText,\n      metadata: { testId, agent: 'Requirement Extractor' },\n    },\n  },\n];\n\nreturn [{ json: { batch, traceId, testId, extractorOutput: outputText } }];"
       },
-      "id": "bfb41a5b-c062-480f-adaf-1354598bed0f",
+      "id": "lf-001",
       "name": "Build Langfuse Batch",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1220,
+        980,
         300
-      ],
-      "notes": "Builds trace + generation. Copy traceId into evidence/baseline-results.md."
+      ]
     },
     {
       "parameters": {
@@ -226,12 +123,12 @@
         "jsonBody": "={{ JSON.stringify({ batch: $json.batch }) }}",
         "options": {}
       },
-      "id": "33de4859-4fb1-4df3-b5ac-c92c38022169",
+      "id": "http-001",
       "name": "Send to Langfuse",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1460,
+        1220,
         300
       ],
       "credentials": {
@@ -239,27 +136,25 @@
           "id": "Z3fMCC3wBY3bi7VF",
           "name": "LangFuse Credentials"
         }
-      },
-      "notes": "Basic Auth credential: username = Langfuse PUBLIC key (pk-lf-...), password = SECRET key (sk-lf-...). EU host. Keys live in n8n credentials, never in this file."
+      }
     },
     {
       "parameters": {
-        "content": "## PRD Genie - Slice 1\n\nTwo **separate** inputs. Never merged.\n\n1. Open **Select Test** and set `testId`:\n   - `T1` — graded one-line string (default)\n   - `Transcript1` — long Sarah/Raj/Lisa meeting\n2. Click **Test workflow** (Manual Trigger), not Test step.\n\nT1 and Transcript1 share some facts (filters, 2 seconds, Sarah, Q3) but they are different tests. Concatenating them would match neither.\n\nCopy `traceId` from Build Langfuse Batch into baseline-results.md.",
-        "height": 620,
-        "width": 480,
+        "content": "## Import as a NEW workflow, then delete the broken copies.\n\nOne line only — no Switch.\n\n1. Select Test → `testId` = `T1` (default) or `Transcript1`\n2. **Test workflow** from Manual Trigger\n3. Re-attach OpenAI + Langfuse credentials if empty\n",
+        "height": 360,
+        "width": 420,
         "color": 5
       },
-      "id": "8255867a-062e-4480-ac05-e816e82be532",
+      "id": "note-001",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -80,
-        -180
+        -40,
+        -80
       ]
     }
   ],
-  "pinData": {},
   "connections": {
     "Manual Trigger": {
       "main": [
@@ -276,43 +171,14 @@
       "main": [
         [
           {
-            "node": "Pick Input",
+            "node": "Resolve Input",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Pick Input": {
-      "main": [
-        [
-          {
-            "node": "T1 Input",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Transcript1 Input",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "T1 Input": {
-      "main": [
-        [
-          {
-            "node": "Requirement Extractor",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Transcript1 Input": {
+    "Resolve Input": {
       "main": [
         [
           {
@@ -357,16 +223,11 @@
       ]
     }
   },
-  "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
+    "executionOrder": "v1"
   },
-  "versionId": "7901708d-bcf9-4c94-9de8-a38f1cdfc29a",
+  "pinData": {},
   "meta": {
-    "instanceId": "b2489aab6989931d43ab21c3e2ed59618c765e0c35ab9e334d007b405bfd2d77"
-  },
-  "nodeGroups": [],
-  "id": "P3dEtmvn2eRFBVKQ",
-  "tags": []
+    "templateCredsSetupCompleted": false
+  }
 }
