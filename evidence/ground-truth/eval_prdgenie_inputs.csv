@@ -1,0 +1,13 @@
+testId,stage,runnable,chatInput,mustContain,mustNot
+T1,extractor,yes,"The user should be able to filter reports by date range, category, and status. Results must load in under 2 seconds. PM: Sarah. Deadline: Q3.","Filter by date/category/status; 2-second load; PM Sarah; Q3 deadline",Requirements not in the input
+T2,extractor,yes,We need better reporting. Something like what Competitor X has.,"Flag ambiguous; list missing info (metrics, format, users)",Invented specific requirements
+T3,extractor,yes,"The dashboard should auto-refresh every 5 seconds. [Later in same meeting] Performance is critical, minimize API calls.",Identify frequent refresh vs minimize API calls; flag for resolution,Silently choosing one side
+T4,extractor,yes,Users need to export reports as PDF and CSV. PDF must include company logo. CSV must preserve formulas.,AC verbatim (PDF logo, CSV formulas),Extra acceptance criteria
+T5,extractor,yes,Discussed dashboard... John mentioned something about real-time... budget TBD...,"Flag insufficient; list missing (what dashboard, what real-time, what budget)",Filling gaps with assumptions
+T6,extractor,yes,Engineering wants microservices. Design wants single-page app. PM wants it shipped by March.,All three viewpoints; tensions named,Favoring one stakeholder
+T7,extractor,yes,"API must support 10,000 concurrent users. Response time < 200ms at p95. Must integrate with Salesforce REST API v52.","Exact 10,000 users; 200ms p95; Salesforce REST API v52; classified as NFRs",Rounded or modified numbers
+T8,extractor,yes,Admins need bulk user management. End users need a simplified view. Auditors need read-only access with full history.,"Three personas (Admin, End User, Auditor); separate stories","Merged generic ""user"" stories"
+T9,extractor,yes,Meeting happened. Notes: none.,Flag: no requirements extractable,A PRD generated from nothing
+T10,extractor,yes,SSO login requires the new auth service which is being built by Team Alpha. ETA unknown.,SSO feature; dependency on auth service / Team Alpha; unknown ETA as risk,Dropping the dependency
+T11,prd,no,,Full template; all sections present; only T1 content,Padding empty sections
+T12,stories,no,,Epics + As a [persona] stories; priority suggestions,AC drift from T4/T11

@@ -10,8 +10,8 @@ Baseline = score on the 12-input set *before* the change. New score = after. Hol
 
 | ID | Date | Change made (exactly one) | Baseline | New score | Result | Decision |
 |---|---|---|---|---|---|---|
-| E1 | | | | | | |
-| E2 | | | | | | |
+| E1 | 2026-09-05 | Extractor prompt: add rule 8 (vague → list metrics/format/users as UNKNOWN) **and** rule 9 (capacity/latency/API version → `class: NFR`). | T2 Fail `8db374ad`; T7 Fail `9f01fda6` | T2 **Pass** `1fadd877` (lists metrics/format/users UNKNOWN). T7 **Fail** `87076a54` (still no `class: NFR`) | mixed | **Keep rule 8.** Do not treat E1 as done. Next experiment E1b = tighten rule 9 only, re-run T7 only. |
+| E1b | 2026-09-05 | Extractor rule 9 only: Constraints section is mandatory when capacity / p95 / API version is stated; each row `class: NFR`. | T7 Fail `87076a54` (no Constraints) | T7 **Pass** `46575316` — three CON rows `class: NFR`; 10,000 / 200ms p95 / v52 exact | pass | **Keep rule 9 (E1b).** T2 and T7 both green. Next: T11 (PRD from T1 extraction), not a new transcript. |
 | E3 | | | | | | |
 
 Planned first experiments *if* the corresponding failure appears — do not run them speculatively:

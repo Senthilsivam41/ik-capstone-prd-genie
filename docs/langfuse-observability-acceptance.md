@@ -1,7 +1,7 @@
 # Langfuse +5 on IK n8n — what “done” looks like
 
 **Rubric line:** Q3 Observability **5 pts**.  
-**Platform:** n8n Cloud `agenticai100.app.n8n.cloud` → Langfuse EU `https://cloud.langfuse.com/project/cmsbfzos000iead0hcz5k5ygp` (`product-health-monitor`).  
+**Platform:** n8n Cloud `agenticai100.app.n8n.cloud` → Langfuse EU `https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv` (`my-capstone-prd-genie`).  
 **Release:** [R1 in release-plan.md](release-plan.md).  
 **Open question for facilitator (only if blocked):** which of the wiring options below they accept when native LangFlow-style env tracing is unavailable.
 
@@ -27,7 +27,7 @@ A TA opening the submission without a live pair session should find:
 
 | # | Evidence | Pass when |
 |---|---|---|
-| 1 | **Project** | Traces land in EU project `cmsbfzos000iead0hcz5k5ygp` (host `https://cloud.langfuse.com`, **not** `us.` / not `eu.` hostname typos) |
+| 1 | **Project** | Traces land in EU project `cmthhhzzv02wsad0d4qogeznv` (host `https://cloud.langfuse.com`, **not** `us.` / not `eu.` hostname typos) |
 | 2 | **At least one successful run** traced **before** we claim green T1 (rule: observability before first successful scored run) |
 | 3 | **Per-agent visibility** | For the agents that ran in that workflow version, the trace shows **separate spans/generations** (or clearly named observations) — not a single opaque blob. Slice 1 = Extractor only; later releases = one span per agent |
 | 4 | **Tokens / cost** | Input+output tokens (and cost if Langfuse prices the model) visible on the trace or generation |
@@ -58,12 +58,13 @@ Route the Chat Model through a gateway that forwards traces to Langfuse. Only if
 
 After Requirement Extractor (and later each agent):
 
-1. **HTTP Request** `POST https://cloud.langfuse.com/api/public/ingestion`
-2. Auth: Basic (`publicKey`:`secretKey`) or Langfuse’s documented header scheme for that API version
-3. Body: minimal ingestion batch with `trace` + `generation` (name = agent name, input = `chatInput` / prior output, output = chain text, usage tokens if present)
-4. Header Auth / generic credential in n8n — **do not** commit keys
+1. **HTTP Request** `POST https://cloud.langfuse.com/api/public/otel/v1/traces`
+2. Auth: Basic (`publicKey`:`secretKey`)
+3. Header: `x-langfuse-ingestion-version: 4`
+4. Body: OTLP/HTTP JSON (`resourceSpans`) — one root span (overall I/O) plus one generation per agent. Do **not** send `trace-create` / `generation-create` to `/api/public/ingestion` (deprecated; removed on Cloud 16 Nov 2026).
+5. Generic Basic Auth credential in n8n — **do not** commit keys
 
-This works without community nodes. Spans are **explicit** (one HTTP per agent) rather than automatic LangChain callbacks — still valid if the Langfuse UI shows per-agent generations and tokens.
+Payload builder: [system/langfuse/build-otlp-trace.js](../system/langfuse/build-otlp-trace.js). This works without community nodes. Spans are **explicit** (one HTTP per agent) rather than automatic LangChain callbacks — still valid if the Langfuse UI shows per-agent generations and tokens.
 
 ### Option D — Fallback (last resort)
 
@@ -79,12 +80,14 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 
 ## R1 checklist (ship when all true)
 
-- [ ] Score configs created on EU project  
-- [ ] One Test workflow run on Slice 1  
-- [ ] Trace visible in Langfuse within a few minutes  
-- [ ] Tokens visible on that generation  
-- [ ] `evidence/baseline-results.md` updated for T1 / Transcript 1 from that run  
-- [ ] Wiring method named in README (one sentence)  
-- [ ] Optional: `langfuse-traces.png` committed  
+- [x] Score configs created on EU project — verified 5 Sep via `GET /api/public/score-configs` (project `cmthhhzzv02wsad0d4qogeznv`): `Completeness`, `Hallucination`, `Groundedness` (Title Case), all **NUMERIC** 0–1. Three matching LLM-as-judge evaluators (`Completeness` gpt-4o, `Hallucination` gpt-4o, `Groundedness` gpt-4.1-nano) are active, NUMERIC 0–1, and assigned to “Generation events outside evaluation environments” at **sampling 1**. Re-checked after the template judges were removed. `GET /api/public/scores` is empty until a post-config run.
+- [x] One Test workflow run on Slice 1 — two runs, 4 Sep (Option C, HTTP ingest)
+- [x] Trace visible in Langfuse within a few minutes — trace `8748c951-d201-4824-ac1b-a4194002f88d`, project `cmthhhzzv02wsad0d4qogeznv`
+- [x] Tokens visible on that generation — 240 in / 395 out / 635 total, cost $0.00455, model `gpt-4o`
+- [x] `evidence/baseline-results.md` updated for **T1** — trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210`, official short brief, Result **Pass**. The 4 Sep long-meeting run stays a pre-T1 proof, not this row.
+- [x] Wiring method named in README (one sentence) — Option C, HTTP Request → `POST /api/public/otel/v1/traces` (v4 header). Re-import n8n after the v4 JSON change.
+- [x] Optional: `langfuse-traces.png` committed — [evidence/screenshots/langfuse-traces.png](../evidence/screenshots/langfuse-traces.png)
 
 Then mark Observability **5/5** in [rubric-evaluation.md](rubric-evaluation.md) only with that evidence — never invent.
+
+**Status 5 Sep: R1 checklist complete.** T1 is recorded from a real trace. LLM-as-judge scores had not appeared on that generation at record time (`GET /api/public/scores` still empty) — configs/evaluators exist; attachment may lag.

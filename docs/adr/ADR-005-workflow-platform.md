@@ -12,7 +12,7 @@ Build the PRD Genie canvas on **Interview Kickstart’s n8n Cloud instance**
 `https://agenticai100.app.n8n.cloud`
 
 Observability stays **Langfuse EU**:  
-`https://cloud.langfuse.com/project/cmsbfzos000iead0hcz5k5ygp`
+`https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv`
 
 Do **not** submit a LangFlow canvas. LangFlow Desktop may exist on the laptop as a personal sandbox; it is not the graded runtime.
 
@@ -43,7 +43,7 @@ Langfuse has no first-party n8n *tracing* node (prompt-management node only). Tr
 2. Else OpenRouter as the model gateway with Langfuse broadcast (course-compatible).
 3. Else an HTTP Request after each agent to Langfuse’s ingestion API — works on any n8n Cloud plan.
 
-Do not call observability done until a real trace exists on the EU project. Host must be `https://cloud.langfuse.com` (EU), not `us.cloud.langfuse.com`.
+Do not call observability done until a real trace exists on the EU project. Host must be `https://cloud.langfuse.com` (EU), not `us.cloud.langfuse.com`. Ingest is OTLP/HTTP (`/api/public/otel/v1/traces`), not the deprecated `/api/public/ingestion` batch.
 
 ## Consequences
 
