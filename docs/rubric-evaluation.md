@@ -75,7 +75,7 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. T2 is green after E1. T7 still fails NFR classification. E1b: tighten rule 9 only, re-run **T7 only**.
+1. T2 and T7 are green (E1 + E1b). Next: PRD Generator on the **T1 extraction** (T11), then Story Breakdown (T12). Do not feed T11 a new transcript.
 2. Then PRD Generator on T1 extraction (T11) and Story Breakdown (T12). Core +12 only when that e2e is live.
 3. Gap Analyzer after core IDs that do not need it are green → **+8**.
 4. Overwrite cost table from traces → **+1** (4→5).

@@ -2,7 +2,7 @@
 
 **E1 result (5 Sep):** T2 **Pass** (`1fadd877-560b-4db4-98fe-ca683925e2d4`). T7 **still Fail** (`87076a54-22f3-4889-aa37-a7beb8989721`) — no Constraints / `class: NFR`.
 
-**E1b is written.** Rule 9 in [`design/agents/requirement-extractor.md`](../design/agents/requirement-extractor.md) now **requires** a `## Constraints` section with `class: NFR`. Paste that prompt into n8n, **then** run T7 only (see below). Do not run T7 before the paste.
+**E1b result:** T7 **Pass** (`46575316-eb24-4058-93de-57d1b3cbfd0e`). Constraints CON-1..3 all `class: NFR`. No further T7 re-run needed.
 
 The Fail results are already recorded. The **fix** is in the Extractor system prompt, not in a new workflow.
 
