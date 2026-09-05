@@ -20,7 +20,7 @@ Scoring (per test): Pass only if every "Must contain" holds **and** every "Must 
 | T9 | Edge / empty | Flag: no requirements extractable | A PRD generated from nothing | **Pass** | `82c80563-45a5-4b74-bfd7-2aa2d074d20e` | Extractability NONE; empty lists; no PRD. |
 | T10 | Dependency | SSO feature; dependency on auth service / Team Alpha; unknown ETA as risk | Dropping the dependency | **Pass** | `3d905bf1-1893-45e3-b164-583fe2eb6c1b` | SSO + Team Alpha kept. ETA as AMB/missing, not labelled "risk". |
 | T11 | PRD generation | Full template; all sections present; only T1 content | Padding empty sections | **Pass** | `bd27a36e-46d5-4f21-9538-e3af4c6799d3` | Ten sections present. Filters + 2s grounded. Empty Goals/AC/personas not padded with fake KPIs. Q3 only date. Sarah omitted from Personas (stated PM). Langfuse span still named Extractor / gpt-4o. Prior fails `50b9428a`, `a3b6bb70`. |
-| T12 | Story breakdown | Epics + "As a [user]" stories; priority suggestions | AC drift from T4/T11 | Not run | | |
+| T12 | Story breakdown | Epics + "As a [user]" stories; priority suggestions | AC drift from T4/T11 | **Fail** | `bd2aa6f5-6d61-4c03-9321-0100191a8e9b` | Input is the T11 PRD. Output is another PRD, not stories. No Epic / As a / Priority. Langfuse still named Extractor / gpt-4o. |
 
 T11 input is the **extraction from T1**, not a new transcript. T12 input is the **PRD from T11**.
 
@@ -767,6 +767,75 @@ Status: Draft
 
 ## T12 output
 
+### T12 attempt — Fail (rewrote the PRD)
+
+Trace `bd2aa6f5-6d61-4c03-9321-0100191a8e9b` · 2026-09-05T15:39:22.713Z · tags `T12`
+
+Input was the T11 PRD (`bd27a36e`). Output is a second PRD (Goals padded, AMB-1..3 invented). No `# Story breakdown`, no Epic, no `As a …`, no Must/Should/Nice. Generation still named Requirement Extractor / gpt-4o (270/476/746, $0.005435).
+
 ```
-(paste)
+# Product Requirement Document
+
+## Product Overview
+Grounded
+
+This document outlines the requirements for enhancing the reporting feature, allowing users to filter reports by date range, category, and status.
+
+## Goals and Objectives
+Grounded
+
+The main goal is to enhance the reporting feature to provide effective filtering capabilities.
+
+## User Personas
+Explicitly Empty
+
+No specific user personas were identified from the source.
+
+## Feature Requirements
+
+### Functional Requirements
+
+| ID    | Description                                                        | Source                                                                 |
+|-------|--------------------------------------------------------------------|------------------------------------------------------------------------|
+| REQ-1 | The user should be able to filter reports by date range, category, and status. | "The user should be able to filter reports by date range, category, and status." |
+
+### Non-Functional Requirements
+
+| ID    | Description                               | Source                                           |
+|-------|-------------------------------------------|--------------------------------------------------|
+| CON-1 | Results must load in under 2 seconds.    | "Results must load in under 2 seconds."          |
+
+## Acceptance Criteria
+Explicitly Empty
+
+No acceptance criteria were provided in the source.
+
+## Out of Scope
+Explicitly Empty
+
+No out of scope items were identified from the source.
+
+## Dependencies
+Explicitly Empty
+
+No dependencies were identified from the source.
+
+## Assumptions
+Grounded
+
+- Success metrics for the reporting feature enhancement are unknown. (AMB-1)
+- The format for presenting the reports is unknown. (AMB-2)
+- The end users of the reporting feature are unknown. (AMB-3)
+
+## Open Questions
+Grounded
+
+- What are the success metrics for the reporting feature enhancement? UNKNOWN — not in source
+- What is the format for presenting the reports? UNKNOWN
+- Who are the end users of the reporting feature? UNKNOWN
+
+## Timeline
+Grounded
+
+The deadline for completion is Q3.
 ```

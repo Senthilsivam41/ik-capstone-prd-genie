@@ -75,7 +75,7 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. T11 is green (`bd27a36e`). Next: Story Breakdown on **this T11 PRD** (T12). Do not feed T12 a new transcript.
+1. T11 is green (`bd27a36e`). T12 first run **Fail** (`bd2aa6f5`) — PRD prompt ran again. Re-run T12 with `design/agents/story-breakdown.md` only.
 2. Core +12 only when extract → PRD → stories is live on the canvas.
 3. Gap Analyzer after core IDs that do not need it are green → **+8**.
 4. Overwrite cost table from traces → **+1** (4→5).
