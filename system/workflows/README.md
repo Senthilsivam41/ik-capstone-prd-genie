@@ -39,3 +39,7 @@ Host is `https://cloud.langfuse.com` (EU). Pointing at `us.cloud.langfuse.com` r
 Copy **both** the Extractor output and the `traceId` into `evidence/baseline-results.md`. A Pass with no trace ID is an invented green.
 
 After T1 is green: extend the same canvas (PRD → stories → Gap branch), add one generation per agent to the batch, then re-export over `system/workflow.json`.
+
+## CSV / later automation
+
+Machine-readable rows: [`evidence/ground-truth/eval_prdgenie_inputs.csv`](../../evidence/ground-truth/eval_prdgenie_inputs.csv). How and when to loop them in n8n: [`evidence/ground-truth/README.md`](../../evidence/ground-truth/README.md). Do not replace this Slice 1 canvas with an unfiltered 10-row loop until those IDs have been scored one at a time.
