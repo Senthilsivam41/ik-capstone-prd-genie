@@ -80,7 +80,7 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 
 ## R1 checklist (ship when all true)
 
-- [x] Score configs created on EU project — verified 5 Sep via `GET /api/public/score-configs` (project `cmthhhzzv02wsad0d4qogeznv`): `Completeness`, `Hallucination`, `Groundedness` (Title Case), all **NUMERIC** 0–1. Three matching LLM-as-judge evaluators (`Completeness` gpt-4o, `Hallucination` gpt-4o, `Groundedness` gpt-4.1-nano) are active, NUMERIC 0–1, and assigned to “Generation events outside evaluation environments” at **sampling 1**. Re-checked after the template judges were removed. `GET /api/public/scores` is empty until a post-config run.
+- [x] Score configs created on EU project — verified 5 Sep via `GET /api/public/score-configs` (project `cmthhhzzv02wsad0d4qogeznv`): `Completeness`, `Hallucination`, `Groundedness` (Title Case), all **NUMERIC** 0–1. Three matching LLM-as-judge evaluators are assigned to **generation** events at sampling 1. **6 Sep:** all three judges are **gpt-4o** (Groundedness was `gpt-4.1-nano` and did not attach; do not treat pre-fix traces as Groundedness evidence). T1–T10 re-runs 11:25–11:30Z each have four generations × H/G/C — see [baseline-results.md](../evidence/baseline-results.md#per-agent-judge-re-score-6-sep-2026).
 - [x] One Test workflow run on Slice 1 — two runs, 4 Sep (Option C, HTTP ingest)
 - [x] Trace visible in Langfuse within a few minutes — trace `8748c951-d201-4824-ac1b-a4194002f88d`, project `cmthhhzzv02wsad0d4qogeznv`
 - [x] Tokens visible on that generation — 240 in / 395 out / 635 total, cost $0.00455, model `gpt-4o`
@@ -90,4 +90,4 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 
 Then mark Observability **5/5** in [rubric-evaluation.md](rubric-evaluation.md) only with that evidence — never invent.
 
-**Status 5 Sep: R1 checklist complete.** T1 is recorded from a real trace. LLM-as-judge scores had not appeared on that generation at record time (`GET /api/public/scores` still empty) — configs/evaluators exist; attachment may lag.
+**Status 6 Sep evening:** R1 complete. T1–T10 re-runs validated (4 generations × 3 scores, Groundedness attaching). Cost table overwritten from Langfuse `totalCost`. Q4 written from first-failure-in-chain. Screenshot of the 4×3 view still belongs in `evidence/screenshots/` (export from the UI; do not invent pixels). Observability +5 unchanged.

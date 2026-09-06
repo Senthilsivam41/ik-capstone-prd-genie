@@ -893,6 +893,29 @@ Seam: questions, not invented answers. Canvas: v0.7 (`system/workflow.json`). Ea
 
 Do not re-grade the 16:49–16:54Z T2–T10 pair as Gap Passes — those traces have no Gap span.
 
+## Per-agent judge re-score (6 Sep 2026)
+
+**Not a new Pass/Fail of T1–T10.** Original baseline and Gap rows stay. This is the Session 2 re-run after Groundedness (and Completeness / Hallucination) judges were set to **gpt-4o** on **generation** events.
+
+Each trace: root span + four generations (Requirement Extractor, Gap Analyzer, PRD Generator, Story Breakdown). Each generation has Completeness, Hallucination, and Groundedness (NUMERIC 0–1). Validated via Langfuse EU project `my-capstone-prd-genie` / `cmthhhzzv02wsad0d4qogeznv` on 6 Sep 16:02 IST.
+
+| ID | Trace (6 Sep 11:25–11:30Z) | Ext H / G / C | Gap H / G / C | PRD H / G / C | Stories H / G / C | Langfuse totalCost |
+|---|---|---|---|---|---|---|
+| T1 | `3301285f4a98eb5b6083cd42da794361` | 0 / 0 / 0 | 0.2 / 0.1 / 0 | 0 / 0.1 / 0 | 0 / 0.1 / 0 | $0.00586 |
+| T2 | `60ad81b467e7c416431f830d1f172989` | 0.1 / 0.2 / 0.3 | 0.2 / 0.2 / 0 | 0 / 0.1 / 0 | 0.1 / 0.15 / 0.2 | $0.00644 |
+| T3 | `04ac86d34cbebeaf6125e7b686a1bacf` | 0.2 / 0.1 / 0.1 | 0.3 / 0.1 / 0.1 | 0.05 / 0.07 / 0 | 0.4 / 0.3 / 0.2 | $0.00689 |
+| T4 | `131f09787585997d0e7accb991457b41` | 0.4 / 0.1 / 0.3 | 0.05 / 0 / 0.1 | 0.2 / 0.2 / 0 | 0.3 / 0.2 / 0.1 | $0.00978 |
+| T5 | `e1b87dad3d6f2624fd17e734a6b33b0f` | 0.1 / 0.1 / 0 | 0 / 0.85 / 0 | 0 / 0 / 0.1 | 0.2 / 0.7 / 0.2 | $0.00623 |
+| T6 | `2421ef209d68f9a2086b1d4353553481` | 0 / 0.1 / 0 | 0.05 / 0 / 0.2 | 0.1 / 0.05 / 0.05 | 0.2 / 0.3 / 0 | $0.00754 |
+| T7 | `acaa0ff60b80d68b48fe3195495dbaff` | 0 / 0.1 / 0.1 | 0.1 / 0.1 / 0.1 | 0.1 / 0 / 0.02 | 0.05 / 0.05 / 0 | $0.00869 |
+| T8 | `d527d19ef9e7a2c22d8e3f5b847f54af` | 0 / 0.1 / 0.1 | 0.1 / 0.1 / 0.1 | 0 / 0 / 0 | 0 / 0 / 0 | $0.00879 |
+| T9 | `14982724c85fa7c2e3ed4814686b7ef5` | 0.9 / 0.95 / 0 | 0.05 / 0.85 / 0 | 0.9 / 0.7 / 0.85 | 0.1 / 0 / 0 | $0.00389 |
+| T10 | `152d09501d77810aefaed5a6a9a7e44a` | 0 / 0.1 / 0.05 | 0.4 / 0.1 / 0 | 0.05 / 0 / 0.04 | 0.3 / 0 / 0 | $0.00676 |
+
+H / G / C = Hallucination / Groundedness / Completeness. Mean `totalCost` across these ten = **~$0.0071 / run**. T9 is the cheap outlier (empty notes) and the score outlier (Extractor + PRD Hallucination 0.9 — see Q4).
+
+Do not treat Completeness=0 on T1 Extractor as “empty extract.” The judge comment on that score describes a complete, grounded listing. Completeness prompts still mix Hallucination language. Format compliance stays the T11/T12 **rule**, not these 0–1 means.
+
 | ID | Must contain | Must not | Result | Trace ID | Notes |
 |---|---|---|---|---|---|
 | T2 | Flag ambiguous; metrics / format / users as questions | Invent Competitor X features | **Pass** | `9e380ba304a29615f44d1354a3bfdee0` | `INSUFFICIENT`. Q-1 Competitor X; Q-2 metrics; Q-3 format; Q-4 users. Prior no-Gap `abfe4682`; earlier Gap `8032aefc` also clean. |

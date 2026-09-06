@@ -1,60 +1,43 @@
 # Q4 Reflection — PRD Genie
 
-**Status:** Design-time reflection. Trace findings and the improvement plan will be filled after the 12-input baseline (charter Days 9–11). Submitting this section with invented scores would fail the assignment.
+Q4 is **5 points**. One page after traces. Not a CalendarMate 15-point essay.
 
-## What this page will prove
+**Sources:** Langfuse EU `my-capstone-prd-genie`, T1–T10 re-runs 6 Sep 2026 11:25–11:30Z (four generations each, Completeness / Hallucination / Groundedness on gpt-4o). Trace IDs in [baseline-results.md](../evidence/baseline-results.md#per-agent-judge-re-score-6-sep-2026). Prompt experiments E1 / E1b already recorded.
 
-Q4 is **5 points** on the PRD Genie rubric (session brief *and* problem statement). CalendarMate/Mira reflections are 15 — do not write to that length. Score is (1) what traces showed, (2) a concrete improvement plan, (3) risks of AI-generated PRDs, (4) connection to evaluation skills from weeks 6–7 / Agent Eval Fundamentals.
+## What the traces showed
 
-## Trace findings (to complete after baseline)
+Open-code the **first** failure in the chain, not the final markdown.
 
-Langfuse traces are not yet available. The evaluation method is locked so findings are comparable:
+1. **T9 is the planted refuse case, and the first failure is architectural.** Extractor + Gap say there is nothing to extract (Gap Hallucination 0.05, Groundedness 0.85). PRD Generator still runs because Gap is a branch, not a gate (ADR-004). On the same trace the PRD generation is scored Hallucination **0.9** and Completeness **0.85** — a fluent document from “Meeting happened. Notes: none.” Session 2 said a third to a half of the set checks refusal. The Extractor Pass is real; the downstream PRD is the defect.
 
-- Pull every failing trace in full (input, per-agent output, tool/LLM spans).
-- Open-code the **first** failure in the chain — later agents will look wrong if extraction already hallucinated.
-- Axial-code into the dataset's own labels: vague (T2), contradictory (T3, T6), incomplete (T5), edge-case (T9), dependency (T10), padding (T11 sections with no source), AC drift (T4, T12).
-- Record tokens, latency, and scores (completeness / hallucination / groundedness) per agent, not just end-to-end.
+2. **Contradiction compounds.** T3 Extractor Hallucination 0.2 → Gap 0.3 → Story Breakdown **0.4**. The Extractor listed both sides; stories are where a side can still sneak in. That matches why Gap sits after extraction: if we wait until stories, the rewrite has already happened.
 
-| Test | Failure mode the dataset is probing | Trace note (fill after run) |
+3. **Vague input is mostly held.** T2 Extractor Hallucination 0.1 after E1 (metrics / format / users as UNKNOWN). T5 Extractor 0.1. The 0.20 “Hallucination · EVAL” dashboard mean is a judge mean over observations, not “20% of T-rows failed.”
+
+4. **Groundedness was dark until today.** The score config existed; the `gpt-4.1-nano` judge did not attach. After all three judges moved to gpt-4o, every generation on T1–T10 has H/G/C. That is instrumentation, not a prompt win (E5).
+
+5. **The Completeness judge is not yet a completeness judge.** On T1 Extractor, Completeness = 0 while the comment describes a complete, grounded listing. Several Completeness comments discuss hallucination. Do not quote Completeness means as “% of fields present.” Format compliance stays the T11 ten-section **rule**.
+
+## Improvement plan (two more weeks, cheapest first)
+
+| Priority | Change (one at a time) | Why |
 |---|---|---|
-| T1, T7, T8 | Completeness on fully-specified input | |
-| T2, T5, T9 | Must NOT invent; must flag UNKNOWN | |
-| T3, T6 | Must surface contradiction; must not pick a side | |
-| T4, T12 | Acceptance criteria / stories stay verbatim | |
-| T10 | Feature + dependency + unknown ETA as risk | |
-| T11 | Template completeness; only T1 content | |
+| 1 | Gate PRD/stories when Gap extractability is `NONE` | Fixes the T9 first failure. Architecture lever, after prompts already held T2. |
+| 2 | Rewrite Completeness judge so it scores required fields, not hallucination | Session 2: the judge is only as good as its brief. |
+| 3 | Repeat T3 Story Breakdown only; if Hallucination stays ≥0.3, add “copy both sides, no winner” to that agent | Isolated from (1). |
+| 4 | Point Gap at gpt-4o (ADR-003) | Live node is still mini. |
+| 5 | Combined `EX` re-run of T1–T12 | Only after 1–3 stay consistent across repeats. |
 
-## Improvement plan (process, then results)
+Fine-tune and RAG stay off. Session 2: not needed.
 
-The loop is the one from class: one change per experiment, logged in `evidence/experiment-log.md`.
+## Risks of AI-generated PRDs (confirmed, not retired)
 
-Planned first experiments, in order, **if** the corresponding failure appears:
+Silent commitment (T5 “real-time”), false consensus (T3/T6), template padding (T9 PRD still writes), AC drift (T4 Extractor Hallucination 0.4 — watch verbatim logo/CSV into stories). Re-run cost is ~$0.007 / full pipeline (Langfuse actuals) — cheap enough that HITL re-runs are not the adoption blocker.
 
-| ID | If we see… | Change (exactly one) | Holdout |
-|---|---|---|---|
-| E1 | Invented requirements on T2/T5/T9 | Tighten Extractor "UNKNOWN" rule + add a negative example | Re-run T1 (must not regress completeness) |
-| E2 | T3/T6 resolved instead of flagged | Add explicit "list both sides, do not recommend" to Extractor and Gap Analyzer | Re-run T1, T4 |
-| E3 | T11 pads Success Metrics / Timeline | PRD Generator: empty sections → Open Questions only | Re-run T11 + T4 |
-| E4 | T4/T12 paraphrase ACs | Story Breakdown: "copy acceptance criteria verbatim" | Re-run T12 + T8 |
+## Eval skills and production privacy
 
-Do not upgrade the mini-tier model until E1–E4 are tried. Model upgrades confound prompt diagnosis (ADR-003).
+Week 6: failures are 200 OKs with plausible text. Per-agent scores are how you see that T9’s harm is the PRD, not the Extractor. Week 7 fine-tune process is the loop we used (E1 → E1b → E5); the trained-model step is unused.
 
-## Risks of AI-generated PRDs
+**Privacy:** traces contain stakeholder names and meeting text in Langfuse EU. For a real NeuronForge rollout, strip names, set retention, and keep `.env` out of git (already). Screenshots for TAs; no keys.
 
-These are design-time risks, already in the RAID log. Traces will confirm, split, or retire them.
-
-1. **Silent commitment.** A "John mentioned something about real-time" becomes a Must-Have NFR. Engineering estimates against fiction. Worse than messy notes, which at least look unfinished.
-2. **False consensus.** T3 and T6 contain disagreements. A fluent PRD that picks Priya over Kevin (or Engineering over Design) launders a political decision as a requirement.
-3. **Template-driven hallucination.** Empty Success Metrics and Timeline are the easiest sections to invent because the template *asks* for them.
-4. **AC drift.** T4's PDF-logo and CSV-formula criteria are the canary. If stories paraphrase them, every later story is untrustworthy.
-5. **Cost of re-runs.** Stateless full-pipeline re-runs after clarification are the HITL substitute. If traces are not cheap (split-model, ADR-003), PMs will skip the second run and ship the first hallucinated draft.
-
-## Connection to evaluation skills
-
-Week 6 taught that agent failures are judgment flaws, not crashes — traces look like 200 OKs with plausible text. PRD Genie is that lesson applied: the product *is* the plausible text. Langfuse is mandatory because reading the final markdown cannot tell you which agent invented the Q3 deadline vs which one copied it. Open/axial coding on this 12-row set is small enough to saturate by hand; that is the point of the capstone dataset.
-
-The 30 Aug kickoff also flagged a production habit to carry forward after submission: log a short **reason** next to each stated/ambiguous tag so a reviewer can check the reasoning against NeuronForge constraints without re-reading the transcript. That explanation step is not in v1 prompts yet; it is the first post-baseline addition if traces show "correct-looking tags with wrong justification."
-
-## After traces exist
-
-Replace the empty column in the table above, paste 3–5 Langfuse screenshots into `evidence/screenshots/`, write E1+ rows with real before/after scores, and keep this page to one page of *findings* plus the risks section. Do not leave this preamble in the submitted PDF.
+**Rollout:** charter initial release is 20 PMs. At 2 drafts/user/day the measured cost is **~$0.014 / user / day**. Human review of Gap questions stays mandatory; T9 shows why auto-ship is unsafe.

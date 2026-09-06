@@ -1,22 +1,22 @@
 # Rubric completion evaluation
 
-**Audit date:** 30 Aug 2026 · **observability line revised 5 Sep 2026** · **extended line 5 Sep 2026**  
-**Scope:** Project documentation plus v0.7 canvas (Extractor → PRD → stories, Gap parallel). T1–T12 and Gap T2/T3/T5/T6/T9/T10 have real traces.  
+**Audit date:** 30 Aug 2026 · **observability line revised 5 Sep 2026** · **extended line 5 Sep 2026** · **cost + Q4 6 Sep 2026**  
+**Scope:** Project documentation plus v0.7 canvas (Extractor → PRD → stories, Gap parallel). T1–T12 and Gap T2/T3/T5/T6/T9/T10 have real traces. T1–T10 re-scored per-agent H/G/C on 6 Sep.  
 **Rubric:** PRD Genie **80 points** (Session 1 × problem statement). Not CalendarMate 100.  
 **Method:** Grader-conservative. Credit only what a TA could mark from GitHub without watching a live canvas.  
 **Live view:** [rubric-completion canvas](../design/canvases/prd-genie-completion.canvas.tsx)
 
-**Headline: 76 / 80 earned. Core, baseline, and Gap Analyzer are in. Cost actuals and Q4 findings remain.**
+**Headline: 80 / 80 on the written+build lines. Pack (demo, canvas screenshots, slides) is still the submission gate.**
 
 | Band | Max | Earned | % |
 |---|---|---|---|
 | Q1 + Q2 (written) | 30 | 30 | 100% |
 | Q3 Design | 10 | 10 | 100% |
-| Q3 Cost + eval strategy | 5 | 4 | 80% |
-| Q4 Reflection | 5 | 2 | 40% |
+| Q3 Cost + eval strategy | 5 | 5 | 100% |
+| Q4 Reflection | 5 | 5 | 100% |
 | Q3 Observability | 5 | 5 | 100% |
 | Q3 Core + extended + baseline | 25 | 25 | 100% |
-| **Total** | **80** | **76** | **95%** |
+| **Total** | **80** | **80** | **100%** |
 
 ---
 
@@ -29,11 +29,11 @@
 | Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n is the IK-hosted equivalent (ADR-005); HITL simulated; tool table | JSON canvas is **core**, not this line. |
 | Q3 Core e2e | 12 | **12** | T11 Pass `bd27a36e`; T12 Pass `958dff5055157a90830d28d3be555c23` (Extractor + PRD + Story Breakdown on one v4 trace) | Pack JSON is now v0.7. |
 | Q3 Extended | 8 | **8** | v0.7 Gap branch; T2 `9e380ba` / T3 `61c58279` / T5 `d13cbdc8` / T6 `f08c60be` / T9 `a526e805` / T10 `aa706289` — questions, not invented answers | Live Gap model is gpt-4o-mini (ADR-003 wants gpt-4o). Canvas screenshot still missing. |
-| Q3 Observability | 5 | **5** | Graded T1 trace `5eb3c0ba-2ea5-4842-93f1-6e7eb3c17210` (short brief, tags `T1`, 255 tokens). Plus 4 Sep proof run, HTTP ingest, screenshot, three NUMERIC score configs + evaluators. | LLM-as-judge scores had not appeared on the T1 generation at record time. Configs exist; attachment may lag. |
+| Q3 Observability | 5 | **5** | Graded T1 `5eb3c0ba` plus 6 Sep T1–T10 four-generation traces with H/G/C on each agent. HTTP OTLP, screenshot, three NUMERIC configs. | Export a 4×3 score screenshot for the pack. |
 | Q3 Baseline documented | 5 | **5** | T1–T12 outputs pasted from real traces | None for the table. T4/T8 story checks still sit on T12, not a second story run. |
-| Q3 Cost + eval strategy | 5 | **4** | Formula `tokens × price × volume` as **$/user/day** (~$0.044); ≥3 failure-mode metrics; five levers; TDD loop; experiment-log template | No Langfuse actuals. −1 until traces overwrite the sketch. |
-| Q4 Reflection | 5 | **2** | [reflection.md](reflection.md): risks of AI PRDs, eval-skills link, improvement-plan process | **Trace findings** empty — that is the scored half. Do not pad to 15 pts. |
-| **Total** | **80** | **76** | | |
+| Q3 Cost + eval strategy | 5 | **5** | Writeup overwritten from Langfuse `totalCost` on ten 6 Sep traces (mean **~$0.0071 / run** → **~$0.014 / user / day** at 2 runs). ≥3 failure-mode metrics; E1/E1b/E5. | Judge Completeness prompt still mixed with Hallucination — named in Q4, not a missing formula. |
+| Q4 Reflection | 5 | **5** | [reflection.md](reflection.md): T9 first failure (PRD still runs on NONE); T3 compounding; Groundedness judge fix; two-week plan; privacy + 20-PM rollout | One page. Do not pad to 15. Screenshot of 4×3 view still a pack item. |
+| **Total** | **80** | **80** | | |
 
 Fine-tuning: 0 and correctly omitted.
 
@@ -48,7 +48,7 @@ Fine-tuning: 0 and correctly omitted.
 | 1–2 page write-up + cost + ≥3 metrics | Pass (actuals pending) |
 | Assignment Q1–Q2 | Pass |
 | Assignment Q3 build | Pass — v0.7 Extractor → (Gap ∥ PRD → stories) → Langfuse |
-| Assignment Q4 | Partial — method only |
+| Assignment Q4 | Pass — findings from 6 Sep per-agent scores |
 | Workflow JSON export | Pass — `system/workflow.json` = v0.7 (sheet → four agents → OTLP) |
 | Baseline outputs for all 12 | Pass — T1–T12 pasted from real traces |
 | Screenshots: canvas, in-action, traces | Partial — `langfuse-traces.png` present; canvas and in-action missing |
@@ -75,9 +75,7 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. Overwrite cost table from traces → **+1** (4→5).
-2. One-page findings after traces → **+3** (2→5).
-3. Pack still open: `n8n-canvas.png`, `pipeline-in-action.png`, slides `.pptx`, 5-min demo.
-4. Optional: point Gap Analyzer at gpt-4o (ADR-003). Do not add a fifth agent.
+1. Pack still open: `n8n-canvas.png`, `pipeline-in-action.png`, 4×3 Langfuse screenshot, slides `.pptx`, 5-min demo.
+2. Optional: Gap → gpt-4o (ADR-003); T9 PRD gate. Do not add a fifth agent.
 
-Ceiling if the above is done without extra scope: **80**. No extra points for RAG, fine-tune, or a fifth agent.
+Written+build ceiling is **80**. No extra points for RAG, fine-tune, or a fifth agent. Pack items can still fail a TA even at 80 on the rubric table.
