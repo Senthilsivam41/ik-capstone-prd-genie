@@ -29,10 +29,10 @@
 | Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n is the IK-hosted equivalent (ADR-005); HITL simulated; tool table | JSON canvas is **core**, not this line. |
 | Q3 Core e2e | 12 | **12** | T11 Pass `bd27a36e`; T12 Pass `958dff5055157a90830d28d3be555c23` (Extractor + PRD + Story Breakdown on one v4 trace) | Pack JSON is now v0.7. |
 | Q3 Extended | 8 | **8** | v0.7 Gap branch; T2 `9e380ba` / T3 `61c58279` / T5 `d13cbdc8` / T6 `f08c60be` / T9 `a526e805` / T10 `aa706289` — questions, not invented answers | Live Gap model is gpt-4o-mini (ADR-003 wants gpt-4o). Canvas screenshot still missing. |
-| Q3 Observability | 5 | **5** | Graded T1 `5eb3c0ba` plus 6 Sep T1–T10 four-generation traces with H/G/C on each agent. HTTP OTLP, screenshot, three NUMERIC configs. | Export a 4×3 score screenshot for the pack. |
+| Q3 Observability | 5 | **5** | Graded T1 `5eb3c0ba` plus 6 Sep T1–T10 four-generation traces with H/G/C on each agent. HTTP OTLP, dashboard/score screenshots, three NUMERIC configs. | Canvas and in-action screenshots still pack items. |
 | Q3 Baseline documented | 5 | **5** | T1–T12 outputs pasted from real traces | None for the table. T4/T8 story checks still sit on T12, not a second story run. |
 | Q3 Cost + eval strategy | 5 | **5** | Writeup overwritten from Langfuse `totalCost` on ten 6 Sep traces (mean **~$0.0071 / run** → **~$0.014 / user / day** at 2 runs). ≥3 failure-mode metrics; E1/E1b/E5. | Judge Completeness prompt still mixed with Hallucination — named in Q4, not a missing formula. |
-| Q4 Reflection | 5 | **5** | [reflection.md](reflection.md): T9 first failure (PRD still runs on NONE); T3 compounding; Groundedness judge fix; two-week plan; privacy + 20-PM rollout | One page. Do not pad to 15. Screenshot of 4×3 view still a pack item. |
+| Q4 Reflection | 5 | **5** | [reflection.md](reflection.md): T9 first failure (PRD still runs on NONE); T3 compounding; Groundedness judge fix; two-week plan; privacy + 20-PM rollout | One page. Do not pad to 15. |
 | **Total** | **80** | **80** | | |
 
 Fine-tuning: 0 and correctly omitted.
@@ -51,7 +51,7 @@ Fine-tuning: 0 and correctly omitted.
 | Assignment Q4 | Pass — findings from 6 Sep per-agent scores |
 | Workflow JSON export | Pass — `system/workflow.json` = v0.7 (sheet → four agents → OTLP) |
 | Baseline outputs for all 12 | Pass — T1–T12 pasted from real traces |
-| Screenshots: canvas, in-action, traces | Partial — `langfuse-traces.png` present; canvas and in-action missing |
+| Screenshots: canvas, in-action, traces | Partial — `langfuse-traces.png` plus 6 Sep dashboard/score shots; canvas and in-action missing |
 | Slide deck `.pptx` | Fail — markdown outline only |
 | 5-minute demo URL | Fail — empty |
 
