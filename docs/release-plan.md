@@ -62,13 +62,13 @@ Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is 
 | **DoD** | No `Not run` left; experiment-log ready for one-change experiments |
 | **Demo** | None required |
 
-### R4 — Gap Analyzer branch
+### R4 — Gap Analyzer branch (**scored** — demo / canvas screenshot still open)
 
 | | |
 |---|---|
-| **Delivers** | Gap Analyzer (gpt-4o) parallel off Extractor; Merge; T2/T3/T5/T6/T9/T10 graded on questions not invented answers |
+| **Delivers** | Gap Analyzer parallel off Extractor (v0.7); Merge → Langfuse; T2/T3/T5/T6/T9/T10 graded on questions not invented answers |
 | **Pts** | Extended **+8** |
-| **DoD** | Full graph matches ADR-001/004; canvas screenshot updated |
+| **DoD** | Graph matches ADR-001/004. Live Gap model is still gpt-4o-mini (ADR-003 wants gpt-4o). Canvas screenshot + 5-min demo still open |
 | **Demo** | **Release gate: graded 5-min demo** — see below |
 
 ### R5 — Reflection + submission pack

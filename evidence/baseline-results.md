@@ -24,6 +24,8 @@ Scoring (per test): Pass only if every "Must contain" holds **and** every "Must 
 
 T11 input is the **extraction from T1**, not a new transcript. T12 input is the **PRD from T11**.
 
+**Gap Analyzer (R4, separate seam):** T2/T3/T5/T6/T9/T10 scored on questions, not invented answers — see [Gap Analyzer (R4)](#gap-analyzer-r4) below. Extractor Pass on those IDs is not a Gap Pass.
+
 ---
 
 ## Observability proof run — 4 Sep (pre-T1, not a graded row)
@@ -881,4 +883,128 @@ Grounded
 Grounded
 
 The deadline for completion is Q3.
+```
+
+---
+
+## Gap Analyzer (R4)
+
+Seam: questions, not invented answers. Canvas: v0.7 (`system/workflow.json`). Each graded trace has generations Requirement Extractor, **Gap Analyzer**, PRD Generator, Story Breakdown. Gap chat model on these runs was **gpt-4o-mini** (ADR-003 wants gpt-4o).
+
+Do not re-grade the 16:49–16:54Z T2–T10 pair as Gap Passes — those traces have no Gap span.
+
+| ID | Must contain | Must not | Result | Trace ID | Notes |
+|---|---|---|---|---|---|
+| T2 | Flag ambiguous; metrics / format / users as questions | Invent Competitor X features | **Pass** | `9e380ba304a29615f44d1354a3bfdee0` | `INSUFFICIENT`. Q-1 Competitor X; Q-2 metrics; Q-3 format; Q-4 users. Prior no-Gap `abfe4682`; earlier Gap `8032aefc` also clean. |
+| T3 | 5s refresh vs minimize API calls; flag for resolution | Pick a side / propose WebSockets | **Pass** | `61c58279930a413108e20a8a9271066d` | Contradiction listed; Q-2 asks which wins. |
+| T5 | Insufficient; missing real-time / dashboard / budget | Fill gaps | **Pass** | `d13cbdc8875e06388df425d160c10204` | Q-1 what real-time means; budget TBD as dependency. No explicit “what dashboard?” Q. |
+| T6 | Eng / Design / PM; tensions named | Favor one stakeholder | **Pass** | `f08c60bee36157778f25a052962a9f8d` | All three safe-to-draft; microservices vs SPA unresolved. |
+| T9 | No requirements extractable | Product questionnaire / invented PRD from Gap | **Pass** | `a526e8058481cb958ead4d7916cd64ee` | Gap output: “No requirements are extractable.” PRD still ran (branch is not a gate). |
+| T10 | SSO stated; Team Alpha auth + unknown ETA as risk | Drop dependency / invent ETA | **Pass** | `aa7062894c182a48cac0517b93868724` | Dependency row + Q-1 for ETA. |
+
+### T2 Gap output
+
+Trace `9e380ba304a29615f44d1354a3bfdee0` · 2026-09-05T17:23:52Z · tags `T2`
+
+```
+# Gap analysis
+## Extractability
+INSUFFICIENT
+
+## Clarification questions
+- ID: Q-1
+  asked_because: ambiguous item regarding features of competitor's reporting
+  question: What specific features or metrics of Competitor X's reporting should we aim to include?
+  blocking: yes
+  evidence: "Something like what Competitor X has."
+
+- ID: Q-2
+  asked_because: missing information on metrics
+  question: What specific metrics do we need to report on?
+  blocking: yes
+  evidence: "metrics: UNKNOWN"
+
+- ID: Q-3
+  asked_because: missing information on report format
+  question: In what format should the reports be delivered (e.g., dashboard, PDF, etc.)?
+  blocking: yes
+  evidence: "format: UNKNOWN"
+
+- ID: Q-4
+  asked_because: missing information on users
+  question: Who are the primary users of the reporting system?
+  blocking: yes
+  evidence: "users: UNKNOWN"
+```
+
+### T3 Gap output
+
+Trace `61c58279930a413108e20a8a9271066d` · 2026-09-05T17:24:41Z · tags `T3`
+
+```
+## Clarification questions
+- ID: Q-2
+  asked_because: contradiction between REQ-1 and AMB-1
+  question: Is the 5-second refresh rate prioritized over minimizing API calls?
+  blocking: yes
+  evidence: "The dashboard should auto-refresh every 5 seconds." / "Performance is critical, minimize API calls."
+
+## Contradictions still unresolved
+- Auto-refresh every 5 seconds vs minimize API calls.
+```
+
+### T5 Gap output
+
+Trace `d13cbdc8875e06388df425d160c10204` · 2026-09-05T17:25:25Z · tags `T5`
+
+```
+## Extractability
+INSUFFICIENT
+
+- ID: Q-1
+  question: What specific real-time capabilities are required for the dashboard?
+  evidence: "John mentioned something about real-time..."
+
+## Dependencies / risks
+- budget — depends on — owner — ETA (UNKNOWN)
+```
+
+### T6 Gap output
+
+Trace `f08c60bee36157778f25a052962a9f8d` · 2026-09-05T17:26:28Z · tags `T6`
+
+```
+## Contradictions still unresolved
+- Microservices vs single-page app.
+
+## What is safe to draft now
+- Engineering wants microservices.
+- Design wants a single-page app.
+- PM wants it shipped by March.
+```
+
+### T9 Gap output
+
+Trace `a526e8058481cb958ead4d7916cd64ee` · 2026-09-05T17:27:12Z · tags `T9`
+
+```
+No requirements are extractable.
+```
+
+### T10 Gap output
+
+Trace `aa7062894c182a48cac0517b93868724` · 2026-09-05T17:27:51Z · tags `T10`
+
+```
+- ID: Q-1
+  asked_because: AMB-1
+  question: What is the estimated time of arrival (ETA) for the new auth service?
+  blocking: yes
+  evidence: "ETA unknown."
+
+## Dependencies / risks
+- new auth service — depends on — Team Alpha — ETA (UNKNOWN)
+
+## What is safe to draft now
+- SSO login requires the new auth service.
 ```
