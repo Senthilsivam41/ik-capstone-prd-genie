@@ -12,6 +12,9 @@ Required by the submission pack. Drop files here with these names (or update the
 | `langfuse-dashboard-latency-agents.png` | Home: H/G/C moving average + named generations | **Present** — same window |
 | `langfuse-scores-completeness-groundedness.png` | Analytics: Completeness vs Groundedness (99 each) | **Present** — same window |
 | `langfuse-scores-hallucination-groundedness.png` | Analytics: Hallucination vs Groundedness (99 each) | **Present** — same window |
+| `langfuse-evaluator-completeness.png` | Judge trace: Completeness on gpt-4o | **Present** — 6 Sep 17:00 IST |
+| `langfuse-evaluator-hallucination.png` | Judge trace: Hallucination on gpt-4o | **Present** — same second |
+| `langfuse-evaluator-groundedness.png` | Judge trace: Groundedness on gpt-4o | **Present** — same second |
 
 Do not commit mockups. Files are added only after the canvas actually runs.
 
@@ -39,3 +42,15 @@ Unedited Langfuse EU screenshots from the same “Past 30 min” window as the r
 | `langfuse-scores-hallucination-groundedness.png` | Analytics compare, n=99 each, Hallucination mean 0.17 / Groundedness 0.15 |
 
 Dashboard means are judge averages over observations in the window, not “% of T-rows failed.” Q4 already treats Completeness as a mixed brief.
+
+## 6 Sep 2026 — LLM-as-judge evaluator traces
+
+These are **Langfuse evaluator** traces (`env: langfuse-llm-as-a-judge`), not `prd-genie-slice1` pipeline traces. All three fired at 17:00:54 IST on gpt-4o against an Extractor `# Extraction` (T10 SSO / Team Alpha is visible on Groundedness).
+
+| File | Trace | Latency | Tokens | Cost |
+|---|---|---|---|---|
+| `langfuse-evaluator-completeness.png` | `88e3fb138b6e431575775071702ab28e` | 2.83s | 951 / 366 / 1,317 | $0.006037 |
+| `langfuse-evaluator-hallucination.png` | `84c4afe4844ad2b08d3e15350599ba6a` | 3.46s | 951 / 380 / 1,331 | $0.006178 |
+| `langfuse-evaluator-groundedness.png` | `3e6465d591adf634c702a0fbb7d39123` | 2.57s | 885 / 321 / 1,206 | $0.005423 |
+
+**Judge-brief defect (Q4):** Completeness and Groundedness traces still open with “Evaluate the degree of hallucination in the generation on a continuous scale from 0 to 1” plus the carrots/vision few-shot. The score **names** differ; the **prompt** does not. Architecture-writeup already excludes judge tokens from pipeline `$/user/day`.

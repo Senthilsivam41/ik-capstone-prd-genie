@@ -16,7 +16,7 @@ Open-code the **first** failure in the chain, not the final markdown.
 
 4. **Groundedness was dark until today.** The score config existed; the `gpt-4.1-nano` judge did not attach. After all three judges moved to gpt-4o, every generation on T1–T10 has H/G/C. That is instrumentation, not a prompt win (E5).
 
-5. **The Completeness judge is not yet a completeness judge.** On T1 Extractor, Completeness = 0 while the comment describes a complete, grounded listing. Several Completeness comments discuss hallucination. Do not quote Completeness means as “% of fields present.” Format compliance stays the T11 ten-section **rule**.
+5. **The Completeness judge is not yet a completeness judge.** On T1 Extractor, Completeness = 0 while the comment describes a complete, grounded listing. Judge traces at 17:00 IST (`88e3fb13` Completeness, `3e6465d5` Groundedness, `84c4afe4` Hallucination) all send the same brief: “Evaluate the degree of hallucination… 0 to 1.” Completeness and Groundedness are labels; the prompt is Hallucination. Do not quote Completeness means as “% of fields present.” Format compliance stays the T11 ten-section **rule**.
 
 ## Improvement plan (two more weeks, cheapest first)
 

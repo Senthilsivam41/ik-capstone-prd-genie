@@ -90,4 +90,4 @@ Document blocker in RAID I1; temporarily run Extractor in a tiny LangFlow/local 
 
 Then mark Observability **5/5** in [rubric-evaluation.md](rubric-evaluation.md) only with that evidence — never invent.
 
-**Status 6 Sep evening:** R1 complete. T1–T10 re-runs validated (4 generations × 3 scores, Groundedness attaching). Cost table overwritten from Langfuse `totalCost`. Q4 written from first-failure-in-chain. Dashboard + Analytics screenshots of that window are in `evidence/screenshots/` (`langfuse-dashboard-*`, `langfuse-scores-*`). A single-trace 4×3 generation table is still nicer for a TA, not required for +5. Observability +5 unchanged.
+**Status 6 Sep evening:** R1 complete. T1–T10 re-runs validated (4 generations × 3 scores, Groundedness attaching). Cost table overwritten from Langfuse `totalCost`. Q4 written from first-failure-in-chain. Dashboard + Analytics screenshots plus three evaluator traces (`langfuse-evaluator-{completeness,hallucination,groundedness}.png`) are in `evidence/screenshots/`. Completeness and Groundedness still use the Hallucination judge brief — named in Q4. Observability +5 unchanged.
