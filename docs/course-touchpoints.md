@@ -40,7 +40,7 @@ Facilitator (2 Sep): **any** stack is fine. Facilitator (6 Sep): n8n→LangFlow 
 | 13 | **Open-code / axial-code** traces; catalog **first** failure in the chain | [reflection.md](reflection.md) method · experiment-log | **R5** (needs traces from R1–R3) | **later** |
 | 14 | **One-change experiments**; repeat; keep only if gain consistent; levers cheapest-first | `evidence/experiment-log.md` · reflection plan | After R3 | **later** |
 | 15 | **Q4 Reflection** (5 pts) — findings, plan, PRD-AI risks, eval skills | reflection.md | **R5** | **done** — 6 Sep first-failure findings |
-| 16 | **Submission pack** — public repo, README, `.gitignore`, JSON export, diagram, 3 screenshots, slides, **≤5 min demo** | README · release-plan · `demo/` · rubric-evaluation | R0 partial · **R4** demo · **R5** pack close | **partial** — Langfuse shots in; canvas/in-action/demo/pptx still open |
+| 16 | **Submission pack** — public repo, README, `.gitignore`, JSON export, diagram, 3 screenshots, slides, **≤5 min demo** | README · release-plan · `demo/` · rubric-evaluation | R0 partial · **R4** demo · **R5** pack close | **partial** — Langfuse shots + pptx in; canvas/in-action/demo still open |
 | 17 | **Platform named clearly** for graders (n8n + Langfuse EU) | README · ADR-005 · workflow filename under `system/workflows/` | R0–R1 | **done** (n8n). 6 Sep: no LangFlow import. |
 | 18 | **Extras after minimum** (Scope Estimator, competitor analysis, synthetic emails) | facilitator clarifications · release-plan “Do not ship until R4 Done” | After R4 | **deferred** |
 | 19 | **Fine-tune / RAG** optional | rubric: forbidden until core + T1–T12 | After R3+ | **deferred** |

@@ -374,19 +374,19 @@ function SlideCost() {
     <Stack gap={16}>
       <H2>Production metrics and cost</H2>
       <Grid columns={3} gap={12}>
-        <Stat value="~$0.006" label="Cost per pipeline run" />
+        <Stat value="~$0.0071" label="Cost per pipeline run" />
         <Stat value="2" label="Expected runs / user / day" />
-        <Stat value="~$0.012" label="Cost per user per day" />
+        <Stat value="~$0.014" label="Cost per user per day" />
       </Grid>
       <Grid columns={3} gap={12}>
         <Stat value="20" label="Users (initial release)" />
         <Stat value="40" label="Runs / day (20 × 2)" />
-        <Stat value="~$0.25" label="Cost / day all users" />
+        <Stat value="~$0.28" label="Cost / day all users" />
       </Grid>
       <Text size="small" tone="secondary">
         tokens × price × volume. Per-run $ is Langfuse totalCost mean of
-        six v0.7 traces (T2 T3 T5 T6 T9 T10). Volume 2 drafts/user/day is
-        a planning assumption. 22-day month ≈ $5.50 for 20 users.
+        ten T1–T10 traces (6 Sep). Volume 2 drafts/user/day is a planning
+        assumption. 22-day month ≈ $6.20 for 20 users.
       </Text>
       <UsageBar
         total={1700}
@@ -435,8 +435,8 @@ function SlideNext() {
           <CardHeader>Not yet in the pack</CardHeader>
           <CardBody>
             <Text>
-              Q4 findings page, cost-table overwrite, canvas / in-action
-              screenshots, slides polish, 5-min demo.
+              n8n-canvas.png, pipeline-in-action.png, 5-min demo.
+              Q4 and cost actuals are already in git.
             </Text>
           </CardBody>
         </Card>

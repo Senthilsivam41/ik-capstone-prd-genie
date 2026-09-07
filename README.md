@@ -30,10 +30,8 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 
 **Not in the repo yet:**
 
-- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` — traces screenshot **is** in
-- Q4 reflection findings (method only)
-- Cost table overwrite from Langfuse actuals
-- 5-minute demo video and slide deck `.pptx`
+- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` (Langfuse dashboard + judge traces **are** in)
+- 5-minute demo video (`demo/prd-genie-demo.mp4`)
 
 ## Repo map
 
@@ -42,7 +40,7 @@ docs/          Q1–Q4 writeups, RAID, ADRs, course problem statement PDF
 design/        architecture SVG, agent prompts, orchestration notes, canvas git copies
 evidence/      ground-truth baseline file, results + experiment log, screenshots
 system/        n8n export (v0.7 core + Gap + OTLP builder), PRD template, .env.example
-slides/        speaker outline for the summary deck
+slides/        `prd_genie_capstone_summary.pptx` + speaker outline
 demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 ```
 
