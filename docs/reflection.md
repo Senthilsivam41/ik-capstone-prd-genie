@@ -1,6 +1,7 @@
 # Q4 Reflection — PRD Genie
 
-Q4 is **5 points**. One page after traces. Not a CalendarMate 15-point essay.
+Q4 is **5 points**. One page after traces. Not a CalendarMate 15-point essay.  
+**Read after** [architecture-writeup.md](architecture-writeup.md). Traces: [baseline-results.md](../evidence/baseline-results.md).
 
 **Sources:** Langfuse EU `my-capstone-prd-genie`, T1–T10 re-runs 6 Sep 2026 11:25–11:30Z (four generations each, Completeness / Hallucination / Groundedness on gpt-4o). Trace IDs in [baseline-results.md](../evidence/baseline-results.md#per-agent-judge-re-score-6-sep-2026). Prompt experiments E1 / E1b already recorded.
 

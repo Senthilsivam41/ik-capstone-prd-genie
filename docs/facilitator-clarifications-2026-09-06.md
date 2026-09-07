@@ -16,7 +16,7 @@ Do not commit the PPTX files into this repo (course materials).
 
 | Topic | Session 2 (and Session 1 where noted) | What we do |
 |---|---|---|
-| **Where you should be** | Project chosen, problem understood, tools selected, architecture sketched, first flow running. If **ahead** of the build, spend remaining time on written deliverables (charter / reflection / pack). | We are ahead on the pipeline. Remaining marks are pack + Q4, not a fifth agent. |
+| **Where you should be** | Project chosen, problem understood, tools selected, architecture sketched, first flow running. If **ahead** of the build, spend remaining time on written deliverables (charter / reflection / pack). | Pipeline, Q4, and pack screenshots/slides are in git. Remaining pack item is the **5-min demo**. |
 | **80 vs 100** | Session 1 slide 33 / Session 2 slide 27: PRD Genie **80** (charter 15, reflection 5). | Unchanged. |
 | **n8n or LangFlow** | Either. Justify the pick. n8n = more custom logic; LangFlow = cleaner straight pipelines. | Stay on IK n8n (cohort account). |
 | **Langfuse or LangWatch** | Either. Pick by integration. | Keep Langfuse EU. |
@@ -34,7 +34,7 @@ Do not commit the PPTX files into this repo (course materials).
 | **Experiment record** | ID, change, baseline scores, new scores, result, decision. A perfect first-run story is a red flag (Session 2 avoidable-loss slide). | `evidence/experiment-log.md`. |
 | **Q1 Ideation (15)** | 2–3 use cases, each: pain, agent, I/O, **three success metrics**, **knowledge base**, assumptions, one risk. Use numbers from the problem statement. | Charter Q1 has pain / agent / I/O / risk. **Metrics and knowledge-base lines are thin** — patch before submit if chasing 15/15. |
 | **Q2 Charter (15)** | Vision, scope, success criteria, timeline, risks, stakeholders, decision-making, rollout. | Written. |
-| **Q4 Reflection (5)** | One page: (1) what traces showed, (2) improvement plan, (3) eval / fine-tune connection, (4) privacy/security, (5) rollout to a real team. Honesty > polish. | `docs/reflection.md` is still a **pre-trace stub**. This is the remaining written +3. |
+| **Q4 Reflection (5)** | One page: (1) what traces showed, (2) improvement plan, (3) eval / fine-tune connection, (4) privacy/security, (5) rollout to a real team. Honesty > polish. | Written from 6 Sep per-agent traces: [reflection.md](reflection.md). |
 
 ## Live Q&A only (not on the PPTX)
 
@@ -45,7 +45,8 @@ Do not commit the PPTX files into this repo (course materials).
 | **“Aim for 30” GT pairs** | Live paraphrase. Official slide says **five is a legitimate v0**, then grow by hand. | Do not invent 18 extra pairs from the pipeline. |
 | **Demo required for all four** | Live paraphrase. Official pack slide still says **only PRD Genie + SalesGenie**. | We need the video either way. |
 | **PM always reviews → lower accuracy OK** | Live / earlier session. | Keep BR-14 (zero untraceable items). Do not relax. |
-| **Structured output parsers in n8n** | Live tooling aside. Official: MVP first; evaluator not inside the workflow. | Do not add parser nodes before demo / Q4. |
+| **GitHub must be self-explanatory** | TAs will not chase Slack for “which file is the demo?” README must map folder → what it covers. The agent diagram must say **what each agent does**, not only arrows. Demo walks agent-1 out → agent-2 in. | README reading order + n8n sticky notes on v0.7. |
+| **Structured output parsers in n8n** | Live tooling aside. Official: MVP first; evaluator not inside the workflow. | Do not add parser nodes before demo. |
 | **Wednesday Expert Connect** | Register explicitly. 9:00 AM. | Personal action. |
 
 ## Do not change because of Session 2

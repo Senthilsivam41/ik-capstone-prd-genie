@@ -1,6 +1,7 @@
 # Requirement Extractor — prompt spec
 
-Paste the **Prompt** block into the n8n AI Agent system message. Keep ROLE / INPUT / OUTPUT / RULES intact. Model: full tier (ADR-003).
+Paste ROLE through Self-check into the n8n chain **System Message**. Keep the sections intact.  
+**Live model:** gpt-4o. Verbatim canvas copy: [live/requirement-extractor.system.md](live/requirement-extractor.system.md).
 
 ## ROLE
 

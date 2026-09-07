@@ -1,6 +1,9 @@
 # Story Breakdown — prompt spec
 
-Core capability. Consumes the generated PRD (T12: the T11 PRD). Model: mini tier.
+Core capability. Consumes the generated PRD (T12: the T11 PRD).  
+**Live model:** gpt-4o-mini. Verbatim canvas copies: [system](live/story-breakdown.system.md) · [user](live/story-breakdown.user.md).
+
+The live **user** message also attaches Gap Analyzer markdown for traceability only — never as a source of new stories.
 
 ## ROLE
 

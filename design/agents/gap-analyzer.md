@@ -1,6 +1,7 @@
 # Gap Analyzer — prompt spec
 
-Extended capability (ADR-002). Runs **in parallel with PRD Generator** on the Extractor output (ADR-004). Model: full tier.
+Extended capability (ADR-002). Runs **in parallel with PRD Generator** on the Extractor output (ADR-004).  
+**Live model:** gpt-4o-mini (ADR-003 wants gpt-4o). Verbatim canvas copy: [live/gap-analyzer.system.md](live/gap-analyzer.system.md).
 
 ## ROLE
 

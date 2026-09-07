@@ -2,6 +2,7 @@
 
 NeuronForge Technologies · Applied Agentic AI for PMs/TPMs Capstone  
 Author: Sendil · 1–2 page design / tool rationale / cost  
+**Read after** [charter.md](charter.md). **Next:** [reflection.md](reflection.md).  
 Decisions: [ADR-001](adr/ADR-001-orchestration-pattern.md) · [ADR-002](adr/ADR-002-extended-capability.md) · [ADR-003](adr/ADR-003-split-model-design.md) · [ADR-004](adr/ADR-004-gap-analyzer-placement.md) · [ADR-005](adr/ADR-005-workflow-platform.md)
 
 ## Problem 
@@ -18,18 +19,27 @@ Four agents. Three are core (Extractor, PRD Generator, Story Breakdown). One is 
   PNG is the submission visual; <a href="../design/architecture-diagram.svg">architecture-diagram.svg</a> is the structural source.</p>
 </div>
 
+**What each agent does** (not just how they connect):
+
+| Agent | Job | Live model | Must not |
+|---|---|---|---|
+| **1 Requirement Extractor** | Split stated vs ambiguous; keep numbers exact | gpt-4o | Invent facts; pick a side on T3/T6 |
+| **2 Gap Analyzer** (+8) | Clarification questions from the extraction | gpt-4o-mini | Invent answers; stop PRD (T9 still writes a PRD — that is the Q4 first failure) |
+| **3 PRD Generator** | Fill `prd_template.md` from extraction only | gpt-4o | Pad empty sections; treat Gap questions as new scope |
+| **4 Story Breakdown** | `As a [persona]`; copy ACs verbatim | gpt-4o-mini | Paraphrase T4 ACs; add stories Gap invented |
+
 Text fallback (same flow):
 
 ```
-Transcript / brief / notes
+Sheet row (testId → chatInput)
         ↓
-Requirement Extractor     (full-tier)  stated vs ambiguous
+Requirement Extractor     (gpt-4o)  stated vs ambiguous
         ↓                         ↓
-  Gap Analyzer (full-tier)    PRD Generator (mini-tier)
-  clarification questions            ↓
-                              Story Breakdown (mini-tier)
+  Gap Analyzer (gpt-4o-mini)    PRD Generator (gpt-4o)
+  questions — not a gate               ↓
+                                Story Breakdown (gpt-4o-mini)
                                      ↓
-                              PRD + user stories (markdown)
+                         Merge → Langfuse (one generation each)
 ```
 
 **Orchestration is sequential with one branch** (ADR-001). Every input type follows extract → generate → breakdown. A router would add a classification step the baseline dataset does not score. A hierarchical supervisor would hide per-agent failures — the opposite of what Langfuse evaluation needs.
@@ -43,8 +53,10 @@ Requirement Extractor     (full-tier)  stated vs ambiguous
 | Category | Choice | Why |
 |---|---|---|
 | Workflow platform | n8n (IK Cloud) | Cohort received n8n (`agenticai100.app.n8n.cloud`); that is the live canvas. Rubric accepts LangFlow **or equivalent**. 6 Sep: n8n→LangFlow JSON is broken — no import ([ADR-005](adr/ADR-005-workflow-platform.md)) |
-| LLM — Extractor / Gap Analyzer | Claude or GPT-4o (full tier) | Highest-stakes judgment; 6/12 baseline tests grade this step |
-| LLM — PRD Generator / Story Breakdown | GPT-4o-mini | Mechanical fill of a fixed template from already-grounded data |
+| LLM — Extractor | gpt-4o (live) | Highest-stakes judgment; 6/12 baseline tests grade this step |
+| LLM — Gap Analyzer | gpt-4o-mini (live; ADR-003 wants gpt-4o) | Same judgment profile; cheaper until a consistent gain shows otherwise |
+| LLM — PRD Generator | gpt-4o (live; ADR-003 sketched mini) | Template fill; empty sections stay Open Questions |
+| LLM — Story Breakdown | gpt-4o-mini | Fixed-format transform; ACs copied verbatim |
 | Document ingestion | n8n Manual Trigger / text | Inputs are `.txt` / `.md`; no OCR or CSV reshape |
 | Observability | Langfuse | Per-agent traces, token cost, LLM-as-judge scores (completeness, hallucination, groundedness); maps to the class open-coding / axial-coding loop |
 | Output | Markdown matching `prd_template.md` | Rubric does not require Docs/Notion export |

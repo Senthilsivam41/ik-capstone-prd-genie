@@ -2,6 +2,8 @@
 
 n8n Cloud import files for PRD Genie (IK instance: `agenticai100.app.n8n.cloud`).
 
+**Graded import:** [`../workflow.json`](../workflow.json) = v0.7. Sticky notes on that canvas name how to run, the pattern, and what each agent does (Extractor / Gap / PRD / stories / Langfuse). Re-import after pulling this branch or the live Cloud workflow will still be the old unlabeled graph.
+
 | File | Slice | What it contains |
 |---|---|---|
 | `prd-genie-slice1-extractor.json` | 1 (Extractor-only) | Manual Trigger → **Input Text** (`chatInput` = official T1 brief) → Extractor → Langfuse OTLP |

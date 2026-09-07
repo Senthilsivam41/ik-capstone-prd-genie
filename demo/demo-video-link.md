@@ -13,14 +13,14 @@ PRD Genie **requires** a ≤5-minute demo of the **working** n8n + Langfuse flow
 
 ## One-take shot list (≤5:00)
 
-Record from `https://agenticai100.app.n8n.cloud/workflow/Eai2sodOz0gUVnx8`. No slide recap.
+Record from `https://agenticai100.app.n8n.cloud/workflow/Eai2sodOz0gUVnx8` **after re-importing** `system/workflow.json` so the sticky notes are visible. No slide recap. Walk **agent out → next agent in**.
 
-1. **0:00–0:20** — Canvas zoomed out: Extractor, Gap branch, PRD, stories, Langfuse HTTP.
-2. **0:20–1:10** — `testId` = T1 → Test workflow → Extractor + PRD + stories visible.
-3. **1:10–2:10** — `testId` = T2 or T5 → Gap questions (no invented answers).
-4. **2:10–3:40** — Langfuse EU project `my-capstone-prd-genie`: one `prd-genie-slice1` trace, four generations, H/G/C.
-5. **3:40–4:30** — Say T9: Gap `NONE`, PRD still ran (branch is not a gate). Cost ~$0.007 / run.
-6. **4:30–5:00** — Stop. Point at `slides/prd_genie_capstone_summary.pptx`.
+1. **0:00–0:25** — Zoom out. Read the Pattern sticky: Agent 1 → (Agent 2 ∥ Agent 3 → Agent 4) → Langfuse.
+2. **0:25–1:20** — `testId` = T1 → Test workflow. Show **Extractor output**, then that same markdown as **PRD input**, then **stories**.
+3. **1:20–2:15** — `testId` = T2 or T5. Show Extractor UNKNOWN/ambiguous → **Gap questions** (no invented answers). Say Gap is a sibling, not a later critic.
+4. **2:15–3:40** — Langfuse EU `my-capstone-prd-genie`: one `prd-genie-slice1` trace, four generations, H/G/C on each.
+5. **3:40–4:30** — T9: Gap `NONE`, PRD still ran (not a gate). Cost ~$0.007 / run.
+6. **4:30–5:00** — Stop. Point at `slides/prd_genie_capstone_summary.pptx` and `demo/prd-genie-demo.mp4` in the README map.
 
 ## Optional URL (backup / if file too large)
 
