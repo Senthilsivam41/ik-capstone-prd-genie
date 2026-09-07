@@ -1,99 +1,118 @@
 # PRD Genie
 
-Capstone for **Applied Agentic AI for PMs/TPMs** (Interview Kickstart).  
-NeuronForge Technologies — AI-powered documentation assistant.
+Interview Kickstart capstone — **Applied Agentic AI for PMs/TPMs**.  
+NeuronForge Technologies: meeting transcripts, briefs, and notes → a grounded PRD and user stories.
 
-Turns meeting transcripts, product briefs, and stakeholder notes into a grounded PRD and user stories. Hallucination is the primary risk: a fluent document that invents scope is worse than messy notes.
+A fluent document that invents scope is worse than messy notes. Every agent says **UNKNOWN** when the source cannot determine X.
 
 | | |
 |---|---|
 | Author | Sendil |
 | Pattern | Sequential pipeline + one branch ([ADR-001](docs/adr/ADR-001-orchestration-pattern.md)) |
-| Extended capability | Gap Analyzer ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
-| Platform | n8n (IK Cloud) + Langfuse EU |
-| Status | Core + Gap live (Extractor → PRD → stories, Gap parallel) · Langfuse v4 OTLP · T1–T12 + Gap T2/T3/T5/T6/T9/T10 documented |
+| Extended | Gap Analyzer only ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
+| Canvas | IK n8n Cloud + Langfuse EU |
+| Written+build | 80/80 on the rubric table — pack still needs the **5-min demo** |
 
-## What is in this repo vs what is still to build
+## Start here (read in this order)
 
-**In the repo now (Q1–Q3 design + course inputs):**
+TAs will not get a Slack walkthrough. This list is the pack.
 
-- Programme charter, RAID, four ADRs, 1–2 page architecture writeup
-- Agent prompt specs (ROLE / INPUT / OUTPUT / RULES)
-- Architecture diagram
-- Official course inputs and the 12-row baseline file
-- Experiment log + baseline results **templates** (no invented scores)
-- Core n8n export: sheet `testId` → Extractor → (Gap Analyzer ∥ PRD → stories) → Langfuse v4 OTLP (`system/workflow.json` = v0.7)
-- Baseline T1–T12 pasted from real traces (T2/T7 kept after E1/E1b; T11/T12 Pass)
-- Gap Analyzer scored on T2/T3/T5/T6/T9/T10 (questions, not invented answers)
-- Langfuse score configs Completeness / Hallucination / Groundedness (NUMERIC 0–1)
-- 4 Sep traces screenshot and recorded tokens/cost
+1. **This README** — what it is, how the four agents work, how to run, which folder covers what.
+2. [docs/charter.md](docs/charter.md) — Q1 ideation + Q2 programme charter.
+3. [docs/architecture-writeup.md](docs/architecture-writeup.md) — Q3 design: **why** sequential + branch, what each agent does, cost per user per day.
+4. [docs/reflection.md](docs/reflection.md) — Q4 (one page, after traces).
+5. [evidence/baseline-results.md](evidence/baseline-results.md) — T1–T12 Must/Must-not + pasted outputs.
+6. [evidence/screenshots/](evidence/screenshots/) — n8n canvas, pipeline in action, Langfuse.
 
-**Not in the repo yet:**
+Then only if needed: [docs/README.md](docs/README.md) (full docs map) · ADRs · RAID.
 
-- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` — traces screenshot **is** in
-- Q4 reflection findings (method only)
-- Cost table overwrite from Langfuse actuals
-- 5-minute demo video and slide deck `.pptx`
+**Demo file (when recorded):** [`demo/prd-genie-demo.mp4`](demo/prd-genie-demo.mp4) — pointer in [demo/demo-video-link.md](demo/demo-video-link.md). That is the remaining pack item.
 
-## Repo map
+**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts). Live audit: [docs/rubric-evaluation.md](docs/rubric-evaluation.md).
+
+## How the pipeline works
+
+Same path for every input type. Not a router. Gap is a **sibling of PRD**, not a later critic and **not a gate**.
 
 ```
-docs/          Q1–Q4 writeups, RAID, ADRs, course problem statement PDF
-design/        architecture SVG, agent prompts, orchestration notes, canvas git copies
-evidence/      ground-truth baseline file, results + experiment log, screenshots
-system/        n8n export (v0.7 core + Gap + OTLP builder), PRD template, .env.example
-slides/        speaker outline for the summary deck
-demo/          5-min demo clip (R4+) + demo-video-link.md pointer
+Input Text.testId  →  Google Sheet row.chatInput
+        ↓
+  Agent 1  Requirement Extractor   gpt-4o     stated vs ambiguous
+        ├──────────────────────────────┐
+        ↓                              ↓
+  Agent 2  Gap Analyzer            Agent 3  PRD Generator
+           gpt-4o-mini                      gpt-4o
+           questions only                   10 template sections
+                                           ↓
+                                     Agent 4  Story Breakdown
+                                              gpt-4o-mini
+        └──────────── Merge ───────────────┘
+                         ↓
+              Langfuse EU  (one generation per agent)
 ```
 
-**Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts) and `.cursor/rules/prd-genie-rubric.mdc` — every change must name the rubric line it earns. **Business framing, scope boundaries and business rules:** [docs/brd.md](docs/brd.md). Design rationale: [docs/architecture-writeup.md](docs/architecture-writeup.md). **Build order / demo:** [docs/release-plan.md](docs/release-plan.md) · clip path `demo/prd-genie-demo.mp4` (R4). **Course touch points (stay on n8n):** [docs/course-touchpoints.md](docs/course-touchpoints.md).
+| Agent | What it does | What it must not do |
+|---|---|---|
+| **1 Extractor** | Split stated vs ambiguous; keep numbers exact | Invent facts; pick a side on contradictions |
+| **2 Gap Analyzer** (+8) | Ask clarification questions from the extraction | Invent answers; block PRD (T9 still writes a PRD) |
+| **3 PRD Generator** | Fill `system/prd_template.md` from extraction only | Pad empty sections; treat Gap output as new scope |
+| **4 Story Breakdown** | `As a [persona]`; copy ACs verbatim | Paraphrase T4 ACs |
 
-## Setup
+**Why sequential:** you cannot fill a PRD before extraction without inviting hallucination; you cannot break stories before the template is the contract.
 
-Runtime is **Interview Kickstart n8n Cloud** + **Langfuse EU** ([ADR-005](docs/adr/ADR-005-workflow-platform.md)). Do not install LangFlow for the submission canvas.
+**Why the branch after Extractor:** catching a contradiction after stories means it was rewritten twice. HITL is offline: PM answers, then re-runs from the Extractor. Full “why”: [design/orchestration-notes.md](design/orchestration-notes.md).
+
+Judges (Completeness / Hallucination / Groundedness) sit **in Langfuse**, not as n8n nodes. Ground truth never enters the canvas.
+
+## How to run
+
+Runtime is **IK n8n Cloud** + **Langfuse EU**. n8n→LangFlow JSON export is **broken** (6 Sep) — do not rebuild.
 
 1. Sign in to [IK n8n](https://agenticai100.app.n8n.cloud/home/workflows).
-2. Confirm the Langfuse project: [EU project](https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv) (region **EU**, host `https://cloud.langfuse.com` — not `us.cloud.langfuse.com`).
-3. Copy `system/.env.example` to `system/.env` and fill keys. **Do not commit `.env`.**
+2. Langfuse project: [my-capstone-prd-genie (EU)](https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv) — host `https://cloud.langfuse.com`, not `us.cloud.langfuse.com`.
+3. Copy `system/.env.example` → `system/.env` (local backup only). **Do not commit `.env`.** n8n Cloud does not read that file.
+4. **Import** [`system/workflow.json`](system/workflow.json) (same graph as [`system/workflows/PRD Genie — Slice 1 Extractor + Langfuse-v0.7.json`](system/workflows/PRD%20Genie%20%E2%80%94%20Slice%201%20Extractor%20%2B%20Langfuse-v0.7.json)). Sticky notes on the canvas name each agent.
+5. Re-select OpenAI, Google Sheets, and Langfuse **Basic Auth** if empty (username = public key, password = secret key).
+6. Open **Input Text**, set `testId` to `T1`…`T12`. The sheet row’s `chatInput` is what Agent 1 reads. T11 = T1 extraction; T12 = T11 PRD — not a new transcript.
+7. **Test workflow.** Confirm a Langfuse trace: root + four generations (Extractor, Gap, PRD, stories).
 
-```bash
-cp system/.env.example system/.env
-```
+## Repo map (folder → what it covers)
 
-4. In n8n: **Credentials → Add → Basic Auth**. Username = `LANGFUSE_PUBLIC_KEY`, password = `LANGFUSE_SECRET_KEY`, with **no trailing slash and no leading space**. The `Send to Langfuse` node uses this as a generic `httpBasicAuth` credential; the host `https://cloud.langfuse.com` is already in the node URL, not in the credential. n8n Cloud does not read `system/.env`; the file is only a local backup of the same values.
-5. Score configs already exist on the EU project: Completeness, Hallucination, Groundedness (NUMERIC 0–1).
-
-**How n8n sends data to Langfuse:** the workflow has no auto-tracing callback, so a `Build Langfuse Batch` Code node builds an OTLP/HTTP JSON payload (root observation + one generation per agent) and a `Send to Langfuse` **HTTP Request** node posts it to `POST https://cloud.langfuse.com/api/public/otel/v1/traces` with `x-langfuse-ingestion-version: 4` — Option C in [docs/langfuse-observability-acceptance.md](docs/langfuse-observability-acceptance.md). Overall I/O sits on the root observation (`langfuse.observation.input` / `output`), not deprecated trace I/O. IK n8n Cloud has no first-party Langfuse *tracing* credential, so spans are explicit. Re-import the JSON after this change; n8n Cloud does not read git.
-
-An OpenAI or Anthropic (or OpenRouter) credential is still required in n8n before T1 can run. Observability keys alone do not earn the +5 until a trace appears on that project.
-
-## How to run (core canvas)
-
-1. In [IK n8n](https://agenticai100.app.n8n.cloud): **… → Import from File**.
-2. Choose [`system/workflow.json`](system/workflow.json) (same as [`system/workflows/PRD Genie — Slice 1 Extractor + Langfuse-v0.7.json`](system/workflows/PRD%20Genie%20%E2%80%94%20Slice%201%20Extractor%20%2B%20Langfuse-v0.7.json)).
-3. Re-select OpenAI, Google Sheets, and Langfuse Basic Auth if empty.
-4. Open **Input Text** and set `testId` (`T1`…`T12`). The sheet row’s `chatInput` is what the Extractor reads. T11/T12 rows should be the T1 extraction / T11 PRD, not a new transcript.
-5. Click **Test workflow**. Confirm a trace in Langfuse (root + one generation per agent: Extractor, Gap Analyzer, PRD, stories).
-6. Gap Analyzer runs **in parallel with PRD** off the Extractor (ADR-004). It does not gate PRD. Live Gap chat model is still gpt-4o-mini — switch to gpt-4o when convenient (ADR-003).
-
-Full graph: [design/orchestration-notes.md](design/orchestration-notes.md).
-
-Sample long-form inputs (not the graded 12, but useful for the thin-slice on Transcript 1) live in `system/inputs/`.
+| Folder / file | What a TA finds there |
+|---|---|
+| [README.md](README.md) | This page — start here |
+| [docs/](docs/) | Graded writeups. Start with [docs/README.md](docs/README.md) |
+| [docs/charter.md](docs/charter.md) | Q1 + Q2 |
+| [docs/architecture-writeup.md](docs/architecture-writeup.md) | Q3 design, cost, eval |
+| [docs/reflection.md](docs/reflection.md) | Q4 |
+| [docs/adr/](docs/adr/) | Five decisions (pattern, Gap, models, Gap placement, n8n) |
+| [design/agents/](design/agents/) | **All four agent prompts** — spec + verbatim n8n copies. Start at [design/agents/README.md](design/agents/README.md) |
+| [design/architecture-diagram.png](design/architecture-diagram.png) | Submission diagram |
+| [design/orchestration-notes.md](design/orchestration-notes.md) | Why sequential + branch; live n8n wiring |
+| [design/canvases/](design/canvases/) | Git copies of Cursor canvases (not the live n8n file) |
+| [evidence/baseline-results.md](evidence/baseline-results.md) | T1–T12 runs (the eval table) |
+| [evidence/ground-truth/](evidence/ground-truth/) | Course inputs (immutable) + how GT is *not* the pipeline |
+| [evidence/screenshots/](evidence/screenshots/) | Canvas, in-action, Langfuse |
+| [evidence/experiment-log.md](evidence/experiment-log.md) | E1 / E1b / E5 |
+| [system/workflow.json](system/workflow.json) | **Import this** — annotated v0.7 n8n export |
+| [system/prd_template.md](system/prd_template.md) | Ten-section PRD contract |
+| [slides/prd_genie_capstone_summary.pptx](slides/prd_genie_capstone_summary.pptx) | Slide deck |
+| [demo/prd-genie-demo.mp4](demo/prd-genie-demo.mp4) | **The demo file** (not recorded yet) |
 
 ## Guardrails (non-negotiable)
 
-- If the input cannot determine X, the agent says UNKNOWN. It does not invent X.
-- Contradictions are listed, not resolved.
+- If the input cannot determine X, write UNKNOWN. Do not invent X.
+- Contradictions are listed, never resolved.
 - Empty template sections stay under Open Questions.
 - Acceptance criteria are copied verbatim into stories (T4 / T12).
 
 ## Cost
 
-A priori estimate is ~**$0.02 per full run** on the split-model design (~$10/month at 20 PRDs/day). Method and table: [docs/architecture-writeup.md](docs/architecture-writeup.md). Replace with Langfuse actuals after the baseline.
+Langfuse actuals (ten T1–T10 runs, 6 Sep): mean **~$0.0071 / run** → **~$0.014 / user / day** at two first-drafts. Formula and table: [docs/architecture-writeup.md](docs/architecture-writeup.md#cost-analysis-langfuse-actuals--6-sep-2026).
 
 ## Demo video
 
-PRD Genie requires a ≤5-minute recording of the working app. **Canonical:** commit a small file as `demo/prd-genie-demo.mp4` (first required at release **R4** — see [docs/release-plan.md](docs/release-plan.md)). Keep an optional URL in [demo/demo-video-link.md](demo/demo-video-link.md) if the file is too large for GitHub (&lt;25 MB preferred; 100 MB hard limit).
+PRD Genie requires a ≤5-minute recording of the **working** n8n + Langfuse flow. Walk **Agent 1 out → Agent 3 in → stories**, then the Gap sibling on a vague input. Shot list: [demo/demo-video-link.md](demo/demo-video-link.md).
 
 ## License / provenance
 

@@ -1,6 +1,6 @@
 # Capstone summary — speaker outline
 
-Export this to Google Slides / PowerPoint as `capstone-summary.pptx` before submission. Keep to ~8–10 slides. Problem, approach, outcomes — not an n8n tutorial.
+Deck file: `slides/prd_genie_capstone_summary.pptx`. Keep to ~8–10 slides. Problem, approach, outcomes — not an n8n tutorial.
 
 ## Slide 1 — Title
 
@@ -34,19 +34,20 @@ ACs copied verbatim.
 
 12-input course baseline. Langfuse from day one.  
 Scores: completeness, hallucination, groundedness.  
-One change per experiment.
+One change per experiment (E1 / E1b / E5).
 
-## Slide 7 — Outcomes *(fill after baseline)*
+## Slide 7 — Outcomes (6 Sep Langfuse)
 
-Pass/fail table T1–T12.  
-Cost: $X per run (Langfuse actual).  
-One failure → one fix → holdout.
+T1–T12 Pass; Gap Pass on T2/T3/T5/T6/T9/T10.  
+Judge means over observations (not % of T-rows): Hallucination 0.17 · Groundedness 0.15 · Completeness 0.12.  
+Completeness/Groundedness still use the Hallucination brief — say that.
 
-## Slide 8 — Risks and next
+## Slide 8 — Cost and next
 
-Silent commitment, false consensus, template padding.  
-Post-capstone: reuse this pipeline as the test subject for AgentLens drift detection.
+Mean **~$0.0071 / run** → **~$0.014 / user / day** (2 drafts). 20 PMs ≈ $0.28/day.  
+First failure is T9: Gap says NONE, PRD still writes (branch is not a gate).  
+Next: gate PRD on NONE; rewrite Completeness judge; Gap → gpt-4o. No fine-tune.
 
 ## Slide 9 — Demo pointer
 
-5-minute video: `demo/demo-video-link.md`
+5-minute video: `demo/demo-video-link.md` (record from a signed-in n8n session).

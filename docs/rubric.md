@@ -1,6 +1,7 @@
 # PRD Genie — official rubric (80 points)
 
-Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.
+Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.  
+**TA start:** [README.md](../README.md) · [docs map](README.md). This file is the point table; [rubric-evaluation.md](rubric-evaluation.md) is what is in git today.
 
 - Problem statement: `docs/problem-statement.pdf` (Q1–Q4)
 - Session brief: *Capstone Session 1 — How you are graded* (point allocation **by project**)
@@ -8,21 +9,21 @@ Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.
 
 **Do not use the 100-point CalendarMate/Mira split.** Those give charter 25 and reflection 15. PRD Genie is **charter 15, reflection 5, total 80.**
 
-**Live completion audit:** [rubric-evaluation.md](rubric-evaluation.md) (46/80 as of 30 Aug 2026).
+**Live completion audit:** [rubric-evaluation.md](rubric-evaluation.md) (written+build **80/80**; pack still needs the 5-min demo).
 
 ## Point allocation
 
 | Component | Pts | Where it lives | Status |
 |---|---|---|---|
-| Q1 Ideation / business case | 15 | [charter.md](charter.md) §Q1 | Drafted |
-| Q2 Programme charter | 15 | [charter.md](charter.md) §Q2 · [raid-log.md](raid-log.md) · [adr/](adr/) | Drafted (RAID + ADRs are named deliverables in the session brief) |
-| Q3 Design and rationale | 10 | [architecture-writeup.md](architecture-writeup.md) · [architecture-diagram.png](../design/architecture-diagram.png) · ADRs | Drafted — pattern **justified**, not just named |
-| Q3 Core capabilities | 12 | n8n canvas + prompts in `design/agents/` | Prompts written · canvas not built |
-| Q3 Extended capability | 8 | Gap Analyzer ([ADR-002](adr/ADR-002-extended-capability.md)) | Designed · not wired |
-| Q3 Observability | 5 | Langfuse traces per agent, tokens + cost | Not connected |
-| Q3 Baseline dataset | 5 | All 12 inputs with outputs in [baseline-results.md](../evidence/baseline-results.md) | Ground truth in repo · not run |
-| Q3 Cost + evaluation strategy | 5 | Writeup: tokens × price × volume, **cost per user per day**, ≥3 production metrics | A priori table written · Langfuse actuals pending |
-| Q4 Reflection | 5 | [reflection.md](reflection.md) | Method locked · findings empty until traces |
+| Q1 Ideation / business case | 15 | [charter.md](charter.md) §Q1 | Written |
+| Q2 Programme charter | 15 | [charter.md](charter.md) §Q2 · [raid-log.md](raid-log.md) · [adr/](adr/) | Written (RAID + ADRs) |
+| Q3 Design and rationale | 10 | [architecture-writeup.md](architecture-writeup.md) · [architecture-diagram.png](../design/architecture-diagram.png) · ADRs | Written — pattern **justified** |
+| Q3 Core capabilities | 12 | n8n v0.7 + prompts in `design/agents/` | T11/T12 Pass on traces |
+| Q3 Extended capability | 8 | Gap Analyzer ([ADR-002](adr/ADR-002-extended-capability.md)) | Wired; T2/T3/T5/T6/T9/T10 documented |
+| Q3 Observability | 5 | Langfuse traces per agent, tokens + cost | Connected before first scored run |
+| Q3 Baseline dataset | 5 | All 12 inputs with outputs in [baseline-results.md](../evidence/baseline-results.md) | T1–T12 pasted from real traces |
+| Q3 Cost + evaluation strategy | 5 | Writeup: tokens × price × volume, **cost per user per day**, ≥3 production metrics | Langfuse actuals ~$0.014 / user / day |
+| Q4 Reflection | 5 | [reflection.md](reflection.md) | Written from 6 Sep traces |
 | **Total** | **80** | | |
 
 Fine-tuning is optional and never required. Recognised if present; ignore until core + baseline pass.
@@ -90,7 +91,7 @@ Q3 needs at least three of these named in the write-up. 1–3 are the scored set
 
 `tokens × price × expected daily volume` → **cost per user per day**.
 
-A priori (replace with Langfuse): ~$0.022 / run. At 2 first-drafts per PM per day → **~$0.044 / user / day**. At 20 org-wide PRDs/day → ~$0.44 / day.
+Live (Langfuse, 6 Sep T1–T10): mean **~$0.0071 / run** → **~$0.014 / user / day** at 2 first-drafts. A-priori sketch was ~$0.022 / run — do not mix the two. Table: [architecture-writeup.md](architecture-writeup.md#cost-analysis-langfuse-actuals--6-sep-2026).
 
 ## Evaluation method (Agent Eval Fundamentals) — how Q3/Q4 are *done*
 

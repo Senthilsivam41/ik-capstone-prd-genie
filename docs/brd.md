@@ -49,7 +49,7 @@ Engineering, design, and business stakeholders are represented in the capstone t
 
 ## 5. Success measures
 
-Targets below are the measurement definitions. **No result is recorded here until it comes from a real run** — baseline outcomes live in `evidence/baseline-results.md` and are all unrun at the time of writing.
+Targets below are the measurement definitions. Results live in [`evidence/baseline-results.md`](../evidence/baseline-results.md) (T1–T12 pasted from real traces). This BRD does not duplicate those scores.
 
 **Quality (primary):**
 - **Groundedness / hallucination rate** — share of output items with no traceable evidence in the source input. Target 0% across the 12 baseline inputs. This is the adoption gate (BO-4).
@@ -57,7 +57,7 @@ Targets below are the measurement definitions. **No result is recorded here unti
 - **Format compliance** — share of generated PRDs containing every template section, with unsupported sections left as open questions rather than padded.
 - **Ambiguity handling** — on the vague, contradictory, incomplete and dependency inputs (T2, T3, T5, T6, T9, T10), the system produces clarification questions and UNKNOWN markers rather than invented answers.
 
-**Cost:** measured as `tokens × price × expected daily volume`, expressed per user per day. The current a-priori estimate is **~$0.022 per full run**, ~$0.044 per PM per day at two drafts, ~$10/month for a team at 20 drafts/day. Method and table: [architecture-writeup.md](architecture-writeup.md#cost-analysis-a-priori--replace-with-langfuse-actuals-after-baseline). To be replaced with observed actuals.
+**Cost:** measured as `tokens × price × expected daily volume`, expressed per user per day. Langfuse actuals (6 Sep, ten T1–T10 runs): mean **~$0.0071 / run** → **~$0.014 / user / day** at two drafts. Method and table: [architecture-writeup.md](architecture-writeup.md#cost-analysis-langfuse-actuals--6-sep-2026).
 
 **Business value:** PM drafting time saved per first-draft PRD — manual hours to hand-write an equivalent draft versus hours to review and edit generated output. **Baseline value: UNKNOWN.** No measured hours-per-PRD figure exists for NeuronForge; nothing in this document is estimated from one, and no revenue, headcount, or hours-saved figure is asserted anywhere here.
 

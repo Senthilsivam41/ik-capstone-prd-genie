@@ -1,7 +1,18 @@
-# Ground truth (course-provided)
+# Ground truth v0
 
-[`eval_prdgenie_inputs.txt`](eval_prdgenie_inputs.txt) is immutable course text.  
-[`eval_prdgenie_inputs.csv`](eval_prdgenie_inputs.csv) is the same rows, machine-readable. Do not invent extra tests.
+**Official Session 2** (`Capstone Session 2 - Build, Evaluate, Submit.pptx`): the brief’s T1–T12 table is a **specification**, not ground truth. You cannot score by comparing a PRD to a sentence that says “must contain filters.” You still **run every brief input** and paste outputs — that is the baseline +5, not GT.
+
+Ground truth is handcrafted ideal I/O, written by a human who knows the domain, **before** and **outside** the pipeline. Never generate the answer key from PRD Genie. Drafting in Claude/ChatGPT is allowed only if it is not *this* pipeline with *these* prompts.
+
+| Layer | What it is | Frozen? |
+|---|---|---|
+| **Inputs (brief)** | [`eval_prdgenie_inputs.txt`](eval_prdgenie_inputs.txt) — course text. CSV is the same rows. | Yes. Immutable. |
+| **GT v0** | Must contain / Must not / Gap checks in [`baseline-results.md`](../baseline-results.md), written **before** each ID was run. Per-agent seams in `.cursor/rules/tdd.mdc`. | Yes for T1–T12. Enrich later by **hand** only. Five pairs is a legitimate v0 (Session 2). |
+| **Not GT** | Pipeline output, Langfuse scores, or “looks good.” The brief table itself. | — |
+
+Vague/bad inputs (T2, T5, T9) expected: UNKNOWN / refuse / Gap questions — not an invented PRD. Official planted fails: empty notes refuse; contradiction flag not resolve; exact figures not rounded.
+
+Do **not** invent extra tests from the agent. Live Q&A said “aim for 30”; the slide says start at five and grow by hand. Extra pairs after the pack = v0.1, handcrafted.
 
 | `stage` | What runs |
 |---|---|

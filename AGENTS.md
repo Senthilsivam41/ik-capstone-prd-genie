@@ -20,14 +20,14 @@ Name the rubric line the current task earns (Q1 15 / Q2 15 / design 10 / core 12
 - Implementation always uses branch `feature/<feature_name>` (kebab-case, no extra slashes). Never `feat/`. Never commit on `main` or `master`.
 - **TDD / eval-first:** red on a T1–T12 row in `evidence/baseline-results.md` before building or changing the agent that should pass it. One test ID per slice. Never invent Pass. See `.cursor/rules/tdd.mdc`.
 
-## Pointers
+## Pointers (same reading order as README)
 
-- Charter / RAID / ADRs: `docs/`
-- Prompts: `design/agents/`
-- Canvas references: `design/canvases/`
-- **Tests (red until run):** `evidence/baseline-results.md` — seams in `.cursor/rules/tdd.mdc`
-- **Rubric completion audit:** `docs/rubric-evaluation.md`
-- **Incremental releases:** `docs/release-plan.md` (each slice production-ready; demo gate at R4)
-- **Langfuse +5 acceptance (IK n8n):** `docs/langfuse-observability-acceptance.md`
-- Ground truth: `evidence/ground-truth/eval_prdgenie_inputs.txt`
-- Template: `system/prd_template.md`
+1. `README.md` — TA start here
+2. `docs/README.md` — docs map
+3. `docs/charter.md` — Q1 + Q2
+4. `docs/architecture-writeup.md` — Q3 design + cost
+5. `docs/reflection.md` — Q4
+6. `evidence/baseline-results.md` — T1–T12 (seams in `.cursor/rules/tdd.mdc`)
+7. `system/workflow.json` — annotated n8n v0.7 (import this)
+
+Also: prompts `design/agents/` · canvases `design/canvases/` · audit `docs/rubric-evaluation.md` · release `docs/release-plan.md` · Langfuse HTTP `docs/langfuse-observability-acceptance.md` · inputs `evidence/ground-truth/eval_prdgenie_inputs.txt` · template `system/prd_template.md`

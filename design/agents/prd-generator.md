@@ -1,6 +1,7 @@
 # PRD Generator — prompt spec
 
-Core capability. Consumes Extractor output only. Model: mini tier (ADR-003). Template: `system/prd_template.md`.
+Core capability. Consumes Extractor output only. Template: `system/prd_template.md`.  
+**Live model:** gpt-4o (ADR-003 sketched mini). Verbatim canvas copy: [live/prd-generator.system.md](live/prd-generator.system.md).
 
 ## ROLE
 
