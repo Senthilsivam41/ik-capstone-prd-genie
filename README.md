@@ -30,10 +30,7 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 
 **Not in the repo yet:**
 
-- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` — traces screenshot **is** in
-- Q4 reflection findings (method only)
-- Cost table overwrite from Langfuse actuals
-- 5-minute demo video and slide deck `.pptx`
+- 5-minute demo video (`demo/prd-genie-demo.mp4`)
 
 ## Repo map
 
@@ -42,7 +39,7 @@ docs/          Q1–Q4 writeups, RAID, ADRs, course problem statement PDF
 design/        architecture SVG, agent prompts, orchestration notes, canvas git copies
 evidence/      ground-truth baseline file, results + experiment log, screenshots
 system/        n8n export (v0.7 core + Gap + OTLP builder), PRD template, .env.example
-slides/        speaker outline for the summary deck
+slides/        `prd_genie_capstone_summary.pptx` + speaker outline
 demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 ```
 
@@ -50,7 +47,7 @@ demo/          5-min demo clip (R4+) + demo-video-link.md pointer
 
 ## Setup
 
-Runtime is **Interview Kickstart n8n Cloud** + **Langfuse EU** ([ADR-005](docs/adr/ADR-005-workflow-platform.md)). Do not install LangFlow for the submission canvas.
+Runtime is **Interview Kickstart n8n Cloud** + **Langfuse EU** ([ADR-005](docs/adr/ADR-005-workflow-platform.md)). The cohort received n8n, so that is the submission canvas. n8n→LangFlow JSON export is **broken** (facilitator, 6 Sep) — do not rebuild on LangFlow.
 
 1. Sign in to [IK n8n](https://agenticai100.app.n8n.cloud/home/workflows).
 2. Confirm the Langfuse project: [EU project](https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv) (region **EU**, host `https://cloud.langfuse.com` — not `us.cloud.langfuse.com`).

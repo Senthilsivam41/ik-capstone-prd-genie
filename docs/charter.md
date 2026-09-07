@@ -118,7 +118,7 @@ Following the same practice used on AgentLens (ADR-007, ADR-008...) — short de
 - **ADR-002**: Extended capability — Gap Analyzer over Scope Estimator
 - **ADR-003**: Split-model design — full-tier LLM for Extractor/Gap Analyzer, mini-tier for PRD Generator/Story Breakdown
 - **ADR-004**: Gap Analyzer placement — **decided**: immediately after Requirement Extractor, running in parallel with PRD Generator (branching off the Extractor's output), rather than the course's suggested placement after Story Breakdown. Rationale: catching ambiguity before PRD generation prevents an unresolved gap from propagating through two more transformation steps (PRD → stories) before being flagged; earlier detection is strictly cheaper to fix and lower-risk.
-- **ADR-005**: Workflow platform — **n8n (IK Cloud)** over LangFlow. Course hosts `agenticai100.app.n8n.cloud`; Langfuse stays EU `cloud.langfuse.com`.
+- **ADR-005**: Workflow platform — **n8n (IK Cloud) now**, LangFlow **later**. Cohort received `agenticai100.app.n8n.cloud`; Langfuse stays EU `cloud.langfuse.com`. Import the n8n graph into LangFlow after the n8n canvas is scored — do not rebuild from scratch.
 
 ### Architecture Diagram
 Sequential pipeline with one branch point:
@@ -167,7 +167,7 @@ Locked for the architecture writeup. All inputs are file/text uploads only — n
 
 | Category | Choice | Why |
 |---|---|---|
-| **Workflow Platform** | n8n (IK Cloud) | Cohort-hosted canvas at `agenticai100.app.n8n.cloud`; sequential Extractor → PRD → stories with Gap Analyzer as a parallel branch; rubric accepts LangFlow **or equivalent** ([ADR-005](adr/ADR-005-workflow-platform.md)) |
+| **Workflow Platform** | n8n (IK Cloud) | Cohort-hosted canvas at `agenticai100.app.n8n.cloud`; sequential Extractor → PRD → stories with Gap Analyzer as a parallel branch. Rubric accepts LangFlow **or equivalent**. 6 Sep: n8n→LangFlow JSON export is broken — stay on n8n ([ADR-005](adr/ADR-005-workflow-platform.md)) |
 | **LLM — Requirement Extractor** | Claude or GPT-4o (full tier) | Highest-stakes reasoning step — stated-vs-ambiguous judgment and contradiction detection are graded directly on 6 of 12 baseline tests (T2, T3, T5, T6, T9, T10); a mini-tier model under-reasons here |
 | **LLM — PRD Generator** | GPT-4o-mini / 4.1-mini | Mechanical restructuring of already-extracted, already-grounded data into the fixed template — low judgment risk once extraction is solid |
 | **LLM — Story Breakdown** | GPT-4o-mini | Same profile as PRD Generator — fixed-format transformation, not open-ended reasoning |

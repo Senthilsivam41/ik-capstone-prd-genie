@@ -42,7 +42,7 @@ Requirement Extractor     (full-tier)  stated vs ambiguous
 
 | Category | Choice | Why |
 |---|---|---|
-| Workflow platform | n8n (IK Cloud) | Cohort instance at agenticai100.app.n8n.cloud; sequential + one branch maps to AI Agent nodes; rubric accepts LangFlow **or equivalent** canvas ([ADR-005](adr/ADR-005-workflow-platform.md)) |
+| Workflow platform | n8n (IK Cloud) | Cohort received n8n (`agenticai100.app.n8n.cloud`); that is the live canvas. Rubric accepts LangFlow **or equivalent**. 6 Sep: n8n→LangFlow JSON is broken — no import ([ADR-005](adr/ADR-005-workflow-platform.md)) |
 | LLM — Extractor / Gap Analyzer | Claude or GPT-4o (full tier) | Highest-stakes judgment; 6/12 baseline tests grade this step |
 | LLM — PRD Generator / Story Breakdown | GPT-4o-mini | Mechanical fill of a fixed template from already-grounded data |
 | Document ingestion | n8n Manual Trigger / text | Inputs are `.txt` / `.md`; no OCR or CSV reshape |
@@ -50,39 +50,31 @@ Requirement Extractor     (full-tier)  stated vs ambiguous
 | Output | Markdown matching `prd_template.md` | Rubric does not require Docs/Notion export |
 | Auth | None in-app | File-upload pipeline; provider keys live in env only |
 
-LangFlow was the 30 Aug default and is now the rejected primary: the course **hosts n8n** for this cohort, so the graded canvas is that instance (ADR-005). A coded LangGraph app stays rejected — the capstone scores a visual canvas export plus traces, not a custom runtime.
+LangFlow was the 30 Aug default builder. The cohort then received an **n8n** account, so we implemented there (ADR-005). On 6 Sep the facilitator confirmed n8n→LangFlow JSON export is **broken**, so LangFlow is not a later import. Graders open the n8n export. A coded LangGraph app stays rejected — the capstone scores a visual canvas export plus traces, not a custom runtime.
 
-## Cost analysis (a priori — replace with Langfuse actuals after baseline)
+## Cost analysis (Langfuse actuals — 6 Sep 2026)
 
-Public list prices used for the estimate (USD / 1M tokens). Lock the exact model IDs in n8n and overwrite this table from traces.
+**Formula:** `tokens × price × volume` as **cost per user per day**. Prices are Langfuse `calculatedTotalCost` on the live models (Extractor/PRD **gpt-4o**, Gap/stories **gpt-4o-mini**), not a second spreadsheet.
 
-| Model | Input | Output |
-|---|---|---|
-| GPT-4o (full) | $2.50 | $10.00 |
-| GPT-4o-mini | $0.15 | $0.60 |
+**Per-run actuals** — ten full-pipeline traces, T1–T10, 6 Sep 11:25–11:30Z, project `my-capstone-prd-genie`. Each run = four generations. Source table: [baseline-results.md](../evidence/baseline-results.md#per-agent-judge-re-score-6-sep-2026).
 
-**Per-run token sketch** (typical T1-sized input, ~400–800 source tokens):
+| Stat | Langfuse totalCost |
+|---|---|
+| Mean / run (n=10) | **~$0.0071** |
+| Min (T9 empty notes) | $0.00389 |
+| Max (T4 long AC) | $0.00978 |
+| T1 (typical brief) | $0.00586 |
 
-| Agent | In (est.) | Out (est.) | Cost |
-|---|---|---|---|
-| Extractor (full) | 1,800 | 700 | ~$0.0115 |
-| Gap Analyzer (full) | 1,600 | 500 | ~$0.0090 |
-| PRD Generator (mini) | 2,200 | 1,200 | ~$0.0011 |
-| Story Breakdown (mini) | 1,800 | 900 | ~$0.0008 |
-| **Total / run** | | | **~$0.022** |
+A-priori sketch was ~$0.022 / run. Live briefs are shorter than that sketch; Gap and stories stay on mini. Do not mix the two without saying which.
 
-Split-model vs all-full-tier: the two mini-tier agents would cost ~$0.018 extra per run on GPT-4o. Across 12 baseline inputs that is noise; across **20 PRDs/day × 22 working days** (~440 runs/month) it is ~$8/month saved and, more importantly, it keeps the reasoning budget on the agents the dataset actually tests.
-
-**Volume → cost per user per day** (the unit the session brief asks for):
+**Volume → cost per user per day** (planning assumption: 2 first-drafts / PM / day):
 
 | Scenario | Volume | Cost |
 |---|---|---|
-| One PM, 2 first-drafts / day | 2 runs | **~$0.044 / user / day** |
-| Team, 20 first-drafts / day | 20 runs | ~$0.44 / day (~$10 / month) |
+| One PM, 2 first-drafts / day | 2 × $0.0071 | **~$0.014 / user / day** |
+| Initial release, 20 PMs | 40 runs / day | ~$0.28 / day · ~$6.20 / 22-day month |
 
-Re-runs after clarification add Extractor+Gap cost only (stateless full pipeline, not a fourth agent).
-
-These numbers are a ceiling-style sketch. Actuals will be higher on T11/T12 (PRD-length context) and lower on T9 (empty notes). The scored deliverable is `tokens × price × expected daily volume`, expressed per user per day, plus Langfuse screenshots of real totals.
+Judge tokens (Completeness / Hallucination / Groundedness on gpt-4o) are **beside** the pipeline and are not in these run costs. Re-runs after clarification pay the full four-agent `totalCost` again (stateless).
 
 ## Evaluation strategy
 
@@ -97,4 +89,4 @@ These numbers are a ceiling-style sketch. Actuals will be higher on T11/T12 (PRD
    3. Format compliance (all 10 template sections present)
    Plus operational: tokens and latency per run. Business: PM drafting time saved per first-draft PRD.
 
-Baseline results and the experiment log are empty of scores until Days 9–11 of the build. The strategy above is what Q3 asks for; Q4 reflection fills in what the traces actually showed.
+T1–T12 outputs and E1/E1b are in [baseline-results.md](../evidence/baseline-results.md) and [experiment-log.md](../evidence/experiment-log.md). Per-agent H/G/C scores exist on the 6 Sep T1–T10 re-runs (E5). Q4 is [reflection.md](reflection.md).

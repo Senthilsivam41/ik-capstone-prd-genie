@@ -36,7 +36,7 @@ Copied from the charter so this folder stands alone:
 
 | Category | Choice | Why |
 |---|---|---|
-| Workflow platform | n8n (IK Cloud) | Cohort instance; sequential + branch; LangFlow-equivalent canvas (ADR-005) |
+| Workflow platform | n8n (IK Cloud) | Cohort instance; sequential + branch. 6 Sep: n8n→LangFlow JSON export is broken (ADR-005) |
 | LLM — Extractor | Claude or GPT-4o | Stated-vs-ambiguous + contradiction tests (6/12) |
 | LLM — Gap Analyzer | Claude or GPT-4o | Same judgment profile |
 | LLM — PRD Generator | GPT-4o-mini | Template fill from grounded data |
