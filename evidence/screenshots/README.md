@@ -4,8 +4,8 @@ Required by the submission pack. Drop files here with these names (or update the
 
 | File | What it must show | Status |
 |---|---|---|
-| `n8n-canvas.png` | Full n8n graph: Extractor, branch to Gap Analyzer + PRD Generator, Story Breakdown | Expected |
-| `pipeline-in-action.png` | A real run: input visible, output visible (ideally T1 or T2) | Expected |
+| `n8n-canvas.png` | Full n8n graph: Extractor, branch to Gap Analyzer + PRD Generator, Story Breakdown | **Present** — live v0.7 editor, 7 Sep |
+| `pipeline-in-action.png` | A real run: input visible, output visible (ideally T1 or T2) | **Present** — execution #225, T10, 6 Sep 17:00:39 IST |
 | `langfuse-traces.png` | Trace list or a single trace with per-agent spans and scores | **Present** — 4 Sep proof (see below) |
 | `langfuse-dashboard-traces-scores.png` | Home: 11 `prd-genie-slice1` traces, $0.08, 297 H/G/C scores | **Present** — 6 Sep T1–T10 window |
 | `langfuse-dashboard-cost.png` | Home: observations + gpt-4o / gpt-4o-mini cost | **Present** — same window |
@@ -17,6 +17,15 @@ Required by the submission pack. Drop files here with these names (or update the
 | `langfuse-evaluator-groundedness.png` | Judge trace: Groundedness on gpt-4o | **Present** — same second |
 
 Do not commit mockups. Files are added only after the canvas actually runs.
+
+## 7 Sep 2026 — n8n canvas and a real run
+
+Unedited shots from IK n8n Cloud `https://agenticai100.app.n8n.cloud/workflow/Eai2sodOz0gUVnx8` (v0.7).
+
+| File | What a grader sees |
+|---|---|
+| `n8n-canvas.png` | Editor: Manual Trigger → Input Text → sheet → Requirement Extractor, Gap branch, PRD → stories, Merge / Build / Send Langfuse |
+| `pipeline-in-action.png` | Execution **#225** (6 Sep 17:00:39 IST, 14.639s, Succeeded). Input `testId` **T10**. Sheet output `chatInput` starts “SSO login requires the new auth service which is being built by Team Alpha. ETA unknown.” |
 
 ## `langfuse-traces.png`
 

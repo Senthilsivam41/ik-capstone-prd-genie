@@ -51,7 +51,7 @@ Fine-tuning: 0 and correctly omitted.
 | Assignment Q4 | Pass — findings from 6 Sep per-agent scores |
 | Workflow JSON export | Pass — `system/workflow.json` = v0.7 (sheet → four agents → OTLP) |
 | Baseline outputs for all 12 | Pass — T1–T12 pasted from real traces |
-| Screenshots: canvas, in-action, traces | Partial — `langfuse-traces.png` plus 6 Sep dashboard/score shots; canvas and in-action missing |
+| Screenshots: canvas, in-action, traces | Pass — `n8n-canvas.png`, `pipeline-in-action.png` (T10 exec #225), Langfuse shots |
 | Slide deck `.pptx` | Pass — `slides/prd_genie_capstone_summary.pptx` |
 | 5-minute demo URL | Fail — empty (`demo/demo-video-link.md`) |
 
@@ -75,7 +75,7 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. Pack still open: `n8n-canvas.png`, `pipeline-in-action.png`, 5-min demo. Slides and Langfuse shots are in git.
+1. Pack still open: 5-min demo. Canvas, in-action, slides, and Langfuse shots are in git.
 2. Optional: Gap → gpt-4o (ADR-003); T9 PRD gate. Do not add a fifth agent.
 
 Written+build ceiling is **80**. No extra points for RAG, fine-tune, or a fifth agent. Pack items can still fail a TA even at 80 on the rubric table.

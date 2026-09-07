@@ -30,7 +30,6 @@ Turns meeting transcripts, product briefs, and stakeholder notes into a grounded
 
 **Not in the repo yet:**
 
-- Screenshots `n8n-canvas.png` and `pipeline-in-action.png` (Langfuse dashboard + judge traces **are** in)
 - 5-minute demo video (`demo/prd-genie-demo.mp4`)
 
 ## Repo map
