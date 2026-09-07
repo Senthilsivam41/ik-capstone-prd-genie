@@ -1,0 +1,171 @@
+{
+  "name": "PRD Genie - Slice 1 Extractor + Langfuse",
+  "description": "LangFlow conversion of the supplied n8n workflow. Reads a Google Sheet row by testId, runs requirement extraction, PRD generation, story breakdown, gap analysis, builds an OTLP Langfuse trace, and posts it.",
+  "data": {
+    "nodes": [
+      {
+        "id": "input",
+        "data": {
+          "node": {
+            "template": {
+              "testId": {"type": "str", "value": "T10"},
+              "startTime": {"type": "str", "value": ""}
+            },
+            "description": "Set testId to the row to run."
+          },
+          "type": "InputValue",
+          "node": "InputValue",
+          "display_name": "Input Text"
+        },
+        "position": {"x": 0, "y": 0}
+      },
+      {
+        "id": "sheet",
+        "data": {
+          "node": {
+            "template": {
+              "spreadsheet_id": {"type": "str", "value": "1LEEh77NQRCYLvJXUk7II-bSQrbv8AHyHvbGCK-Csftc"},
+              "worksheet": {"type": "str", "value": "eval_prdgenie_inputs"},
+              "lookup_column": {"type": "str", "value": "testId"},
+              "lookup_value": {"type": "str", "value": ""}
+            },
+            "description": "Replace this placeholder with a Google Sheets custom component or API request. Return the matching row, including chatInput and testId."
+          },
+          "type": "CustomComponent",
+          "node": "CustomComponent",
+          "display_name": "Get row(s) in sheet"
+        },
+        "position": {"x": 260, "y": 0}
+      },
+      {
+        "id": "extractor",
+        "data": {
+          "node": {
+            "template": {
+              "system_prompt": {"type": "str", "value": "You are the Requirement Extractor for NeuronForge PRD Genie. Read the supplied transcript, product brief, or stakeholder notes and extract only what is actually present. Do not invent requirements. Return markdown with exactly these sections: # Extraction; ## Source type; ## Stated requirements; ## Ambiguous / assumed; ## Constraints; ## Stakeholders; ## Deadlines; ## Contradictions; ## Missing information; ## Extractability. Preserve exact numbers and evidence quotes. If the source is empty, return NONE with empty requirement lists. End with counts of evidence-backed stated requirements, NFR constraints, items deliberately not added, and the sentence: I did not add anything that is not in the input."},
+              "input_text": {"type": "str", "value": ""},
+              "model_name": {"type": "str", "value": "gpt-4o"},
+              "temperature": {"type": "float", "value": 0.2}
+            },
+            "description": "Use an OpenAI-compatible model component or replace this node with LangFlow's Prompt + Language Model components."
+          },
+          "type": "CustomComponent",
+          "node": "CustomComponent",
+          "display_name": "Requirement Extractor"
+        },
+        "position": {"x": 520, "y": 0}
+      },
+      {
+        "id": "prd",
+        "data": {
+          "node": {
+            "template": {
+              "system_prompt": {"type": "str", "value": "You are the PRD Generator for NeuronForge PRD Genie. Convert only the grounded Requirement Extractor output into a PRD. Do not invent KPIs, personas, dates, NFRs, features, or success metrics. Return these sections in order: Product Overview; Goals and Objectives; User Personas; Feature Requirements with functional and NFR tables; Acceptance Criteria; Out of Scope; Dependencies; Assumptions; Open Questions; Timeline. Every functional row must cite a REQ id or quote. Preserve exact numbers. Status is Draft unless stated otherwise."},
+              "input_text": {"type": "str", "value": ""},
+              "model_name": {"type": "str", "value": "gpt-4o"},
+              "temperature": {"type": "float", "value": 0.2}
+            }
+          },
+          "type": "CustomComponent",
+          "node": "CustomComponent",
+          "display_name": "PRD Generator"
+        },
+        "position": {"x": 800, "y": -120}
+      },
+      {
+        "id": "stories",
+        "data": {
+          "node": {
+            "template": {
+              "system_prompt": {"type": "str", "value": "You are the Story Breakdown agent. Turn the grounded PRD into Epics, Features, and user stories. Do not add scope or acceptance criteria. Acceptance criteria must be copied from the PRD. Personas must exist in the PRD. Use exactly these priorities: Must Have, Should Have, Nice to Have. If the PRD is empty, output no stories."},
+              "input_text": {"type": "str", "value": ""},
+              "model_name": {"type": "str", "value": "gpt-4o-mini"},
+              "temperature": {"type": "float", "value": 0.2}
+            }
+          },
+          "type": "CustomComponent",
+          "node": "CustomComponent",
+          "display_name": "PRD Breakdown Agent"
+        },
+        "position": {"x": 1080, "y": -120}
+      },
+      {
+        "id": "gap",
+        "data": {
+          "node": {
+            "template": {
+              "system_prompt": {"type": "str", "value": "You are the Gap Analyzer. Read the Requirement Extractor output and produce clarification questions only. Do not answer questions, invent solutions, resolve contradictions, or add stories. Return Extractability, clarification questions with IDs, unresolved contradictions, dependencies and risks, what is safe to draft, and what must not be committed. If Extractability is NONE, state that no requirements are extractable and stop."},
+              "input_text": {"type": "str", "value": ""},
+              "model_name": {"type": "str", "value": "gpt-4o-mini"},
+              "temperature": {"type": "float", "value": 0.2}
+            }
+          },
+          "type": "CustomComponent",
+          "node": "CustomComponent",
+          "display_name": "Gap Analyzer Agent"
+        },
+        "position": {"x": 800, "y": 180}
+      },
+      {
+        "id": "langfuse_builder",
+        "data": {
+          "node": {
+            "template": {
+              "test_id": {"type": "str", "value": ""},
+              "chat_input": {"type": "str", "value": ""},
+              "extractor_output": {"type": "str", "value": ""},
+              "prd_output": {"type": "str", "value": ""},
+              "story_output": {"type": "str", "value": ""},
+              "gap_output": {"type": "str", "value": ""}
+            },
+            "description": "Custom Python component implementing the original Build Langfuse Batch JavaScript logic. It should return an object containing otlp and the four outputs."
+          },
+          "type": "CustomComponent",
+          "node": "CustomComponent",
+          "display_name": "Build Langfuse OTLP Trace"
+        },
+        "position": {"x": 1360, "y": 80}
+      },
+      {
+        "id": "langfuse_post",
+        "data": {
+          "node": {
+            "template": {
+              "url": {"type": "str", "value": "https://cloud.langfuse.com/api/public/otel/v1/traces"},
+              "method": {"type": "str", "value": "POST"},
+              "headers": {"type": "dict", "value": {"x-langfuse-ingestion-version": "4"}},
+              "body": {"type": "str", "value": ""}
+            },
+            "description": "Configure Basic Auth using Langfuse public key as username and secret key as password."
+          },
+          "type": "APIRequest",
+          "node": "APIRequest",
+          "display_name": "Send to Langfuse"
+        },
+        "position": {"x": 1640, "y": 80}
+      }
+    ],
+    "edges": [
+      {"source": "input", "target": "sheet", "sourceHandle": "testId", "targetHandle": "lookup_value"},
+      {"source": "sheet", "target": "extractor", "sourceHandle": "chatInput", "targetHandle": "input_text"},
+      {"source": "extractor", "target": "prd", "sourceHandle": "text", "targetHandle": "input_text"},
+      {"source": "extractor", "target": "gap", "sourceHandle": "text", "targetHandle": "input_text"},
+      {"source": "prd", "target": "stories", "sourceHandle": "text", "targetHandle": "input_text"},
+      {"source": "input", "target": "langfuse_builder", "sourceHandle": "testId", "targetHandle": "test_id"},
+      {"source": "sheet", "target": "langfuse_builder", "sourceHandle": "chatInput", "targetHandle": "chat_input"},
+      {"source": "extractor", "target": "langfuse_builder", "sourceHandle": "text", "targetHandle": "extractor_output"},
+      {"source": "prd", "target": "langfuse_builder", "sourceHandle": "text", "targetHandle": "prd_output"},
+      {"source": "stories", "target": "langfuse_builder", "sourceHandle": "text", "targetHandle": "story_output"},
+      {"source": "gap", "target": "langfuse_builder", "sourceHandle": "text", "targetHandle": "gap_output"},
+      {"source": "langfuse_builder", "target": "langfuse_post", "sourceHandle": "otlp", "targetHandle": "body"}
+    ]
+  },
+  "metadata": {
+    "conversion_notes": [
+      "This is a portable LangFlow flow-definition blueprint. LangFlow versions differ in serialized component schema.",
+      "Google Sheets lookup, OTLP trace construction, and Langfuse Basic Auth are represented as custom/API nodes and require configuration in the target LangFlow instance.",
+      "The source n8n sticky note, credential IDs, and n8n expression syntax were not carried over.",
+      "Create or select the OpenAI model component and connect it to each prompt/LLM node if your LangFlow version does not allow model_name directly."
+    ]
+  }
+}
