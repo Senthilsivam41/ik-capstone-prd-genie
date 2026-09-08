@@ -34,3 +34,6 @@ system/workflows/*-5Sept.json
 demo/raw/
 demo/*.mov.raw
 demo/*.uncompressed.*
+
+# cursor related files
+*.cursor/*
