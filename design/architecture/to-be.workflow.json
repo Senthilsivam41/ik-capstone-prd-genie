@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "TO-BE — PRD Genie capstone canvas",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "views": [
+      {
+        "id": "core-path",
+        "label": "Core path",
+        "focus": ["trigger", "sheet", "extractor", "prd", "stories", "review"],
+        "note": "One testId row. Extractor then PRD then stories. PM reviews offline."
+      },
+      {
+        "id": "gap-branch",
+        "label": "Gap branch",
+        "focus": ["extractor", "gap", "prd", "langfuse"],
+        "note": "Gap runs after Extractor in parallel with PRD. It is not a gate. T9 still writes a PRD."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "pm", "label": "PM / TPM" },
+    { "id": "core", "label": "Core agents (live)" },
+    { "id": "gaplane", "label": "Extended +8", "variant": "exception" },
+    { "id": "observe", "label": "Observability" }
+  ],
+  "phases": [
+    { "id": "intake", "label": "One-row intake", "fromCol": 0, "toCol": 1 },
+    { "id": "generate", "label": "Extract + generate", "fromCol": 2, "toCol": 4, "variant": "emphasis" },
+    { "id": "review", "label": "Review", "fromCol": 5, "toCol": 5 }
+  ],
+  "groups": [
+    { "id": "core_chain", "label": "Sequential core", "lane": "core", "fromCol": 2, "toCol": 4, "variant": "emphasis" },
+    { "id": "gap_box", "label": "Not a gate", "lane": "gaplane", "fromCol": 3, "toCol": 3, "variant": "security" }
+  ],
+  "mainPath": ["trigger", "sheet", "extractor", "prd", "stories", "review"],
+  "nodes": [
+    { "id": "trigger", "lane": "pm", "col": 0, "type": "frontend", "label": "Manual Trigger", "sublabel": "set testId T1–T12", "width": 132 },
+    { "id": "sheet", "lane": "pm", "col": 1, "type": "database", "label": "Google Sheet row", "sublabel": "chatInput", "width": 132 },
+    { "id": "extractor", "lane": "core", "col": 2, "type": "backend", "label": "Extractor", "sublabel": "gpt-4o · UNKNOWN", "tag": "stated vs ambiguous", "width": 140 },
+    { "id": "prd", "lane": "core", "col": 3, "type": "backend", "label": "PRD Generator", "sublabel": "gpt-4o · no padding", "width": 132 },
+    { "id": "stories", "lane": "core", "col": 4, "type": "backend", "label": "Story Breakdown", "sublabel": "gpt-4o-mini · AC verbatim", "width": 140 },
+    { "id": "review", "lane": "pm", "col": 5, "type": "security", "label": "PM review offline", "sublabel": "HITL simulated", "width": 132 },
+    { "id": "gap", "lane": "gaplane", "col": 3, "type": "backend", "label": "Gap Analyzer", "sublabel": "gpt-4o-mini · questions", "tag": "ADR-004", "width": 140 },
+    { "id": "langfuse", "lane": "observe", "col": 5, "type": "cloud", "label": "Langfuse EU", "sublabel": "OTLP · 4 generations", "width": 140 }
+  ],
+  "edges": [
+    { "id": "t-sheet", "from": "trigger", "to": "sheet", "label": "one row", "variant": "emphasis" },
+    { "id": "sheet-ex", "from": "sheet", "to": "extractor", "label": "chatInput", "variant": "emphasis" },
+    { "id": "ex-prd", "from": "extractor", "to": "prd", "variant": "emphasis" },
+    { "id": "prd-st", "from": "prd", "to": "stories", "variant": "emphasis" },
+    { "id": "st-review", "from": "stories", "to": "review", "label": "markdown draft", "variant": "emphasis" },
+    { "id": "ex-gap", "from": "extractor", "to": "gap", "label": "parallel", "variant": "security" },
+    { "id": "st-lf", "from": "stories", "to": "langfuse", "label": "OTLP v4", "variant": "dashed" },
+    { "id": "gap-lf", "from": "gap", "to": "langfuse", "label": "not a gate", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "What changed",
+      "items": [
+        "Stated vs ambiguous is explicit before the PRD",
+        "One template for every PM",
+        "Gap questions sit beside PRD, not after stories"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Capstone stack (live)",
+      "items": [
+        "IK n8n Cloud · Manual Trigger · one testId",
+        "OpenAI split models · Sheet row · Langfuse EU HTTP",
+        "Batch loop is not on this canvas"
+      ]
+    }
+  ]
+}

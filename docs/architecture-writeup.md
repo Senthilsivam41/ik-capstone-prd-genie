@@ -64,6 +64,8 @@ Requirement Extractor     (gpt-4o)  stated vs ambiguous
 
 LangFlow was the 30 Aug default builder. The cohort then received an **n8n** account, so we implemented there (ADR-005). On 6 Sep the facilitator confirmed n8n→LangFlow JSON export is **broken**, so LangFlow is not a later import. Graders open the n8n export. A coded LangGraph app stays rejected — the capstone scores a visual canvas export plus traces, not a custom runtime.
 
+**Long term (not built):** Meet/Teams + Drive/SharePoint are ingestion; chat and email are HITL adapters; Google Doc/SharePoint are export. n8n still orchestrates the same four agents; Langfuse stays; split-model stays. Detail and diagrams: [solution-journey.md](solution-journey.md) · [target.html](../design/architecture/target.html). Do not put those connectors on `system/workflow.json`.
+
 ## Cost analysis (Langfuse actuals — 6 Sep 2026)
 
 **Formula:** `tokens × price × volume` as **cost per user per day**. Prices are Langfuse `calculatedTotalCost` on the live models (Extractor/PRD **gpt-4o**, Gap/stories **gpt-4o-mini**), not a second spreadsheet.

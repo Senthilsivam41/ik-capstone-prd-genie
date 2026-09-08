@@ -82,6 +82,29 @@ Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is 
 
 ---
 
+## After capstone (not scored, not built)
+
+These rows are the long-term answer to “how would NeuronForge ingest real meetings and close HITL.” They do **not** replace R0–R5. They are **not** on the live n8n canvas (`system/workflow.json`). Meet, Teams, Drive, SharePoint, Slack, Google Chat, and email are **not live**. Story: [solution-journey.md](solution-journey.md#5-target-intake-hitl-and-how-pains-map-not-built).
+
+Cheapest first:
+
+| Horizon | Increment | Constraint |
+|---|---|---|
+| R6 | Structured intake schema; still Sheet/CSV-fed | UNKNOWN in empty slots; stated vs ambiguous unchanged |
+| R7 | One transcript connector (Meet **or** Teams) | Ingestion, not a new LLM |
+| R8 | Correlate one doc store (Drive **or** SharePoint) to the meeting | Same source / meeting id / time window / attendees |
+| R9 | Chat HITL — one of Slack, Google Chat, or Teams | Stateless re-run from Extractor; no wait/resume on the graded graph |
+| R10 | Doc export (Google Doc / SharePoint) + email share; approve in email **or** chat | Draft is ready for engineering only after approval (production BR-3) |
+| R11 | Remaining connectors | Do not build every channel in one slice |
+| R12 | Loop Over Items on already-green extractor rows | Not for first-failure isolation |
+| R13 | Optional T9 gate (no PRD when Extractability NONE) | Architecture lever, not a fifth agent |
+| R14 | Project/PRD registry classification | Only after R4-class quality (BR-8) |
+| R15 | Markdown → issue tracker | Markdown remains source of truth |
+
+Fine-tune stays optional. Cost remains `tokens × price × volume` as **$/user/day**. Split-model stays. Do not rebuild LangFlow.
+
+---
+
 ## Demo video (graded pack)
 
 **Intent (2 Sep clarification from author):** record the **working application** and put a **small video in the git repo**. External Loom/YouTube remains optional backup.
