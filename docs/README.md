@@ -7,6 +7,7 @@ Do not start this folder at RAID or the Langfuse acceptance checklist. Those are
 | # | File | Rubric line | What it is |
 |---|---|---|---|
 | 1 | [charter.md](charter.md) | Q1 15 + Q2 15 | Pain → agent → I/O → risk; vision, scope, success, rollout |
+| 1b | [solution-journey.md](solution-journey.md) | Q2 rollout + Q3 tools | AS-IS / TO-BE (live); target intake + HITL **not built**; short vs long stack |
 | 2 | [architecture-writeup.md](architecture-writeup.md) | Q3 Design 10 + Cost+eval 5 | Diagram, **why** sequential + branch, what each agent does, `$/user/day` |
 | 3 | [reflection.md](reflection.md) | Q4 5 | One page after traces. Do not pad to 15 |
 | 4 | [adr/](adr/) | Named Q2 deliverable | Open only if a decision is unclear |
@@ -45,6 +46,7 @@ Do not start this folder at RAID or the Langfuse acceptance checklist. Those are
 |---|---|
 | [`../system/workflow.json`](../system/workflow.json) | Annotated n8n v0.7 export — **import this** |
 | [`../design/agents/`](../design/agents/) | Four agent prompts (spec + live n8n copy) |
+| [`../design/architecture/`](../design/architecture/) | Archify AS-IS / TO-BE / live-vs-target HTML |
 | [`../evidence/screenshots/`](../evidence/screenshots/) | Canvas / in-action / Langfuse shots |
 | [`../demo/prd-genie-demo.mp4`](../demo/prd-genie-demo.mp4) | **The demo file** (not recorded yet) |
 | [`../slides/prd_genie_capstone_summary.pptx`](../slides/prd_genie_capstone_summary.pptx) | Slide deck |

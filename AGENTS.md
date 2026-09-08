@@ -25,9 +25,10 @@ Name the rubric line the current task earns (Q1 15 / Q2 15 / design 10 / core 12
 1. `README.md` — TA start here
 2. `docs/README.md` — docs map
 3. `docs/charter.md` — Q1 + Q2
-4. `docs/architecture-writeup.md` — Q3 design + cost
-5. `docs/reflection.md` — Q4
-6. `evidence/baseline-results.md` — T1–T12 (seams in `.cursor/rules/tdd.mdc`)
-7. `system/workflow.json` — annotated n8n v0.7 (import this)
+4. `docs/solution-journey.md` — AS-IS / TO-BE / tool stack / R6+
+5. `docs/architecture-writeup.md` — Q3 design + cost
+6. `docs/reflection.md` — Q4
+7. `evidence/baseline-results.md` — T1–T12 (seams in `.cursor/rules/tdd.mdc`)
+8. `system/workflow.json` — annotated n8n v0.7 (import this)
 
-Also: prompts `design/agents/` · canvases `design/canvases/` · audit `docs/rubric-evaluation.md` · release `docs/release-plan.md` · Langfuse HTTP `docs/langfuse-observability-acceptance.md` · inputs `evidence/ground-truth/eval_prdgenie_inputs.txt` · template `system/prd_template.md`
+Also: prompts `design/agents/` · Langfuse judges `design/evals/` · canvases `design/canvases/` · audit `docs/rubric-evaluation.md` · release `docs/release-plan.md` · Langfuse HTTP `docs/langfuse-observability-acceptance.md` · inputs `evidence/ground-truth/eval_prdgenie_inputs.txt` · template `system/prd_template.md`

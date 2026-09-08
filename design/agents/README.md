@@ -13,4 +13,4 @@ These four files are the scored agents. A TA can read them here without opening 
 
 **How to paste:** copy ROLE through Self-check from the spec into the n8n chain **System Message**, then re-export JSON so `live/` stays in sync.
 
-Judges (Completeness / Hallucination / Groundedness) are **not** agents. They live in Langfuse, not in this folder.
+Judges (Completeness / Hallucination / Groundedness) are **not** agents. They live in Langfuse. Briefs: [`../evals/`](../evals/).

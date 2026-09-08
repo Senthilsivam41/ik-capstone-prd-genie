@@ -19,10 +19,11 @@ TAs will not get a Slack walkthrough. This list is the pack.
 
 1. **This README** — what it is, how the four agents work, how to run, which folder covers what.
 2. [docs/charter.md](docs/charter.md) — Q1 ideation + Q2 programme charter.
-3. [docs/architecture-writeup.md](docs/architecture-writeup.md) — Q3 design: **why** sequential + branch, what each agent does, cost per user per day.
-4. [docs/reflection.md](docs/reflection.md) — Q4 (one page, after traces).
-5. [evidence/baseline-results.md](evidence/baseline-results.md) — T1–T12 Must/Must-not + pasted outputs.
-6. [evidence/screenshots/](evidence/screenshots/) — n8n canvas, pipeline in action, Langfuse.
+3. [docs/solution-journey.md](docs/solution-journey.md) — AS-IS / TO-BE / target intake+HITL (not built) / short vs long tool stack / roadmap.
+4. [docs/architecture-writeup.md](docs/architecture-writeup.md) — Q3 design: **why** sequential + branch, what each agent does, cost per user per day.
+5. [docs/reflection.md](docs/reflection.md) — Q4 (one page, after traces).
+6. [evidence/baseline-results.md](evidence/baseline-results.md) — T1–T12 Must/Must-not + pasted outputs.
+7. [evidence/screenshots/](evidence/screenshots/) — n8n canvas, pipeline in action, Langfuse.
 
 Then only if needed: [docs/README.md](docs/README.md) (full docs map) · ADRs · RAID.
 
@@ -83,10 +84,13 @@ Runtime is **IK n8n Cloud** + **Langfuse EU**. n8n→LangFlow JSON export is **b
 | [README.md](README.md) | This page — start here |
 | [docs/](docs/) | Graded writeups. Start with [docs/README.md](docs/README.md) |
 | [docs/charter.md](docs/charter.md) | Q1 + Q2 |
+| [docs/solution-journey.md](docs/solution-journey.md) | AS-IS → TO-BE → target (not built): connectors, intake schema, HITL |
+| [design/architecture/](design/architecture/) | Archify AS-IS / TO-BE (live) / target + HITL (not built) |
 | [docs/architecture-writeup.md](docs/architecture-writeup.md) | Q3 design, cost, eval |
 | [docs/reflection.md](docs/reflection.md) | Q4 |
 | [docs/adr/](docs/adr/) | Five decisions (pattern, Gap, models, Gap placement, n8n) |
 | [design/agents/](design/agents/) | **All four agent prompts** — spec + verbatim n8n copies. Start at [design/agents/README.md](design/agents/README.md) |
+| [design/evals/](design/evals/) | Langfuse judge briefs (Hallucination / Completeness / Groundedness) — paste into Evaluators |
 | [design/architecture-diagram.png](design/architecture-diagram.png) | Submission diagram |
 | [design/orchestration-notes.md](design/orchestration-notes.md) | Why sequential + branch; live n8n wiring |
 | [design/canvases/](design/canvases/) | Git copies of Cursor canvases (not the live n8n file) |

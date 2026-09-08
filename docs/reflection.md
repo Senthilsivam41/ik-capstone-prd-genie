@@ -24,7 +24,7 @@ Open-code the **first** failure in the chain, not the final markdown.
 | Priority | Change (one at a time) | Why |
 |---|---|---|
 | 1 | Gate PRD/stories when Gap extractability is `NONE` | Fixes the T9 first failure. Architecture lever, after prompts already held T2. |
-| 2 | Rewrite Completeness judge so it scores required fields, not hallucination | Session 2: the judge is only as good as its brief. |
+| 2 | Paste [design/evals/](../design/evals/) judge briefs into Langfuse (Completeness / Groundedness / Hallucination are three jobs). Re-score only after a key exists; do not mix with 6 Sep polarities | Session 2: the judge is only as good as its brief. |
 | 3 | Repeat T3 Story Breakdown only; if Hallucination stays ≥0.3, add “copy both sides, no winner” to that agent | Isolated from (1). |
 | 4 | Point Gap at gpt-4o (ADR-003) | Live node is still mini. |
 | 5 | Combined `EX` re-run of T1–T12 | Only after 1–3 stay consistent across repeats. |

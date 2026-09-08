@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "PRD Genie — target intake and HITL (not built)",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "intake",
+        "label": "Intake (not built)",
+        "focus": ["meetings", "docs", "intake", "extractor"],
+        "note": "Meet/Teams transcripts plus Drive/SharePoint files become one structured record before Extractor. Capstone still uses Sheet chatInput."
+      },
+      {
+        "id": "core-live",
+        "label": "Four agents (live)",
+        "focus": ["extractor", "gap", "prd", "stories", "langfuse"],
+        "note": "Same sequential core plus Gap branch as the graded canvas. Langfuse stays. No fifth agent."
+      },
+      {
+        "id": "hitl",
+        "label": "HITL + publish (not built)",
+        "focus": ["gap", "stories", "chat", "publish", "email"],
+        "note": "Chat and email are approval adapters. Google Doc / SharePoint are export. Markdown remains the pipeline record."
+      }
+    ]
+  },
+  "components": [
+    { "id": "meetings", "type": "external", "label": "Meeting transcripts", "sublabel": "Google Meet · Teams", "tag": "not built", "pos": [40, 40], "size": [170, 60] },
+    { "id": "docs", "type": "external", "label": "Doc stores", "sublabel": "Drive · SharePoint", "tag": "not built", "pos": [40, 200], "size": [170, 60] },
+    { "id": "intake", "type": "database", "label": "Structured transcript", "sublabel": "canonical intake", "tag": "not built", "pos": [250, 120], "size": [170, 60] },
+    { "id": "extractor", "type": "backend", "label": "Extractor", "sublabel": "gpt-4o · UNKNOWN", "pos": [500, 120], "size": [150, 60] },
+    { "id": "prd", "type": "backend", "label": "PRD Generator", "sublabel": "gpt-4o", "pos": [720, 120], "size": [150, 60] },
+    { "id": "stories", "type": "backend", "label": "Story Breakdown", "sublabel": "gpt-4o-mini", "pos": [940, 120], "size": [150, 60] },
+    { "id": "langfuse", "type": "cloud", "label": "Langfuse EU", "sublabel": "OTLP · live", "pos": [500, 300], "size": [150, 60] },
+    { "id": "gap", "type": "backend", "label": "Gap Analyzer", "sublabel": "questions only", "tag": "ADR-004", "pos": [720, 300], "size": [150, 60] },
+    { "id": "publish", "type": "frontend", "label": "Doc publish", "sublabel": "Google Doc · SharePoint", "tag": "not built", "pos": [940, 300], "size": [170, 60] },
+    { "id": "chat", "type": "messagebus", "label": "Chat HITL", "sublabel": "Slack · GChat · Teams", "tag": "not built", "pos": [720, 480], "size": [170, 60] },
+    { "id": "email", "type": "security", "label": "Email approval", "sublabel": "reply to approve", "tag": "not built", "pos": [940, 480], "size": [170, 60] }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Intake (not built)",
+      "wraps": ["meetings", "docs", "intake"]
+    },
+    {
+      "kind": "region",
+      "label": "Capstone core (live)",
+      "wraps": ["extractor", "prd", "stories", "langfuse", "gap"]
+    },
+    {
+      "kind": "region",
+      "label": "HITL (not built)",
+      "wraps": ["publish", "chat", "email"]
+    }
+  ],
+  "connections": [
+    { "id": "meet-intake", "from": "meetings", "to": "intake", "label": "meeting id", "variant": "dashed", "labelDy": 17 },
+    { "id": "docs-intake", "from": "docs", "to": "intake", "label": "correlate files", "variant": "dashed", "labelDy": 10 },
+    { "id": "intake-ex", "from": "intake", "to": "extractor", "label": "canonical record", "variant": "dashed", "labelDy": 48 },
+    { "id": "ex-prd", "from": "extractor", "to": "prd", "variant": "emphasis" },
+    { "id": "prd-st", "from": "prd", "to": "stories", "variant": "emphasis" },
+    { "id": "ex-gap", "from": "extractor", "to": "gap", "label": "parallel", "variant": "security", "fromSide": "bottom", "toSide": "left" },
+    { "id": "ex-lf", "from": "extractor", "to": "langfuse", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "gap-chat", "from": "gap", "to": "chat", "label": "questions", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "st-pub", "from": "stories", "to": "publish", "label": "markdown export", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 24 },
+    { "id": "pub-chat", "from": "publish", "to": "chat", "label": "share to chat", "variant": "dashed", "fromSide": "left", "toSide": "right" },
+    { "id": "pub-email", "from": "publish", "to": "email", "label": "share link", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 24 }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Short term — live stack",
+      "items": [
+        "IK n8n · Manual Trigger · Sheet testId · four agents",
+        "OpenAI split models · Langfuse OTLP before scored runs",
+        "HITL is offline (BR-3). Meet/Teams/Drive are not connected"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Long term — not built",
+      "items": [
+        "Connectors ingest; they are not a new LLM. n8n still orchestrates",
+        "Chat then email then Doc export, one channel first",
+        "Split-model stays. Cost is still tokens × price × volume as $/user/day"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "AS-IS — NeuronForge PRD by hand",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "views": [
+      {
+        "id": "manual-draft",
+        "label": "Manual draft path",
+        "focus": ["meeting", "reread", "pick", "prd", "stories", "estimate"],
+        "note": "The PM re-reads conversation, drafts a personal PRD, then breaks stories before engineering can estimate."
+      },
+      {
+        "id": "late-rework",
+        "label": "Late constraint rework",
+        "focus": ["notes", "estimate", "rework"],
+        "note": "Notes nobody revisits surface after estimation. That is pain 4."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "stakeholders", "label": "Stakeholders" },
+    { "id": "pm", "label": "PM / TPM" },
+    { "id": "engineering", "label": "Engineering", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "capture", "label": "Capture", "fromCol": 0, "toCol": 1 },
+    { "id": "draft", "label": "Hand-draft", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "handoff", "label": "Estimate + rework", "fromCol": 4, "toCol": 5 }
+  ],
+  "groups": [
+    { "id": "pm_work", "label": "Four manual passes", "lane": "pm", "fromCol": 1, "toCol": 4, "variant": "emphasis" }
+  ],
+  "mainPath": ["meeting", "reread", "pick", "prd", "stories", "estimate"],
+  "nodes": [
+    { "id": "meeting", "lane": "stakeholders", "col": 0, "type": "external", "label": "Meeting / notes", "sublabel": "unstructured", "width": 148 },
+    { "id": "notes", "lane": "stakeholders", "col": 1, "type": "database", "label": "Notes park", "sublabel": "rarely revisited", "width": 132 },
+    { "id": "reread", "lane": "pm", "col": 1, "type": "frontend", "label": "Re-read transcript", "sublabel": "pain 1", "width": 148 },
+    { "id": "pick", "lane": "pm", "col": 2, "type": "backend", "label": "Hand-pick reqs", "sublabel": "stated mixed with maybe", "width": 148 },
+    { "id": "prd", "lane": "pm", "col": 3, "type": "backend", "label": "Draft PRD", "sublabel": "format varies", "tag": "pain 2", "width": 132 },
+    { "id": "stories", "lane": "pm", "col": 4, "type": "backend", "label": "Hand-write stories", "sublabel": "pain 3", "width": 132 },
+    { "id": "estimate", "lane": "engineering", "col": 4, "type": "cloud", "label": "Estimate", "sublabel": "re-interpret format", "width": 132 },
+    { "id": "rework", "lane": "engineering", "col": 5, "type": "security", "label": "Late rework", "sublabel": "dropped constraint", "tag": "pain 4", "width": 132 }
+  ],
+  "edges": [
+    { "id": "meet-read", "from": "meeting", "to": "reread", "label": "PM mines discussion", "variant": "emphasis" },
+    { "id": "meet-park", "from": "meeting", "to": "notes", "label": "side notes", "variant": "dashed" },
+    { "id": "read-pick", "from": "reread", "to": "pick", "variant": "emphasis" },
+    { "id": "pick-prd", "from": "pick", "to": "prd", "variant": "emphasis" },
+    { "id": "prd-stories", "from": "prd", "to": "stories", "variant": "emphasis" },
+    { "id": "stories-est", "from": "stories", "to": "estimate", "label": "inconsistent template", "variant": "emphasis" },
+    { "id": "notes-rework", "from": "notes", "to": "rework", "label": "constraint surfaces late", "variant": "security", "role": "error" },
+    { "id": "est-rework", "from": "estimate", "to": "rework", "label": "build against a maybe", "variant": "security", "role": "error" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Why this fails",
+      "items": [
+        "A fluent wrong PRD is worse than messy notes",
+        "Format varies by author; engineering re-interprets every time",
+        "Constraints in parked notes arrive after estimation"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Pains from the problem statement",
+      "items": [
+        "Pain 1: requirements buried in conversation",
+        "Pain 2: inconsistent PRD structure",
+        "Pain 3: second pass for epics and stories",
+        "Pain 4: notes nobody revisits"
+      ]
+    }
+  ]
+}

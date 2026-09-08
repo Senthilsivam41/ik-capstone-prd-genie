@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Target HITL — approve before engineering (not built)",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "views": [
+      {
+        "id": "share-path",
+        "label": "Share the draft",
+        "focus": ["draft", "export", "share"],
+        "note": "Markdown stays the pipeline record. Google Doc / SharePoint are export. Link goes to chat and email."
+      },
+      {
+        "id": "decide-path",
+        "label": "Revise or approve",
+        "focus": ["share", "revise", "approve", "ready"],
+        "note": "Corrections re-enter at Extractor. Approval in email reply or chat. Only then is the draft ready for engineering."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "pipeline", "label": "Pipeline" },
+    { "id": "export", "label": "Publish" },
+    { "id": "review", "label": "Reviewers" },
+    { "id": "eng", "label": "Engineering", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "produce", "label": "Draft", "fromCol": 0, "toCol": 1 },
+    { "id": "circulate", "label": "Share", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
+    { "id": "decide", "label": "Approve", "fromCol": 3, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "human_gate", "label": "Not on live n8n", "lane": "review", "fromCol": 2, "toCol": 4, "variant": "security" }
+  ],
+  "mainPath": ["draft", "export", "share", "approve", "ready"],
+  "nodes": [
+    { "id": "draft", "lane": "pipeline", "col": 0, "type": "backend", "label": "PRD + stories", "sublabel": "markdown SoR", "width": 140 },
+    { "id": "export", "lane": "export", "col": 1, "type": "frontend", "label": "Doc / SharePoint", "sublabel": "export only", "tag": "not built", "width": 148 },
+    { "id": "share", "lane": "review", "col": 2, "type": "messagebus", "label": "Chat + email", "sublabel": "Slack · GChat · Teams", "tag": "not built", "width": 148 },
+    { "id": "revise", "lane": "review", "col": 3, "type": "security", "label": "Request corrections", "sublabel": "re-run Extractor", "width": 148 },
+    { "id": "approve", "lane": "review", "col": 4, "type": "security", "label": "Approve", "sublabel": "email or chat", "tag": "BR-3 later", "width": 132 },
+    { "id": "ready", "lane": "eng", "col": 5, "type": "cloud", "label": "Ready for eng", "sublabel": "after approval", "width": 140 }
+  ],
+  "edges": [
+    { "id": "d-ex", "from": "draft", "to": "export", "label": "convert", "variant": "dashed" },
+    { "id": "ex-sh", "from": "export", "to": "share", "label": "send link", "variant": "dashed" },
+    { "id": "sh-ap", "from": "share", "to": "approve", "label": "approve in window", "variant": "emphasis" },
+    { "id": "sh-rev", "from": "share", "to": "revise", "label": "correct points", "variant": "security", "role": "error" },
+    { "id": "rev-d", "from": "revise", "to": "draft", "label": "stateless re-run", "variant": "dashed", "role": "return" },
+    { "id": "ap-rdy", "from": "approve", "to": "ready", "label": "only after yes", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Not built",
+      "items": [
+        "Capstone HITL is offline (BR-3): answer Gap questions, then a new run",
+        "Meet, Teams, Drive, SharePoint, Slack, GChat, and email are not live",
+        "Do not add wait/resume nodes to system/workflow.json"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Production gate",
+      "items": [
+        "Reviewer can correct, then approve in email or in chat",
+        "Engineering sees the draft only after that approval",
+        "Markdown inside the pipeline remains the source of truth"
+      ]
+    }
+  ]
+}
