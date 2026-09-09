@@ -9,7 +9,7 @@ Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.
 
 **Do not use the 100-point CalendarMate/Mira split.** Those give charter 25 and reflection 15. PRD Genie is **charter 15, reflection 5, total 80.**
 
-**Live completion audit:** [rubric-evaluation.md](rubric-evaluation.md) (written+build **80/80**; pack still needs the 5-min demo).
+**Live completion audit:** [rubric-evaluation.md](rubric-evaluation.md) (written+build **80/80**; pack demo is in [`demo/prd-genie-demo.mp4`](../demo/prd-genie-demo.mp4), **≤5 min**).
 
 ## Point allocation
 
@@ -55,7 +55,7 @@ Always:
 
 PRD Genie-specific:
 
-- **5-minute demo video** (most commonly missed item)
+- **Demo video, at most 5 minutes** (most commonly missed item; shorter is fine)
 
 ## Avoidable losses (session brief)
 

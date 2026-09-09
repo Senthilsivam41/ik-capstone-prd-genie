@@ -11,7 +11,7 @@ A fluent document that invents scope is worse than messy notes. Every agent says
 | Pattern | Sequential pipeline + one branch ([ADR-001](docs/adr/ADR-001-orchestration-pattern.md)) |
 | Extended | Gap Analyzer only ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
 | Canvas | IK n8n Cloud + Langfuse EU |
-| Written+build | 80/80 on the rubric table — pack still needs the **5-min demo** |
+| Written+build | 80/80 on the rubric table — pack includes a **≤5 min** demo ([`demo/prd-genie-demo.mp4`](demo/prd-genie-demo.mp4)) |
 
 ## Start here (read in this order)
 
@@ -23,11 +23,12 @@ TAs will not get a Slack walkthrough. This list is the pack.
 4. [docs/architecture-writeup.md](docs/architecture-writeup.md) — Q3 design: **why** sequential + branch, what each agent does, cost per user per day.
 5. [docs/reflection.md](docs/reflection.md) — Q4 (one page, after traces).
 6. [evidence/baseline-results.md](evidence/baseline-results.md) — T1–T12 Must/Must-not + pasted outputs.
-7. [evidence/screenshots/](evidence/screenshots/) — n8n canvas, pipeline in action, Langfuse.
+7. [evidence/experiment-log.md](evidence/experiment-log.md) — **Failures found and how we improved** (E1 T2 vague → UNKNOWN; E1b T7 NFR class; E5 judges on gpt-4o). One change per row.
+8. [evidence/screenshots/](evidence/screenshots/) — n8n canvas, pipeline in action, Langfuse.
 
 Then only if needed: [docs/README.md](docs/README.md) (full docs map) · ADRs · RAID.
 
-**Demo file (when recorded):** [`demo/prd-genie-demo.mp4`](demo/prd-genie-demo.mp4) — pointer in [demo/demo-video-link.md](demo/demo-video-link.md). That is the remaining pack item.
+**Demo (≤5 min max, not a 5:00 target):** [`demo/prd-genie-demo.mp4`](demo/prd-genie-demo.mp4) — T1 + T5. Pointer: [demo/demo-video-link.md](demo/demo-video-link.md).
 
 **Scoring law:** [docs/rubric.md](docs/rubric.md) (80 pts). Live audit: [docs/rubric-evaluation.md](docs/rubric-evaluation.md).
 
@@ -95,13 +96,13 @@ Runtime is **IK n8n Cloud** + **Langfuse EU**. n8n→LangFlow JSON export is **b
 | [design/orchestration-notes.md](design/orchestration-notes.md) | Why sequential + branch; live n8n wiring |
 | [design/canvases/](design/canvases/) | Git copies of Cursor canvases (not the live n8n file) |
 | [evidence/baseline-results.md](evidence/baseline-results.md) | T1–T12 runs (the eval table) |
+| [evidence/experiment-log.md](evidence/experiment-log.md) | **Failures → fixes** (E1 / E1b / E5). Do not miss this for the eval loop. |
 | [evidence/ground-truth/](evidence/ground-truth/) | Course inputs (immutable) + how GT is *not* the pipeline |
 | [evidence/screenshots/](evidence/screenshots/) | Canvas, in-action, Langfuse |
-| [evidence/experiment-log.md](evidence/experiment-log.md) | E1 / E1b / E5 |
 | [system/workflow.json](system/workflow.json) | **Import this** — annotated v0.7 n8n export |
 | [system/prd_template.md](system/prd_template.md) | Ten-section PRD contract |
 | [slides/prd_genie_capstone_summary.pptx](slides/prd_genie_capstone_summary.pptx) | Slide deck |
-| [demo/prd-genie-demo.mp4](demo/prd-genie-demo.mp4) | **The demo file** (not recorded yet) |
+| [demo/prd-genie-demo.mp4](demo/prd-genie-demo.mp4) | **Demo** — T1 + T5, ~3:57 (5:00 is a max) |
 
 ## Guardrails (non-negotiable)
 
@@ -116,7 +117,7 @@ Langfuse actuals (ten T1–T10 runs, 6 Sep): mean **~$0.0071 / run** → **~$0.0
 
 ## Demo video
 
-PRD Genie requires a ≤5-minute recording of the **working** n8n + Langfuse flow. Walk **Agent 1 out → Agent 3 in → stories**, then the Gap sibling on a vague input. Shot list: [demo/demo-video-link.md](demo/demo-video-link.md).
+PRD Genie requires a recording of the **working** n8n flow, **at most 5 minutes** (shorter is fine). This clip is T1 (Extractor → PRD → stories) then T5 (Gap on an ambiguous input). Details: [demo/demo-video-link.md](demo/demo-video-link.md).
 
 ## License / provenance
 

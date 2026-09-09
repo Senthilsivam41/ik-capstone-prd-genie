@@ -156,7 +156,7 @@ Used during the Step 6 evaluation loop (Days 9–11). One row per change — nev
 
 ### Rollout Plan
 1. Validate against the 12-input baseline dataset (all core + extended capabilities).
-2. Record 5-minute demo video showing a full run: transcript in → PRD out → stories out → Gap Analyzer flags on an ambiguous input.
+2. Record a demo of **at most 5 minutes** (shorter is fine): T1 (transcript in → PRD out → stories out) and T5 (Gap Analyzer flags on an ambiguous input).
 3. Submit as capstone; post-submission, reuse the working pipeline as a real test subject for AgentLens's drift-detection and evaluation tooling.
 
 ---

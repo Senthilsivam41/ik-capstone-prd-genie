@@ -1,4 +1,6 @@
-# Experiment log
+# Experiment log — failures found and how we improved
+
+Linked from the root [README](../README.md) reading order so reviewers do not miss the eval loop.
 
 Evaluation loop (Days 9–11). **One change per row.** If a row changes prompt *and* model, it is invalid.
 

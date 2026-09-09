@@ -50,4 +50,4 @@ Next: gate PRD on NONE; rewrite Completeness judge; Gap → gpt-4o. No fine-tune
 
 ## Slide 9 — Demo pointer
 
-5-minute video: `demo/demo-video-link.md` (record from a signed-in n8n session).
+≤5-minute video (max, not a 5:00 target): `demo/prd-genie-demo.mp4` — T1 + T5.
