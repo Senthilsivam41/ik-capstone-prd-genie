@@ -171,8 +171,8 @@ Graded slices. Detail and DoD: [release-plan.md](release-plan.md).
 | R1 Observability + Extractor | Langfuse before T1 | Done |
 | R2 Core e2e | PRD + stories (T11/T12) | Done |
 | R3 Baseline | T1–T12 pasted from traces | Done |
-| R4 Gap branch | Extended +8 | Done (demo video still pack-open) |
-| R5 Q4 + pack | Reflection, slides | Written; **5-min demo** still required |
+| R4 Gap branch | Extended +8 | Done (demo in `demo/prd-genie-demo.mp4`, T1 + T5, ≤5 min) |
+| R5 Q4 + pack | Reflection, slides | Written; demo is in the pack |
 
 ### After capstone (R6+) — **not built, not scored**
 

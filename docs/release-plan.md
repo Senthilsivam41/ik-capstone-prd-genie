@@ -62,14 +62,14 @@ Do **not** ship Scope Estimator, synthetic emails, or fine-tune until **R4** is 
 | **DoD** | No `Not run` left; experiment-log ready for one-change experiments |
 | **Demo** | None required |
 
-### R4 — Gap Analyzer branch (**scored** — demo / canvas screenshot still open)
+### R4 — Gap Analyzer branch (**scored** — demo in `demo/`)
 
 | | |
 |---|---|
 | **Delivers** | Gap Analyzer parallel off Extractor (v0.7); Merge → Langfuse; T2/T3/T5/T6/T9/T10 graded on questions not invented answers |
 | **Pts** | Extended **+8** |
-| **DoD** | Graph matches ADR-001/004. Live Gap model is still gpt-4o-mini (ADR-003 wants gpt-4o). Canvas screenshot + 5-min demo still open |
-| **Demo** | **Release gate: graded 5-min demo** — see below |
+| **DoD** | Graph matches ADR-001/004. Live Gap model is still gpt-4o-mini (ADR-003 wants gpt-4o). |
+| **Demo** | **Pack clip in repo** — [`demo/prd-genie-demo.mp4`](../demo/prd-genie-demo.mp4). **5:00 is a max, not a target.** T1 + T5 is enough. |
 
 ### R5 — Reflection + submission pack
 
@@ -111,12 +111,12 @@ Fine-tune stays optional. Cost remains `tokens × price × volume` as **$/user/d
 
 | Item | Rule |
 |---|---|
-| **First required in** | **R4** (full Extractor → PRD → stories + Gap + Langfuse visible) |
-| **Primary file** | `demo/prd-genie-demo.mp4` (or `.webm` / `.mov`) — ≤ **5:00**, prefer **&lt; 25 MB** |
+| **First required in** | **R4** — **T1** (Extractor → PRD → stories) and **T5** (Gap). **5:00 is a max**, not a filled clock. |
+| **Primary file** | `demo/prd-genie-demo.mp4` — **at most 5:00** (shorter is fine), prefer **&lt; 25 MB**. Recorded (~3:57, ~14 MB). |
 | **Pointer** | Always update [demo/demo-video-link.md](../demo/demo-video-link.md) with path + optional URL |
 | **GitHub limits** | Soft warn &gt;50 MB; hard block **100 MB**. If over ~25 MB: compress, or use Git LFS, or host unlisted + keep link in `demo-video-link.md` and a 10–20s teaser in-repo |
 | **gitignore** | Do **not** ignore `demo/prd-genie-demo.*`. Ignore only bloated locals: `demo/*.mov.raw`, `demo/raw/` |
-| **Must show** | Transcript in → extraction → PRD → stories → Gap on T2/T5 → Langfuse trace with per-agent spans |
+| **Must show** | **T1** (transcript → extraction → PRD → stories) and **T5** (Gap on an ambiguous input). Two runs are enough. Do not pad extra IDs to fill 5:00. |
 
 Earlier course note said “link only.” **Reconcile:** prefer **small in-repo video**; keep URL field for overflow or secondary share. Graders cloning the repo should see `demo/` without chasing Drive permissions.
 

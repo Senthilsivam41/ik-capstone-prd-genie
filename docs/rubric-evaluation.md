@@ -6,7 +6,7 @@
 **Method:** Grader-conservative. Credit only what a TA could mark from GitHub without watching a live canvas.  
 **Live view:** [rubric-completion canvas](../design/canvases/prd-genie-completion.canvas.tsx)
 
-**Headline: 80 / 80 on the written+build lines. Pack (demo, canvas screenshots, slides) is still the submission gate.**
+**Headline: 80 / 80 on the written+build lines. Pack (demo ≤5 min, canvas screenshots, slides) is in git.**
 
 | Band | Max | Earned | % |
 |---|---|---|---|
@@ -53,7 +53,7 @@ Fine-tuning: 0 and correctly omitted.
 | Baseline outputs for all 12 | Pass — T1–T12 pasted from real traces |
 | Screenshots: canvas, in-action, traces | Pass — `n8n-canvas.png`, `pipeline-in-action.png` (T10 exec #225), Langfuse shots |
 | Slide deck `.pptx` | Pass — `slides/prd_genie_capstone_summary.pptx` |
-| 5-minute demo URL | Fail — empty (`demo/demo-video-link.md`) |
+| 5-minute demo (max, not a 5:00 target) | Pass — [`demo/prd-genie-demo.mp4`](../demo/prd-genie-demo.mp4) (~3:57, T1 + T5). Pointer: [demo/demo-video-link.md](../demo/demo-video-link.md) |
 
 ---
 
@@ -75,7 +75,6 @@ These do not add points. They prevent losing the points above.
 
 TDD order. Do not chase 80 by writing more docs.
 
-1. Pack still open: 5-min demo. Canvas, in-action, slides, and Langfuse shots are in git.
-2. Optional: Gap → gpt-4o (ADR-003); T9 PRD gate. Do not add a fifth agent.
+Pack demo is in git: T1 + T5, ~3:57 (5:00 is a ceiling). Optional after that: Gap → gpt-4o (ADR-003); T9 PRD gate. Do not add a fifth agent.
 
 Written+build ceiling is **80**. No extra points for RAG, fine-tune, or a fifth agent. Pack items can still fail a TA even at 80 on the rubric table.
