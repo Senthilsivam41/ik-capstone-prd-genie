@@ -10,7 +10,7 @@ A fluent document that invents scope is worse than messy notes. Every agent says
 | Author | Sendil |
 | Pattern | Sequential pipeline + one branch ([ADR-001](docs/adr/ADR-001-orchestration-pattern.md)) |
 | Extended | Gap Analyzer only ([ADR-002](docs/adr/ADR-002-extended-capability.md)) |
-| Canvas | IK n8n Cloud + Langfuse EU |
+| Canvas | n8n **1.0** (IK Cloud; account now closed) + Langfuse EU |
 | Written+build | 80/80 on the rubric table — pack includes a **≤5 min** demo ([`demo/prd-genie-demo.mp4`](demo/prd-genie-demo.mp4)) |
 
 ## Start here (read in this order)
@@ -25,6 +25,8 @@ TAs will not get a Slack walkthrough. This list is the pack.
 6. [evidence/baseline-results.md](evidence/baseline-results.md) — T1–T12 Must/Must-not + pasted outputs.
 7. [evidence/experiment-log.md](evidence/experiment-log.md) — **Failures found and how we improved** (E1 T2 vague → UNKNOWN; E1b T7 NFR class; E5 judges on gpt-4o). One change per row.
 8. [evidence/screenshots/](evidence/screenshots/) — n8n canvas, pipeline in action, Langfuse.
+
+**Workflows:** import **1.0** ([`system/workflow.json`](system/workflow.json)) for scoring. **1.1** is an optional Drive inbox ([docs/enhancement-v1.1-drive-inbox.md](docs/enhancement-v1.1-drive-inbox.md)) — not a fifth agent, not required for the 80.
 
 Then only if needed: [docs/README.md](docs/README.md) (full docs map) · ADRs · RAID.
 
@@ -68,15 +70,21 @@ Judges (Completeness / Hallucination / Groundedness) sit **in Langfuse**, not as
 
 ## How to run
 
-Runtime is **IK n8n Cloud** + **Langfuse EU**. n8n→LangFlow JSON export is **broken** (6 Sep) — do not rebuild.
+The cohort **IK n8n Cloud** account is **deactivated**. Graders should **not** need a live canvas. Proof of the working pipeline:
 
-1. Sign in to [IK n8n](https://agenticai100.app.n8n.cloud/home/workflows).
-2. Langfuse project: [my-capstone-prd-genie (EU)](https://cloud.langfuse.com/project/cmthhhzzv02wsad0d4qogeznv) — host `https://cloud.langfuse.com`, not `us.cloud.langfuse.com`.
-3. Copy `system/.env.example` → `system/.env` (local backup only). **Do not commit `.env`.** n8n Cloud does not read that file.
-4. **Import** [`system/workflow.json`](system/workflow.json) (same graph as [`system/workflows/PRD Genie — Slice 1 Extractor + Langfuse-v0.7.json`](system/workflows/PRD%20Genie%20%E2%80%94%20Slice%201%20Extractor%20%2B%20Langfuse-v0.7.json)). Sticky notes on the canvas name each agent.
-5. Re-select OpenAI, Google Sheets, and Langfuse **Basic Auth** if empty (username = public key, password = secret key).
-6. Open **Input Text**, set `testId` to `T1`…`T12`. The sheet row’s `chatInput` is what Agent 1 reads. T11 = T1 extraction; T12 = T11 PRD — not a new transcript.
-7. **Test workflow.** Confirm a Langfuse trace: root + four generations (Extractor, Gap, PRD, stories).
+- Workflow **1.0** JSON: [`system/workflow.json`](system/workflow.json)
+- Screenshots: [`evidence/screenshots/`](evidence/screenshots/) (canvas, in-action, Langfuse)
+- T1–T12 outputs + trace IDs: [`evidence/baseline-results.md`](evidence/baseline-results.md)
+- Demo (T1 + T5, ≤5 min): [`demo/prd-genie-demo.mp4`](demo/prd-genie-demo.mp4)
+
+If you have a **private** n8n + Langfuse:
+
+1. Import [`system/workflow.json`](system/workflow.json) (**1.0**). Same graph as [`system/workflows/prd-genie-1.0.json`](system/workflows/prd-genie-1.0.json).
+2. Re-select OpenAI, Google Sheets, and Langfuse **Basic Auth** (username = public key, password = secret key).
+3. Open **Input Text**, set `testId` to `T1`…`T12`. The sheet row’s `chatInput` is what Agent 1 reads. T11 = T1 extraction; T12 = T11 PRD — not a new transcript.
+4. **Test workflow.** Confirm a Langfuse trace: root + four generations (Extractor, Gap, PRD, stories).
+
+**1.1 (optional):** [`system/workflows/prd-genie-1.1.json`](system/workflows/prd-genie-1.1.json) adds Google Drive Ready vs Unclassified after Langfuse. Needs Drive OAuth. How to mark it without n8n: [docs/enhancement-v1.1-drive-inbox.md](docs/enhancement-v1.1-drive-inbox.md).
 
 ## Repo map (folder → what it covers)
 
@@ -94,12 +102,14 @@ Runtime is **IK n8n Cloud** + **Langfuse EU**. n8n→LangFlow JSON export is **b
 | [design/evals/](design/evals/) | Langfuse judge briefs (Hallucination / Completeness / Groundedness) — paste into Evaluators |
 | [design/architecture-diagram.png](design/architecture-diagram.png) | Submission diagram |
 | [design/orchestration-notes.md](design/orchestration-notes.md) | Why sequential + branch; live n8n wiring |
+| [design/drive-output.md](design/drive-output.md) | 1.1 Drive folder contract (enhancement) |
+| [docs/enhancement-v1.1-drive-inbox.md](docs/enhancement-v1.1-drive-inbox.md) | Why Drive helps TPM review; how to mark 1.1 with n8n offline |
 | [design/canvases/](design/canvases/) | Git copies of Cursor canvases (not the live n8n file) |
 | [evidence/baseline-results.md](evidence/baseline-results.md) | T1–T12 runs (the eval table) |
 | [evidence/experiment-log.md](evidence/experiment-log.md) | **Failures → fixes** (E1 / E1b / E5). Do not miss this for the eval loop. |
 | [evidence/ground-truth/](evidence/ground-truth/) | Course inputs (immutable) + how GT is *not* the pipeline |
 | [evidence/screenshots/](evidence/screenshots/) | Canvas, in-action, Langfuse |
-| [system/workflow.json](system/workflow.json) | **Import this** — annotated v0.7 n8n export |
+| [system/workflow.json](system/workflow.json) | **Import this — version 1.0** (graded). 1.1 is optional |
 | [system/prd_template.md](system/prd_template.md) | Ten-section PRD contract |
 | [slides/prd_genie_capstone_summary.pptx](slides/prd_genie_capstone_summary.pptx) | Slide deck |
 | [demo/prd-genie-demo.mp4](demo/prd-genie-demo.mp4) | **Demo** — T1 + T5, ~3:57 (5:00 is a max) |
@@ -118,6 +128,16 @@ Langfuse actuals (ten T1–T10 runs, 6 Sep): mean **~$0.0071 / run** → **~$0.0
 ## Demo video
 
 PRD Genie requires a recording of the **working** n8n flow, **at most 5 minutes** (shorter is fine). This clip is T1 (Extractor → PRD → stories) then T5 (Gap on an ambiguous input). Details: [demo/demo-video-link.md](demo/demo-video-link.md).
+
+## Zip this branch (submission pack)
+
+Do **not** zip the working folder by hand — that would include `demo/raw/` (~289 MB) and `system/.env`. From this branch:
+
+```bash
+git archive --format=zip --output=prd-genie-submission.zip HEAD
+```
+
+That archive is **1.0** JSON, prompts, docs, traces, screenshots, slides, and the ≤5 min demo. **1.1** is included as an enhancement JSON + [docs/enhancement-v1.1-drive-inbox.md](docs/enhancement-v1.1-drive-inbox.md).
 
 ## License / provenance
 

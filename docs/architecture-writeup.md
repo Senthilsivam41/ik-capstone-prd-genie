@@ -52,19 +52,19 @@ Requirement Extractor     (gpt-4o)  stated vs ambiguous
 
 | Category | Choice | Why |
 |---|---|---|
-| Workflow platform | n8n (IK Cloud) | Cohort received n8n (`agenticai100.app.n8n.cloud`); that is the live canvas. Rubric accepts LangFlow **or equivalent**. 6 Sep: n8n→LangFlow JSON is broken — no import ([ADR-005](adr/ADR-005-workflow-platform.md)) |
+| Workflow platform | n8n (IK Cloud) | Cohort received n8n (`agenticai100.app.n8n.cloud`). That account is now **closed**; the graded artefact is JSON **1.0**. Rubric accepts LangFlow **or equivalent**. 6 Sep: n8n→LangFlow JSON is broken — no import ([ADR-005](adr/ADR-005-workflow-platform.md)) |
 | LLM — Extractor | gpt-4o (live) | Highest-stakes judgment; 6/12 baseline tests grade this step |
 | LLM — Gap Analyzer | gpt-4o-mini (live; ADR-003 wants gpt-4o) | Same judgment profile; cheaper until a consistent gain shows otherwise |
 | LLM — PRD Generator | gpt-4o (live; ADR-003 sketched mini) | Template fill; empty sections stay Open Questions |
 | LLM — Story Breakdown | gpt-4o-mini | Fixed-format transform; ACs copied verbatim |
 | Document ingestion | n8n Manual Trigger / text | Inputs are `.txt` / `.md`; no OCR or CSV reshape |
 | Observability | Langfuse | Per-agent traces, token cost, LLM-as-judge scores (completeness, hallucination, groundedness); maps to the class open-coding / axial-coding loop |
-| Output | Markdown matching `prd_template.md` | Rubric does not require Docs/Notion export |
+| Output | Markdown matching `prd_template.md` | Rubric does not require Docs/Notion. **1.1** (optional) files the same markdown to Google Drive — [enhancement-v1.1-drive-inbox.md](enhancement-v1.1-drive-inbox.md) |
 | Auth | None in-app | File-upload pipeline; provider keys live in env only |
 
 LangFlow was the 30 Aug default builder. The cohort then received an **n8n** account, so we implemented there (ADR-005). On 6 Sep the facilitator confirmed n8n→LangFlow JSON export is **broken**, so LangFlow is not a later import. Graders open the n8n export. A coded LangGraph app stays rejected — the capstone scores a visual canvas export plus traces, not a custom runtime.
 
-**Long term (not built):** Meet/Teams + Drive/SharePoint are ingestion; chat and email are HITL adapters; Google Doc/SharePoint are export. n8n still orchestrates the same four agents; Langfuse stays; split-model stays. Detail and diagrams: [solution-journey.md](solution-journey.md) · [target.html](../design/architecture/target.html). Do not put those connectors on `system/workflow.json`.
+**1.1 Drive inbox (optional, not scored):** after Langfuse, a Code node can file the draft as Google Docs into Ready vs Unclassified. That is not a fifth agent and not a Gap gate. The cohort n8n account is now closed; mark 1.1 from the JSON and [enhancement-v1.1-drive-inbox.md](enhancement-v1.1-drive-inbox.md). Meet/Teams ingestion and chat HITL are still not built.
 
 ## Cost analysis (Langfuse actuals — 6 Sep 2026)
 
