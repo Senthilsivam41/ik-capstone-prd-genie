@@ -18,7 +18,7 @@ Source of truth for **this** project, not CalendarMate / Mira / SalesGenie.
 | Q1 Ideation / business case | 15 | [charter.md](charter.md) §Q1 | Written |
 | Q2 Programme charter | 15 | [charter.md](charter.md) §Q2 · [raid-log.md](raid-log.md) · [adr/](adr/) | Written (RAID + ADRs) |
 | Q3 Design and rationale | 10 | [architecture-writeup.md](architecture-writeup.md) · [architecture-diagram.png](../design/architecture-diagram.png) · ADRs | Written — pattern **justified** |
-| Q3 Core capabilities | 12 | n8n v0.7 + prompts in `design/agents/` | T11/T12 Pass on traces |
+| Q3 Core capabilities | 12 | n8n **1.0** + prompts in `design/agents/` | T11/T12 Pass on traces |
 | Q3 Extended capability | 8 | Gap Analyzer ([ADR-002](adr/ADR-002-extended-capability.md)) | Wired; T2/T3/T5/T6/T9/T10 documented |
 | Q3 Observability | 5 | Langfuse traces per agent, tokens + cost | Connected before first scored run |
 | Q3 Baseline dataset | 5 | All 12 inputs with outputs in [baseline-results.md](../evidence/baseline-results.md) | T1–T12 pasted from real traces |

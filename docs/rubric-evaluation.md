@@ -27,7 +27,7 @@
 | Q1 Ideation | 15 | **15** | [charter.md](charter.md) §Q1 — four pains, each with manual step, agent, I/O, risk, tied to T2/T4/T5/T9 | None for the written Q. |
 | Q2 Programme charter | 15 | **15** | Charter §Q2: vision, objectives, scope (core + Gap Analyzer + out of scope), success criteria, timeline, RAID, stakeholders, rollout. Named deliverables: [raid-log.md](raid-log.md), [ADR-001](adr/ADR-001-orchestration-pattern.md)–[005](adr/ADR-005-workflow-platform.md) | Issues log empty is appropriate at Day 2. |
 | Q3 Design / rationale | 10 | **10** | [architecture-writeup.md](architecture-writeup.md) 1–2 pages; PNG diagram; sequential **justified** (not just named); n8n is the IK-hosted equivalent (ADR-005); HITL simulated; tool table | JSON canvas is **core**, not this line. |
-| Q3 Core e2e | 12 | **12** | T11 Pass `bd27a36e`; T12 Pass `958dff5055157a90830d28d3be555c23` (Extractor + PRD + Story Breakdown on one v4 trace) | Pack JSON is now v0.7. |
+| Q3 Core e2e | 12 | **12** | T11 Pass `bd27a36e`; T12 Pass `958dff5055157a90830d28d3be555c23` (Extractor + PRD + Story Breakdown on one v4 trace) | Pack JSON is now **1.0**. |
 | Q3 Extended | 8 | **8** | v0.7 Gap branch; T2 `9e380ba` / T3 `61c58279` / T5 `d13cbdc8` / T6 `f08c60be` / T9 `a526e805` / T10 `aa706289` — questions, not invented answers | Live Gap model is gpt-4o-mini (ADR-003 wants gpt-4o). |
 | Q3 Observability | 5 | **5** | Graded T1 `5eb3c0ba` plus 6 Sep T1–T10 four-generation traces with H/G/C on each agent. HTTP OTLP, dashboard/score screenshots, three NUMERIC configs. | Canvas and in-action screenshots still pack items. |
 | Q3 Baseline documented | 5 | **5** | T1–T12 outputs pasted from real traces | None for the table. T4/T8 story checks still sit on T12, not a second story run. |
@@ -49,7 +49,7 @@ Fine-tuning: 0 and correctly omitted.
 | Assignment Q1–Q2 | Pass |
 | Assignment Q3 build | Pass — v0.7 Extractor → (Gap ∥ PRD → stories) → Langfuse |
 | Assignment Q4 | Pass — findings from 6 Sep per-agent scores |
-| Workflow JSON export | Pass — `system/workflow.json` = v0.7 (sheet → four agents → OTLP) |
+| Workflow JSON export | Pass — `system/workflow.json` = **1.0** (sheet → four agents → OTLP). **1.1** is optional Drive |
 | Baseline outputs for all 12 | Pass — T1–T12 pasted from real traces |
 | Screenshots: canvas, in-action, traces | Pass — `n8n-canvas.png`, `pipeline-in-action.png` (T10 exec #225), Langfuse shots |
 | Slide deck `.pptx` | Pass — `slides/prd_genie_capstone_summary.pptx` |
