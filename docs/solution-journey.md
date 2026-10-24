@@ -2,7 +2,7 @@
 
 **Rubric:** Q1 pains · Q2 rollout · Q3 design / tool rationale.  
 **Audience:** TA or NeuronForge PM who needs the story, not a node-by-node n8n import.  
-**Live vs target:** AS-IS and TO-BE describe what happens today and what the graded canvas actually runs. Target diagrams are **not built**. Meet, Teams, Drive, SharePoint, Slack, Google Chat, and email are **not connected**.
+**Live vs target:** AS-IS and TO-BE describe the graded **1.0** canvas (four agents + Langfuse). Target diagrams (Meet/Teams **ingestion**, chat HITL, SharePoint) are **not built**. **1.1** Google Drive export is an optional enhancement — [enhancement-v1.1-drive-inbox.md](enhancement-v1.1-drive-inbox.md). The cohort n8n account is now closed.
 
 Interactive diagrams (Archify): [AS-IS](../design/architecture/as-is.html) · [TO-BE capstone](../design/architecture/to-be.html) · [Target intake + HITL](../design/architecture/target.html) · [HITL approval loop](../design/architecture/hitl-approval.html). Source JSON sits next to each HTML. Graded 1–2 page writeup remains [architecture-writeup.md](architecture-writeup.md).
 
@@ -100,7 +100,7 @@ Capstone proves the four agents on one Sheet row. Target is how NeuronForge woul
 | Pain | Capstone (live) | Target (not built) |
 |---|---|---|
 | 1 Requirements buried in conversation | Extractor on `chatInput` | Meet/Teams transcript **plus** Drive/SharePoint files tied to that meeting |
-| 2 Inconsistent PRD format | PRD Generator + template | Same generator; **export** to Google Doc / SharePoint after the markdown draft exists |
+| 2 Inconsistent PRD format | PRD Generator + template | Same generator; **1.1** optional Google Doc export |
 | 3 Manual story breakdown | Story Breakdown | Same agent; stories ride with the PRD into chat/email review |
 | 4 Notes and contradictions lost | Gap Analyzer questions; PM answers offline | Same questions delivered in **chat**; parked items live on the structured record, not a side note |
 
@@ -126,7 +126,7 @@ Capstone still feeds plain `chatInput` from the Sheet. The first cheap step afte
 
 ### HITL approval loop (production BR-3)
 
-Today BR-3 is **simulated**: Gap report out, PM answers offline, **new** run from Extractor. There is no wait/resume node.
+Today BR-3 is **simulated on 1.0**: Gap report out, PM answers offline, **new** run from Extractor. There is no wait/resume node. **1.1** (optional) would file Ready vs Unclassified Google Docs — [enhancement-v1.1-drive-inbox.md](enhancement-v1.1-drive-inbox.md). The cohort n8n account is closed.
 
 Target (see [hitl-approval.html](../design/architecture/hitl-approval.html)):
 
@@ -184,7 +184,7 @@ Cheapest first. None of these rows are nodes on `system/workflow.json`.
 | R7 | One transcript connector — Meet **or** Teams, not both | Do not treat the connector as a new LLM |
 | R8 | Correlate one doc store — Drive **or** SharePoint — by meeting id / time / attendees | Do not extract from an uncorrelated file pile |
 | R9 | Chat HITL — **one** of Slack, Google Chat, or Teams | Do not add wait/resume on the graded canvas; re-run from Extractor |
-| R10 | Google Doc / SharePoint **export** + email share; approve by email reply **or** chat | Do not call a draft ready for engineering before approval (production BR-3) |
+| R10 | Google Doc **export** as workflow **1.1** (optional). Email share still later | Do not add wait/resume; mark from [enhancement-v1.1-drive-inbox.md](enhancement-v1.1-drive-inbox.md) |
 | R11 | Remaining connectors (the other meeting, doc store, chat channels) | Do not build all six products in one slice |
 | R12 | Loop Over Items on **already green** `runnable=yes` rows | Do not fire unfiltered T-rows while isolating a red ID |
 | R13 | Optional T9 gate: skip PRD/stories when Extractability is NONE | Do not invent a fifth agent |

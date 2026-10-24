@@ -2,7 +2,7 @@
 
 Companion to [docs/architecture-writeup.md](../docs/architecture-writeup.md) and the ADRs. This is the "why sequential + branch" page for the design folder.
 
-Live canvas: [`system/workflow.json`](../system/workflow.json) (v0.7). Sticky notes on that import name each agent so a TA does not need a Slack walkthrough.
+Graded canvas: [`system/workflow.json`](../system/workflow.json) (**1.0**). Sticky notes on that import name each agent so a TA does not need a Slack walkthrough. **1.1** (Drive inbox) is an optional enhancement: [enhancement-v1.1-drive-inbox.md](../docs/enhancement-v1.1-drive-inbox.md).
 
 ## Pattern
 
@@ -27,7 +27,7 @@ Fixed order is the product. You cannot generate a PRD before extraction without 
 
 Gap Analyzer must see extraction, not stories. If it waits until after Story Breakdown (course default), gaps have already been rewritten twice. Parallel with PRD Generator means T11/T12 still run on a full chain for specified inputs, while T2/T5/T9 are graded on the Gap Analyzer output.
 
-The branch is **not** a gate. HITL is simulated: PM takes questions offline, appends answers to the source, re-runs from the Extractor. Stateless by design. T9 (empty notes) still produces a PRD — that is the Q4 first failure, not a wiring bug.
+The branch is **not** a gate. HITL is offline: PM takes questions, appends answers to the source, re-runs from the Extractor. Stateless by design. T9 (empty notes) still produces a PRD — that is the Q4 first failure, not a wiring bug. **1.1** (optional) files Unclassified runs into Google Drive with `04-open-items` — [drive-output.md](drive-output.md).
 
 ## What each agent does
 
@@ -53,12 +53,12 @@ Copied from the charter so this folder stands alone:
 | LLM — Story Breakdown | gpt-4o-mini | Fixed-format transform |
 | Ingestion | Manual Trigger → `testId` → sheet `chatInput` | Official T1–T12 rows, not a pasted sample transcript |
 | Observability | Langfuse EU OTLP v4 | Per-agent generations; judges in Langfuse, not n8n |
-| Output | Markdown / `prd_template.md` | No Docs/Notion required |
+| Output | Markdown / `prd_template.md` | **1.1** optional: Google Drive Ready vs Unclassified |
 | Auth | None in-app | Keys in n8n credentials / `.env` only |
 
-## n8n wiring (live v0.7)
+## n8n wiring (1.0 — graded)
 
-IK instance: `https://agenticai100.app.n8n.cloud`. Langfuse: EU `https://cloud.langfuse.com`.  
+IK n8n Cloud for this cohort is **deactivated**. The scored graph is in `system/workflow.json` (1.0). Langfuse: EU `https://cloud.langfuse.com`.  
 Follow-along (build-plan canvas, not the live graph): [prd-genie-n8n-workflow.canvas.tsx](canvases/prd-genie-n8n-workflow.canvas.tsx).
 
 Use **Basic LLM Chain** (or LLM Chain / AI Agent with **zero tools**). Do not attach tools. Do not add a judge node.
@@ -77,7 +77,7 @@ flowchart TD
   B --> L[Send to Langfuse EU]
 ```
 
-TDD order (done through Gap): **Extractor + Langfuse HTTP only** until T1 is green. Then PRD → stories. Then Gap Analyzer branch (v0.7).
+TDD order (done through Gap): **Extractor + Langfuse HTTP only** until T1 is green. Then PRD → stories. Then Gap Analyzer branch (**1.0**). Drive export is **1.1**, after Langfuse, optional.
 
 1. Manual Trigger → Input Text (`testId`) → Sheet row → Extractor (prompt from `agents/requirement-extractor.md`, gpt-4o).
 2. HTTP Request after the Merge: `POST https://cloud.langfuse.com/api/public/otel/v1/traces` with `x-langfuse-ingestion-version: 4` — connected **before** the first successful scored run.

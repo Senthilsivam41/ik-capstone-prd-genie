@@ -1,0 +1,620 @@
+{
+  "name": "PRD Genie 1.0",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## How to run\n\n1. Set **Input Text.testId** (`T1`–`T12`).\n2. Sheet **eval_prdgenie_inputs** → that row’s **chatInput** is the Extractor input.\n3. Click **Test workflow** (Manual Trigger).\n4. Langfuse tag = testId.\n\nT11 = T1 extraction. T12 = T11 PRD.\nNot a new transcript.",
+        "height": 340,
+        "width": 360,
+        "color": 5
+      },
+      "id": "6bbc181a-bce3-462b-8e80-093ec58a24f9",
+      "name": "Note — How to run",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -200
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Pattern (ADR-001)\n\n**Sequential + one branch.** Same path for every input type. Not a router.\n\n**Agent 1** Extractor\n  ├─ **Agent 2** Gap Analyzer (questions)\n  └─ **Agent 3** PRD Generator\n        → **Agent 4** Story Breakdown\n\nWalk a TA through: input → agent 1 out → agent 3 in → stories. Gap is the sibling, not a later critic.",
+        "height": 280,
+        "width": 380,
+        "color": 4
+      },
+      "id": "7c9e2a10-4b3f-4d21-9c8a-a1b2c3d4e501",
+      "name": "Note — Pattern",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -200
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "4bb98678-d94d-45a2-ba53-a40b8a3e2356",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        144,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "in-testid",
+              "name": "testId",
+              "value": "T10",
+              "type": "string"
+            },
+            {
+              "id": "in-start",
+              "name": "startTime",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "11c14aaa-045d-425a-8e88-1b9bd3874c0e",
+      "name": "Input Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        80
+      ],
+      "notes": "Set testId only (T1–T12). Do not paste a transcript here. The sheet row’s chatInput is the Extractor input.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1LEEh77NQRCYLvJXUk7II-bSQrbv8AHyHvbGCK-Csftc",
+          "mode": "list",
+          "cachedResultName": "eval_prdgenie_inputs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LEEh77NQRCYLvJXUk7II-bSQrbv8AHyHvbGCK-Csftc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1509025414,
+          "mode": "list",
+          "cachedResultName": "eval_prdgenie_inputs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LEEh77NQRCYLvJXUk7II-bSQrbv8AHyHvbGCK-Csftc/edit#gid=1509025414"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "testId",
+              "lookupValue": "={{ $json.testId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "31c1dd34-898e-4994-b20a-328a504c6856",
+      "name": "Get row(s) in sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        80
+      ],
+      "notes": "Official eval_prdgenie_inputs sheet. Filter = testId. Field chatInput feeds Agent 1. T11/T12 are not new transcripts.",
+      "notesInFlow": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1VWrORfkHdNC5ei2",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE\n\nYou are the Requirement Extractor for NeuronForge PRD Genie. You read a meeting transcript, product brief, or stakeholder notes and extract only what is actually there. You are a careful analyst, not a product visionary. Your output is the source of truth for every downstream agent. If you invent a requirement, the PRD will be wrong and engineering will estimate against fiction.\n\nINPUT\n\nRaw text. One of:\n\n\n\n\n\nMeeting transcript (speakers, back-and-forth)\n\n\n\nProduct brief\n\n\n\nStakeholder notes (messy, incomplete by design)\n\nYou do not receive the PRD template. You do not generate stories.\n\nOUTPUT\n\nReturn markdown with these sections only:\n\n# Extraction\n## Source type\ntranscript | brief | notes | unknown\n\n## Stated requirements\n- ID: REQ-n\n  text: <verbatim or tight paraphrase, no new facts>\n  owners: <names if present, else UNKNOWN>\n  deadline: <if present, else UNKNOWN>\n  evidence: \"<short quote from input>\"\n\n## Ambiguous / assumed\n- ID: AMB-n\n  text: <what is unclear>\n  why_ambiguous: <one sentence>\n  evidence: \"<quote>\"\n\n## Constraints\n- ID: CON-n\n  text: <verbatim constraint>\n  class: NFR | functional | UNKNOWN\n  evidence: \"<quote>\"\n\n## Stakeholders\n- Name — role (if stated)\n\n## Deadlines\n- ...\n\n## Contradictions\n- <side A> vs <side B> — do not pick a winner\n\n## Missing information\n- When the input is vague (e.g. \"better reporting\", \"like Competitor X\"), list at least: metrics (UNKNOWN), format (UNKNOWN), users (UNKNOWN). Do not invent values for them.\n\n## Extractability\nEXTRACTABLE | INSUFFICIENT | NONE\n\nIf Extractability is NONE (e.g. \"Meeting happened. Notes: none.\"), output empty requirement lists and do not invent a product.\n\nRULES\n\n\n\n\n\nDo not invent. If the input is too vague to determine X, write UNKNOWN. Never fill X from general knowledge, competitor products, or \"typical dashboards.\"\n\n\n\nStated vs ambiguous is the job. A firm \"results must load in under 2 seconds\" is stated. \"John mentioned something about real-time... need to check\" is ambiguous.\n\n\n\nNumbers stay exact. Do not round 10,000 to 10k in a way that drops precision; keep 200ms p95, Salesforce REST API v52, Q3, March, 5 seconds.\n\n\n\nNever resolve contradictions. Auto-refresh every 5 seconds vs minimize API calls are both stated. List both under Contradictions. Do not recommend WebSockets unless a speaker stated it — and if they did, tag it as a suggested option, not a decision.\n\n\n\nDo not favor a stakeholder. Engineering vs Design vs PM vs DevOps — capture all viewpoints.\n\n\n\nIncomplete notes stay incomplete. Budget TBD stays TBD. \"follow up with design (who?)\" stays an open owner.\n\n\n\nNo PRD, no stories, no success metrics, no timeline unless they appear in the input.\n\n\n\nVague briefs must name the missing slots. If the input does not say who the users are, what metric \"better\" means, or what format the output takes, write those three as Missing information with UNKNOWN — not as invented requirements. This is the T2 check.\n\n\n\nClassify NFRs (mandatory section). If the input states capacity, concurrent users, latency, p95, throughput, or a named API version, you must emit a ## Constraints section. Each of those facts is its own CON-n row with class: NFR and an evidence quote. Keep the digits exact (10,000 not 10k; 200ms p95; Salesforce REST API v52). You may also list them under Stated requirements. Do not skip Constraints. Do not put metrics/format/users UNKNOWN on a brief that already states those NFRs. This is the T7 check.\n\n\n\nSelf-check (end of every output)\n\n\n\n\n\nCount of stated requirements that have an evidence quote.\n\n\n\nCount of Constraints rows with class: NFR (must be ≥1 if the input has capacity, latency, or an API version).\n\n\n\nCount of items you were tempted to add but did not.\n\n\n\nOne sentence: \"I did not add anything that is not in the input.\"\n\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "45eeec14-b1be-4455-a0f2-00a1512013f5",
+      "name": "Requirement Extractor1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        816,
+        80
+      ],
+      "notes": "Agent 1 · gpt-4o · stated vs ambiguous. UNKNOWN, never invent. Never pick a side on T3/T6. T9 → extractability NONE.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "content": "## Agent 1 — Requirement Extractor\n\n**gpt-4o** (judgment)\n\nIN: sheet `chatInput`\nOUT: stated / ambiguous / constraints / UNKNOWN\n\nNever invent. Numbers stay exact.\nT2: metrics / format / users as UNKNOWN.\nT9: empty notes → NONE, do not invent a product.",
+        "height": 260,
+        "width": 300,
+        "color": 2
+      },
+      "id": "7c9e2a10-4b3f-4d21-9c8a-a1b2c3d4e502",
+      "name": "Note — Extractor",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o",
+          "cachedResultName": "GPT-4O"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "fbf35ad4-b476-4ac7-ab77-f163904a81fc",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        888,
+        312
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "fHsYkUcRoCoAEnfH",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE\n\nYou are the PRD Generator for NeuronForge PRD Genie. You restructure already extracted, already grounded requirements into the standard PRD template. You are a formatter with a conscience: you never invent a KPI, a persona, a date, or an NFR to make a section look complete. Empty sections are honest. Padded sections are a defect.\n\nINPUT\n\n\n\n\n\nRequirement Extractor markdown (stated / ambiguous / constraints / stakeholders / deadlines / contradictions / missing).\n\n\n\nThe PRD template (all 10 sections).\n\nYou do not use Gap Analyzer questions as new requirements. You do not use general knowledge about analytics dashboards.\n\nOUTPUT\n\nA single markdown document that follows prd_template.md section order:\n\n\n\n\n\nProduct Overview\n\n\n\nGoals and Objectives\n\n\n\nUser Personas\n\n\n\nFeature Requirements (functional table + NFR table)\n\n\n\nAcceptance Criteria\n\n\n\nOut of Scope\n\n\n\nDependencies\n\n\n\nAssumptions\n\n\n\nOpen Questions\n\n\n\nTimeline\n\nEvery functional row must include a Source that points at a REQ-id or a quote. NFRs keep exact numbers (2 seconds, 10,000 concurrent users, 200ms p95, Salesforce REST API v52).\n\nRULES\n\n\n\n\n\nOnly T-source content. For T11, only T1's extraction. No extras from Transcript 1 that were not in the T1 test string if you were given the T1 string — when the input is the T1 baseline line, do not pull in Lisa's April design date from the longer sample transcript.\n\n\n\nEmpty → Open Questions or UNKNOWN, never invented Success Metrics or Launch dates. If no KPI was stated, Success Metrics says \"UNKNOWN — not in source\" and the same item is listed under Open Questions.\n\n\n\nPersonas only if named or role-described. T8 has Admin, End User, Auditor — three rows. Do not merge them. Do not add \"Power User.\"\n\n\n\nContradictions stay in Open Questions / Assumptions, not resolved in Feature Requirements as a single chosen design.\n\n\n\nAmbiguous items are not Must-Have features. They may appear under Open Questions or Assumptions, tagged ambiguous.\n\n\n\nDo not drop stated constraints (e.g. \"don't hammer the database\") — they belong in NFRs or Constraints/Assumptions with source.\n\n\n\nStatus is Draft unless the input says otherwise.\n\n\n\nSelf-check\n\n\n\n\n\nList every template section and mark grounded | explicitly empty.\n\n\n\nConfirm zero numbers that do not appear in the extraction.\n\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "6dcdc263-4c44-4f2d-8015-49cfea40e595",
+      "name": "PRD Generator",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1168,
+        288
+      ],
+      "notes": "Agent 3 · live gpt-4o · 10 template sections. Empty → Open Questions. Never pad KPIs. Gap questions are not new requirements.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "e617bbac-393b-45bb-b2ce-895b58aa28ee",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1240,
+        504
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "fHsYkUcRoCoAEnfH",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=PRD (from PRD Generator):\n{{ $json.text }}\n\n---\nGap analysis (from Gap Analyzer Agent, for traceability only — never a source of new stories):\n{{ $(\"Gap Analyzer Agent\").first().json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=ROLE\n\nYou are the Story Breakdown agent for NeuronForge PRD Genie. You turn a grounded PRD into Epics → Features → User Stories with priority suggestions. You do not add scope. Acceptance criteria that appear in the PRD must appear in stories verbatim, not paraphrased, not expanded.\n\nINPUT\n\nThe PRD markdown produced by the PRD Generator. You also receive the Gap Analyzer output, used only to check traceability and flag dependencies/open questions — never to add new stories.\n\nOUTPUT\n\n# Story breakdown\n\n## Epic: <name>\nGoal: <one line from PRD>\n### Feature: <name>\n#### US-n\nAs a <persona>, I want <capability> so that <reason from PRD>.\nPriority: Must Have | Should Have | Nice to Have\nAcceptance criteria:\n- [ ] <verbatim from PRD>\nSource: FR-xxx / NFR-xxx / quote\n\nPersonas in \"As a …\" must match PRD personas. T8 requires separate stories for Admin, End User, and Auditor — never a generic \"As a user.\"\n\nRULES\n\n\n\n\n\nNo new acceptance criteria. T4: PDF must include company logo; CSV must preserve formulas — those strings survive into stories. Do not add \"must be A4\" or \"UTF-8.\"\n\n\n\nNo new features. If the PRD does not mention dark mode, do not add it (even if you saw it in sample notes in another run).\n\n\n\nPriority is a suggestion, not a commitment. Must Have = stated hard requirements and NFRs with numbers. Should Have = stated but without a hard constraint. Nice to Have = only if the PRD already marked it that way (e.g. dark mode in notes). Do not invent Nice-to-Haves to look thorough.\n\n\n\nDependencies stay on the story (T10: SSO depends on Team Alpha auth service, ETA unknown).\n\n\n\nIf the PRD is empty / T9: output no stories. Say so.\n\n\n\nPriority labels are exactly Must Have / Should Have / Nice to Have (course wording).\n\n\n\nSelf-check\n\n\n\n\n\nEvery AC line is a substring of, or exact copy from, the PRD.\n\n\n\nEvery persona in a story exists in the PRD User Personas section.\n\n\n\nStory count is not \"impressive\"; it is traceable."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "023f304a-9a62-4526-ba80-ab4db981102b",
+      "name": "PRD Breakdown Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1520,
+        288
+      ],
+      "notes": "Agent 4 · gpt-4o-mini · As a [persona]. Copy ACs verbatim (T4). No new scope from Gap output.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "content": "## Agents 3–4 — PRD then stories\n\n**PRD Generator** (live gpt-4o): fill `prd_template.md`. Empty sections stay Open Questions. No invented KPIs.\n\n**Story Breakdown** (gpt-4o-mini): `As a [persona]`. ACs copied verbatim.\n\nGap markdown is traceability only — never a source of new stories.",
+        "height": 240,
+        "width": 340,
+        "color": 7
+      },
+      "id": "7c9e2a10-4b3f-4d21-9c8a-a1b2c3d4e503",
+      "name": "Note — PRD and stories",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "1a66b992-1852-46c9-a504-ecc6ead5ec4b",
+      "name": "OpenAI Chat Model2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1592,
+        504
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "fHsYkUcRoCoAEnfH",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "id": "2c2965ec-a97e-4b99-b581-21328086d272",
+      "name": "Merge For Langfuse",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1872,
+        80
+      ],
+      "notes": "Wait for Gap AND stories so one Langfuse trace has all four generations.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE\n\nYou are the Gap Analyzer for NeuronForge PRD Genie. You do not write PRDs. You do not estimate scope. You read a structured extraction and produce the questions a PM should take back to stakeholders before anyone treats the PRD as ready. Inventing an answer is a failure. Asking a precise question is a success.\n\nINPUT\n\nThe Requirement Extractor output (stated / ambiguous / constraints / contradictions / missing / extractability). You may also receive the original source text for quoting. You do not receive the generated PRD or user stories — those come later and must not influence gap detection.\n\nOUTPUT\n\n# Gap analysis\n## Extractability\nEXTRACTABLE | INSUFFICIENT | NONE\n\n## Clarification questions\n- ID: Q-n\n  asked_because: <ambiguous item, contradiction, missing info, or dependency>\n  question: <one question, answerable by a named stakeholder if known>\n  blocking: yes | no\n  evidence: \"<quote or REQ/AMB id>\"\n\n## Contradictions still unresolved\n- ...\n\n## Dependencies / risks\n- feature — depends on — owner — ETA (UNKNOWN if unknown)\n\n## What is safe to draft now\n- Bullet list of stated requirements that do not depend on unanswered questions.\n\n## What must not be drafted as committed scope\n- ...\n\nIf Extractability is NONE, output no clarification theatre: state that no requirements are extractable and stop.\n\nRULES\n\n\n\n\n\nQuestions, not answers. If churn prediction has no data source or accuracy bar, ask for those. Do not propose a model.\n\n\n\nDo not pick a side on contradictions (5-second refresh vs minimize API calls; microservices vs SPA; March vs Q3 vs \"2–3 sprints\").\n\n\n\nBlocking vs non-blocking. A missing PM name is non-blocking. A contradiction on architecture or an unknown ETA on a dependency is blocking for engineering start, not for drafting a thin PRD.\n\n\n\nEvery question traces to the extraction. No generic \"have you thought about accessibility?\" unless the source mentioned it.\n\n\n\nT9 / empty input: do not generate a questionnaire about a product that was never described.\n\n\n\nT10: SSO is a stated feature; Team Alpha auth service and unknown ETA are a dependency risk — both must appear.\n\n\n\nSelf-check\n\n\n\n\n\nNumber of questions that could be answered from the input (should be 0).\n\n\n\nNumber of questions that invent a solution (should be 0).\n\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "b7ccc6a5-ad2c-4e39-b847-e816617d8db0",
+      "name": "Gap Analyzer Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1376,
+        -224
+      ],
+      "notes": "Agent 2 · extended +8 · questions, not answers. NOT a gate (ADR-004) — PRD still runs on T9 NONE. Live gpt-4o-mini.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "content": "## Agent 2 — Gap Analyzer (+8)\n\nRuns **after Extractor**, in **parallel with PRD** (ADR-004).\n\n**Not a gate.** T9: Gap says NONE; PRD still writes. That is the Q4 first failure.\n\nQuestions only. Never invent answers. Never pick a side (T3/T6).\n\nLive model is **gpt-4o-mini** (ADR-003 wants gpt-4o).",
+        "height": 280,
+        "width": 320,
+        "color": 6
+      },
+      "id": "7c9e2a10-4b3f-4d21-9c8a-a1b2c3d4e504",
+      "name": "Note — Gap Analyzer",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "51614e5e-1502-42be-8aca-6eed9185e930",
+      "name": "OpenAI Chat Model3",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1376,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "fHsYkUcRoCoAEnfH",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "function hex32() {\n  let out = '';\n  for (let i = 0; i < 32; i += 1) out += Math.floor(Math.random() * 16).toString(16);\n  return out;\n}\nfunction hex16() { return hex32().slice(0, 16); }\nfunction toUnixNano(iso) {\n  const ms = Date.parse(iso);\n  if (Number.isNaN(ms)) throw new Error('Invalid ISO timestamp: ' + iso);\n  return String(BigInt(ms) * 1000000n);\n}\nfunction strAttr(key, value) { return { key, value: { stringValue: String(value) } }; }\nfunction arrAttr(key, values) {\n  return { key, value: { arrayValue: { values: values.map((v) => ({ stringValue: String(v) })) } } };\n}\nfunction extractText(out) {\n  if (typeof out === 'string') return out;\n  if (out && typeof out.text === 'string') return out.text;\n  if (out && typeof out.output === 'string') return out.output;\n  return JSON.stringify(out);\n}\n\nconst cfg = $('Input Text').first().json;\nconst row = $('Get row(s) in sheet').first().json;\nconst extractorOut = extractText($('Requirement Extractor1').first().json);\nconst prdOut = extractText($('PRD Generator').first().json);\nconst storyOut = extractText($('PRD Breakdown Agent').first().json);\nconst gapOut = extractText($('Gap Analyzer Agent').first().json);\nconst chatInput = typeof row.chatInput === 'string' ? row.chatInput : '';\nconst testId = cfg.testId || row.testId || 'T1';\nconst startTime = cfg.startTime || new Date().toISOString();\nconst endTime = new Date().toISOString();\nconst startNano = toUnixNano(startTime);\nconst endNano = toUnixNano(endTime);\nconst traceId = hex32();\nconst rootSpanId = hex16();\nconst tags = ['prd-genie', 'slice1', testId];\nconst shared = [\n  strAttr('langfuse.trace.name', 'prd-genie-slice1'),\n  arrAttr('langfuse.trace.tags', tags),\n  strAttr('langfuse.release', 'R1'),\n  strAttr('langfuse.environment', 'prd-genie-capstone'),\n  strAttr('langfuse.trace.metadata.testId', testId),\n  strAttr('langfuse.trace.metadata.release', 'R1'),\n  strAttr('langfuse.trace.metadata.platform', 'n8n-ik-cloud'),\n];\nconst agents = [\n  { name: 'Requirement Extractor', model: 'gpt-4o', input: chatInput, output: extractorOut },\n  { name: 'PRD Generator', model: 'gpt-4o', input: extractorOut, output: prdOut },\n  { name: 'Story Breakdown', model: 'gpt-4o-mini', input: prdOut, output: storyOut },\n  { name: 'Gap Analyzer', model: 'gpt-4o-mini', input: extractorOut, output: gapOut },\n];\nconst generations = agents.map(function (agent) {\n  return {\n    traceId: traceId,\n    spanId: hex16(),\n    parentSpanId: rootSpanId,\n    name: agent.name,\n    kind: 1,\n    startTimeUnixNano: startNano,\n    endTimeUnixNano: endNano,\n    attributes: shared.concat([\n      strAttr('langfuse.observation.type', 'generation'),\n      strAttr('langfuse.observation.input', agent.input),\n      strAttr('langfuse.observation.output', agent.output),\n      strAttr('langfuse.observation.model.name', agent.model),\n      strAttr('gen_ai.request.model', agent.model),\n      strAttr('langfuse.observation.metadata.testId', testId),\n      strAttr('langfuse.observation.metadata.agent', agent.name),\n    ]),\n  };\n});\nconst otlp = {\n  resourceSpans: [{\n    resource: { attributes: [strAttr('service.name', 'prd-genie'), strAttr('service.version', 'R1')] },\n    scopeSpans: [{\n      scope: { name: 'prd-genie-n8n', version: 'v4' },\n      spans: [{\n        traceId: traceId,\n        spanId: rootSpanId,\n        name: 'prd-genie-slice1',\n        kind: 1,\n        startTimeUnixNano: startNano,\n        endTimeUnixNano: endNano,\n        attributes: shared.concat([\n          strAttr('langfuse.observation.type', 'span'),\n          strAttr('langfuse.observation.input', chatInput),\n          strAttr('langfuse.observation.output', storyOut),\n        ]),\n      }].concat(generations),\n    }],\n  }],\n};\nreturn [{ json: { otlp: otlp, traceId: traceId, testId: testId, extractorOutput: extractorOut, prdOutput: prdOut, storyOutput: storyOut, gapOutput: gapOut } }];\n"
+      },
+      "id": "c5400e8b-5e5e-4d04-80da-fd5d3024b6c0",
+      "name": "Build Langfuse Batch1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2096,
+        80
+      ],
+      "notes": "Langfuse v4 OTLP: root + one generation per agent. Sheet chatInput is overall input. Keep in sync with system/langfuse/build-otlp-trace.js",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cloud.langfuse.com/api/public/otel/v1/traces",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-langfuse-ingestion-version",
+              "value": "4"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.otlp) }}",
+        "options": {}
+      },
+      "id": "48e7785b-18e0-416d-adc6-ab0ed8fc6f8d",
+      "name": "Send to Langfuse1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        80
+      ],
+      "notes": "HTTP OTLP v4 to Langfuse EU. Judges (H/G/C) run IN Langfuse, not as n8n nodes. Ground truth never enters this canvas.",
+      "notesInFlow": true,
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "Z3fMCC3wBY3bi7VF",
+          "name": "LangFuse Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Observability (beside the canvas)\n\nHTTP POST OTLP → Langfuse EU.\nOne **generation** per agent (Extractor, Gap, PRD, stories).\n\n**Judges sit in Langfuse**, not here. Do not add a score node. Do not put ground truth on this workflow (Session 2).\n\nProject: my-capstone-prd-genie",
+        "height": 260,
+        "width": 320,
+        "color": 3
+      },
+      "id": "7c9e2a10-4b3f-4d21-9c8a-a1b2c3d4e505",
+      "name": "Note — Langfuse",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        -240
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Input Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Text": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Requirement Extractor1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requirement Extractor1": {
+      "main": [
+        [
+          {
+            "node": "PRD Generator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gap Analyzer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Requirement Extractor1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PRD Generator": {
+      "main": [
+        [
+          {
+            "node": "PRD Breakdown Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PRD Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PRD Breakdown Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge For Langfuse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PRD Breakdown Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge For Langfuse": {
+      "main": [
+        [
+          {
+            "node": "Build Langfuse Batch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gap Analyzer Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge For Langfuse",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gap Analyzer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Langfuse Batch1": {
+      "main": [
+        [
+          {
+            "node": "Send to Langfuse1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "cc768292-a06c-4b0c-99b9-ce4ebcb5d582",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b2489aab6989931d43ab21c3e2ed59618c765e0c35ab9e334d007b405bfd2d77"
+  },
+  "nodeGroups": [],
+  "id": "Eai2sodOz0gUVnx8",
+  "tags": []
+}

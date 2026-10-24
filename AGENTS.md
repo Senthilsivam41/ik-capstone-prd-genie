@@ -30,6 +30,6 @@ Name the rubric line the current task earns (Q1 15 / Q2 15 / design 10 / core 12
 6. `docs/reflection.md` — Q4
 7. `evidence/baseline-results.md` — T1–T12 (seams in `.cursor/rules/tdd.mdc`)
 8. `evidence/experiment-log.md` — failures found and how we improved (E1 / E1b / E5)
-9. `system/workflow.json` — annotated n8n v0.7 (import this)
+9. `system/workflow.json` — **1.0** (import this). `prd-genie-1.1.json` is the Drive enhancement.
 
-Also: prompts `design/agents/` · Langfuse judges `design/evals/` · canvases `design/canvases/` · audit `docs/rubric-evaluation.md` · release `docs/release-plan.md` · Langfuse HTTP `docs/langfuse-observability-acceptance.md` · inputs `evidence/ground-truth/eval_prdgenie_inputs.txt` · template `system/prd_template.md`
+Also: prompts `design/agents/` · Langfuse judges `design/evals/` · 1.1 Drive inbox `docs/enhancement-v1.1-drive-inbox.md` · canvases `design/canvases/` · audit `docs/rubric-evaluation.md` · release `docs/release-plan.md` · Langfuse HTTP `docs/langfuse-observability-acceptance.md` · inputs `evidence/ground-truth/eval_prdgenie_inputs.txt` · template `system/prd_template.md`
